@@ -1,0 +1,98 @@
+/* --- NAVBAR FIJA SUPERIOR --- */
+.navbar-fija {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999; /* Por debajo del overlay que abre */
+}
+
+.navbar-logo h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.menu-icon-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.menu-icon-btn:hover {
+  color: #a51c30;
+}
+
+/* --- OVERLAY PANTALLA COMPLETA --- */
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(26, 26, 26, 0.98); /* Fondo oscuro casi opaco */
+  z-index: 1000; /* Arriba de absolutamente todo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Efecto de transición para la cortina */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease-in-out;
+}
+
+/* Cuando el estado mapea 'open', se muestra */
+.fullscreen-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Botón de cerrar (X) */
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 3.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #a51c30;
+}
+
+/* Contenedor de links en vertical */
+.overlay-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.overlay-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 2rem; /* Tamaño grande de diseño premium */
+  font-weight: 600;
+  letter-spacing: 2px;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.overlay-links a:hover {
+  color: #a51c30;
+  transform: scale(1.1); /* Ligero zoom al pasar el mouse */
+}
