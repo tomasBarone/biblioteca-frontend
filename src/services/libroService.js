@@ -1,0 +1,31 @@
+import api from './api';
+
+export const libroService = {
+
+    obtenerTodos: async () =>{
+        const response = await api.get('/libros');
+        return response.data;
+    },
+
+// GET con paginación al filtro avanzado que armaste en tu back
+  filtrarAvanzado: async (inicio, fin, pagina = 0, tamano = 10) => {
+    const response = await api.get('/libros/filtrar-avanzado', {
+      params: { inicio, fin, page: pagina, size: tamano }
+    });
+    return response.data;
+  },
+
+  // POST para guardar un libro nuevo (requiere rol ADMIN en tu back)
+  crear: async (libroDTO) => {
+    const response = await api.post('/libros', libroDTO);
+    return response.data;
+  },
+
+  // DELETE para eliminar un libro por ID
+  eliminar: async (id) => {
+    await api.delete(`/libros/eliminar/${id}`);
+  }
+};
+
+
+
