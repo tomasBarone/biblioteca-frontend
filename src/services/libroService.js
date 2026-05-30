@@ -1,10 +1,17 @@
 import api from './api';
 
 export const libroService = {
+    
 
     obtenerTodos: async () =>{
-        const response = await api.get('/libros');
+      try{
+        
+        const response = await api.get('/all');
         return response.data;
+      } catch (error) {
+        console.error('Error al obtener los libros:', error);
+        throw error;
+      }
     },
 
 // GET con paginación al filtro avanzado que armaste en tu back
@@ -28,4 +35,4 @@ export const libroService = {
 };
 
 
-
+export default libroService;

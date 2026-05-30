@@ -2,9 +2,12 @@ import React from 'react';
 import MenuOverlay from './components/MenuOverlay/MenuOverlay';
 import LibroCard from './components/LibroCard/LibroCard';
 import Hero from './components/Hero/Hero'; 
+import CatalogoLibros from './components/CatalogoLibros';
 
 function App() {
-
+  
+  /*
+  LIBROS HARDCODEADOS PARA PRUEBAS INICIALES, REEMPLAZAR POR LLAMADA REAL AL BACKEND
   const librosRecomendados = [
     {id: 1, titulo: "Los Hermanos Karamazov", autor: "Fyodor Dostoevsky", precio: 1500, generoNombre: "Realismo Mágico"},
     {id: 2, titulo: "El Proceso", autor: "Franz Kafka", precio: 1200, generoNombre: "Narrativo"},
@@ -12,35 +15,20 @@ function App() {
     {id: 4, titulo: "Matar a un Ruiseñor", autor: "Harper Lee", precio: 1300, generoNombre: "Ficción"},
     {id: 5, titulo: "La Divina Comedia", autor: "Dante Alighieri", precio: 1400, generoNombre: "Poema"}
   ]
+*/
+
 
   return (
-    
 
     <div>
+      {/*Menu overlay a pantalla completa*/}
       <MenuOverlay />
 
+      {/*Banner Principal*/}
       <Hero/>
 
-      <main style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <h2 style= {{color: '#ffffff', marginBottom: '24px', fontSize: '1.8rem' }}>Libros Recomendados</h2>
-
-        <div style= {{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-          gap: '24px' 
-        }}>
-          
-          {librosRecomendados.map(libro => (
-            <LibroCard 
-              key={libro.id}
-              titulo={libro.titulo}
-              autor={libro.autor}
-              precio={libro.precio}
-              generoNombre={libro.generoNombre}
-            />
-          ))}
-        </div>
-        </main>
+      {/*Catálogo de libros*/}
+      <CatalogoLibros/>
       </div> 
   );
 }

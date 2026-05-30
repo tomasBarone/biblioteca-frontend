@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api';
+const API_URL = 'http://localhost:8080/api/libros';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -14,6 +14,7 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
+    console.log('Agregando token al header:', token);
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
