@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import libroService from '../services/libroService';
-import LibroCard from './LibroCard/LibroCard'; // Asegurate de que la importación de tu tarjeta esté acá
+import LibroCard from './LibroCard/LibroCard'; 
 
 function CatalogoLibros() {
+    
     // 1. Definimos los estados (el array empieza vacío)
     const [libros, setLibros] = useState([]);
     const [cargando, setCargando] = useState(true);
@@ -10,6 +11,9 @@ function CatalogoLibros() {
 
     // Función auxiliar con nombre unívoco para normalizar si la respuesta es una lista directa o un PageImpl paginado
     const procesarRespuestaLibros = (backendResponse) => {
+
+    
+
         if (Array.isArray(backendResponse)) {
             setLibros(backendResponse);
         } else if (backendResponse && Array.isArray(backendResponse.content)) {
@@ -38,7 +42,23 @@ function CatalogoLibros() {
         cargarLibros();
     }, []); // El array vacío asegura que esto se ejecute solo una vez al montar
 
-    // 3. Renderizado condicional para mostrar estados de carga, error o el catálogo
+   const handleEliminarLibro = async (id) => {
+        try {
+            // 1. Le avisamos al backend (Axios viaja con el token automáticamente)
+            await libroService.eliminar(id);
+            
+            // 2. Si el backend no falló, actualizamos el estado de React aplicando un filter.
+            // Esto descarta el libro eliminado y redibuja la pantalla sin necesidad de recargar toda la lista desde el backend.
+            setLibros(prevLibros => prevLibros.filter(libro => libro.id !== id));
+            
+            alert('Libro eliminado correctamente del sistema central.');
+        } catch (err) {
+            console.error("Error al eliminar el libro:", err);
+            alert('No se pudo eliminar el libro. Verificá los permisos de administrador en la consola.');
+        }
+    };
+
+    // 3. Renderizamos la UI según el estado actual
     if (cargando) return <div style={{ color: '#fff' , textAlign: 'center' , padding: '40px' }}>Conectando con el catálogo central...</div>;
     if (error) return <div style={{ color: '#ef4444' , textAlign: 'center' , padding: '40px' }}>{error}</div>;
 
@@ -48,7 +68,6 @@ function CatalogoLibros() {
                 Libros Recomendados
             </h2>
 
-            {/* Grilla responsiva idéntica a tu diseño original */}
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
@@ -59,11 +78,13 @@ function CatalogoLibros() {
                 ) : (
                     libros.map((libro) => (
                         <LibroCard 
-                            key={libro.id} // Clave única mandatoria para performance del DOM virtual
-                            titulo={libro.titulo}
-                            autor={libro.autor}
-                            precio={libro.precio || 1200} 
-                            generoNombre={libro.subgenero?.nombre || libro.generoNombre || "Clásico"}
+                          key={libro.id || libro.idLibro} // Clave única para React
+                          id={libro.id || libro.idLibro}   // <-- SI EL BACKEND DEVOLVIÓ 'idLibro', ACÁ LO ATRAPAMOS
+                          titulo={libro.titulo}
+                          autor={libro.autor}
+                          precio={libro.precio || 1200} 
+                          generoNombre={libro.subgenero?.nombre || libro.generoNombre || "Clásico"}
+                          onEliminar={handleEliminarLibro}
                         />
                     ))
                 )}

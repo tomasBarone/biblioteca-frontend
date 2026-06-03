@@ -30,7 +30,8 @@ export const libroService = {
 
   // DELETE para eliminar un libro por ID
   eliminar: async (id) => {
-    await api.delete(`/libros/eliminar/${id}`);
+    const response = await api.delete(`/eliminar/${id}`); 
+       return response.data;
   }
 };
 
