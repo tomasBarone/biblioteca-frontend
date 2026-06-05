@@ -1,79 +1,29 @@
-.hero-container{
-    height: 60vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* src/components/Hero/Hero.css */
+
+.hero-container {
+    background-color: transparent; /* Quitamos el fondo oscuro para que use el crema de App.jsx */
+    padding: 80px 20px; /* Le damos mucho aire arriba y abajo para que respire */
     text-align: center;
-    background: linear-gradient(135deg, #1e1e24 0%, #2a2a35 100%);
-    color: #ffffff;
-    padding: 0 20px;
-    margin-top: 60px;
-
-}
-
-.hero-content{
     max-width: 800px;
+    margin: 0 auto;
 }
 
-.hero-title{
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    letter-spacing: -0.5px;
+.hero-titulo {
+    font-family: "Playfair Display", "Georgia", serif;
+    font-size: 3rem; /* Un tamaño imponente como el de la foto */
+    font-weight: 400;
+    color: #2c1810; /* El tono marrón oscuro literario */
+    margin-bottom: 16px;
+    line-height: 1.2;
 }
 
-.hero-subtitle{
-    font-size: 1.25rem;
+.hero-subtitulo {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 1.1rem;
+    color: #555555; /* Gris suave, muy elegante */
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    max-width: 600px;
+    margin: 0 auto;
     line-height: 1.6;
-    color: #a0a0b0;
-    margin-bottom: 30px;
-
-}
-
-
-.hero-buttons{
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-}
-
-
-.btn-primary, .btn-secondary{
-    padding: 12px 28px;
-    font-size:1rem;
-    font-weight:600;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.btn-primary {
-    background-color: #3b82f6;
-    color: white;
-}
-
-.btn-primary:hover{
-    background-color: #2563eb;
-    transform: translateY(-2px);
-}
-
-.btn-secondary{
-    background-color: transparent;
-    color: #ffffff;
-    border: 2px solid #4b5563;
-
-}
-
-.btn-secondary:hover{
-
-    background-color: rgb(255,255,255,0.05);
-    color: #ffffff;
-    transform: translateY(-2px);
-   
-}
-
-@media (max-width: 768px){
-    .hero-title { font-size: 2.2rem; }
-    .hero-subtitle { font-size: 1.1rem; }
-    .hero-buttons { flex-direction: column; gap: 10px; }
 }

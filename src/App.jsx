@@ -1,35 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar'; // <-- IMPORTAMOS EL NUEVO ENCABEZADO
 import MenuOverlay from './components/MenuOverlay/MenuOverlay';
-import LibroCard from './components/LibroCard/LibroCard';
 import Hero from './components/Hero/Hero'; 
 import CatalogoLibros from './components/CatalogoLibros';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
-  
-  /*
-  LIBROS HARDCODEADOS PARA PRUEBAS INICIALES, REEMPLAZAR POR LLAMADA REAL AL BACKEND
-  const librosRecomendados = [
-    {id: 1, titulo: "Los Hermanos Karamazov", autor: "Fyodor Dostoevsky", precio: 1500, generoNombre: "Realismo Mágico"},
-    {id: 2, titulo: "El Proceso", autor: "Franz Kafka", precio: 1200, generoNombre: "Narrativo"},
-    {id: 3, titulo: "El Retrato de Dorian Gray", autor: "Oscar Wilde", precio: 1100, generoNombre: "Narrativo"},
-    {id: 4, titulo: "Matar a un Ruiseñor", autor: "Harper Lee", precio: 1300, generoNombre: "Ficción"},
-    {id: 5, titulo: "La Divina Comedia", autor: "Dante Alighieri", precio: 1400, generoNombre: "Poema"}
-  ]
-*/
 
+// 2. Creamos el estado global para abrir/cerrar el menú
+  const [menuAbierto, setMenuAbierto] = useState(false);
 
   return (
+    <Router>
+      {/* CAMBIO RADICAL DE ESTÉTICA: Pasamos a los colores arena y beige del mockup */}
+      <div style={{ 
+        backgroundColor: '#fbf9f4', // Fondo general crema/arena de la imagen
+        minHeight: '100vh', 
+        color: '#1a1a1a', // Texto oscuro para alto contraste sobre claro
+        fontFamily: '"Playfair Display", "Georgia", system-ui, sans-serif'
+      }}>
+        
+        {/* El Navbar queda fijo arriba de todas las páginas */}
+        <Navbar onToggleMenu={() => setMenuAbierto(!menuAbierto)} />
 
-    <div>
-      {/*Menu overlay a pantalla completa*/}
-      <MenuOverlay />
+        {/* Menu overlay para cuando se abra el menú */}
+        <MenuOverlay isOpen={menuAbierto} onClose={() => setMenuAbierto(false)} />
 
-      {/*Banner Principal*/}
-      <Hero/>
+        <Routes>
+          
+          {/* RUTA PÚBLICA */}
+          <Route path="/" element={
+            <>
+              <Hero />
+              <CatalogoLibros />
+            </>
+          } />
 
-      {/*Catálogo de libros*/}
-      <CatalogoLibros/>
+          {/* RUTA ADMINISTRATIVA */}
+          <Route path="/admin" element={<AdminDashboard />} />
+
+        </Routes>
       </div> 
+    </Router>
   );
 }
 
