@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import libroService from '../services/libroService';
 import LibroCard from './LibroCard/LibroCard'; 
+import FormularioLibro from './FormularioLibro';
 
 function CatalogoLibros() {
     
@@ -8,6 +9,7 @@ function CatalogoLibros() {
     const [libros, setLibros] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
+    const [mostrarForm, setMostrarForm] = useState(false);
 
     // Función auxiliar con nombre unívoco para normalizar si la respuesta es una lista directa o un PageImpl paginado
     const procesarRespuestaLibros = (backendResponse) => {
@@ -42,6 +44,34 @@ function CatalogoLibros() {
         cargarLibros();
     }, []); // El array vacío asegura que esto se ejecute solo una vez al montar
 
+
+
+
+    const handleCrearLibro = async (nuevoLibroData) => {
+    try {
+        // 1. Despachamos el POST hacia Spring Boot mediante el Service
+        const libroCreadoDTO = await libroService.crear(nuevoLibroData);
+        
+        console.log("Objeto DTO retornado por el Backend tras crear:", libroCreadoDTO);
+
+        // 2. Normalizamos el objeto antes de inyectarlo en la lista.
+        // Nos aseguramos de que mantenga la consistencia con las propiedades que lee tu tarjeta.
+        const libroNormalizado = {
+            ...libroCreadoDTO,
+            // Si el DTO trae subgeneroNombre directo del constructor, lo consolidamos acá
+            generoNombre: libroCreadoDTO.subgeneroNombre || libroCreadoDTO.generoNombre || "Clásico"
+        };
+        
+        // 3. Modificamos el estado de React inyectándolo al inicio
+        setLibros(prevLibros => [libroNormalizado, ...prevLibros]);
+        
+    } catch (err) {
+        console.error("Fallo la sincronización en el Catálogo:", err);
+        throw err; // Re-lanzamos para que el formulario sepa que no debe limpiarse
+    }
+};
+
+
    const handleEliminarLibro = async (id) => {
         try {
             // 1. Le avisamos al backend (Axios viaja con el token automáticamente)
@@ -63,28 +93,64 @@ function CatalogoLibros() {
     if (error) return <div style={{ color: '#ef4444' , textAlign: 'center' , padding: '40px' }}>{error}</div>;
 
     return (
-        <main style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-            <h2 style={{ color: '#ffffff', marginBottom: '24px', fontSize: '1.8rem' }}>
-                Libros Recomendados
-            </h2>
+   <main style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
+            
+            {/* ================= SECCIÓN DE CABECERA CON BOTÓN ================= */}
+            <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                marginBottom: '32px',
+                borderBottom: '1px solid #313244',
+                paddingBottom: '16px'
+            }}>
+                <h2 style={{ color: '#ffffff', margin: 0, fontSize: '1.8rem' }}>
+                    Libros Recomendados
+                </h2>
+                
+                {/* Este botón conmuta el estado mostrarForm entre true y false */}
+                <button 
+                    onClick={() => setMostrarForm(!mostrarForm)}
+                    style={{
+                        background: mostrarForm ? '#f38ba8' : '#cba6f7', // Cambia de color según el estado
+                        color: '#11111b', 
+                        border: 'none', 
+                        padding: '10px 20px', 
+                        borderRadius: '8px', 
+                        cursor: 'pointer', 
+                        fontWeight: 'bold',
+                        fontSize: '0.9rem',
+                        transition: 'all 0.2s'
+                    }}
+                >
+                    {mostrarForm ? '✕ Cancelar Alta' : '＋ Agregar Libro'}
+                </button>
+            </div>
 
+            {/* ================= COMPONENTE FORMULARIO CONDICIONAL ================= */}
+            {/* Si mostrarForm es true, el formulario se inyecta en el DOM de React */}
+            {mostrarForm && <FormularioLibro onLibroCreado={handleCrearLibro} />}
+
+
+            {/* ================= GRILLA DE TARJETAS (TU CÓDIGO) ================= */}
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-                gap: '24px'
+                gap: '24px',
+                marginTop: '20px'
             }}>
                 {libros.length === 0 ? (
                     <div style={{ color: '#aaa', padding: '20px' }}>No hay libros cargados en el sistema actualmente.</div>
                 ) : (
                     libros.map((libro) => (
                         <LibroCard 
-                          key={libro.id || libro.idLibro} // Clave única para React
-                          id={libro.id || libro.idLibro}   // <-- SI EL BACKEND DEVOLVIÓ 'idLibro', ACÁ LO ATRAPAMOS
-                          titulo={libro.titulo}
-                          autor={libro.autor}
-                          precio={libro.precio || 1200} 
-                          generoNombre={libro.subgenero?.nombre || libro.generoNombre || "Clásico"}
-                          onEliminar={handleEliminarLibro}
+                            key={libro.id} 
+                            id={libro.id}   
+                            titulo={libro.titulo}
+                            autor={libro.autor}
+                            precio={libro.precio} 
+                            generoNombre={libro.subgeneroNombre || (libro.subgenero?.nombre) || "Clásico"}
+                            onEliminar={handleEliminarLibro}
                         />
                     ))
                 )}

@@ -14,7 +14,7 @@ export const libroService = {
       }
     },
 
-// GET con paginación al filtro avanzado que armaste en tu back
+//  GET para obtener libros por género
   filtrarAvanzado: async (inicio, fin, pagina = 0, tamano = 10) => {
     const response = await api.get('/libros/filtrar-avanzado', {
       params: { inicio, fin, page: pagina, size: tamano }
@@ -22,9 +22,9 @@ export const libroService = {
     return response.data;
   },
 
-  // POST para guardar un libro nuevo (requiere rol ADMIN en tu back)
+  // POST para crear un nuevo libro
   crear: async (libroDTO) => {
-    const response = await api.post('/libros', libroDTO);
+    const response = await api.post('/crear', libroDTO);
     return response.data;
   },
 
