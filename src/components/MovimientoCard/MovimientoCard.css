@@ -1,0 +1,65 @@
+.movimiento-card{
+    background-color: #fdfbf7;
+    border: 1px solid #e2dacb;
+    border-radius: 4px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.movimiento-card:hover{
+    border-color: #c4b59f;
+    box-shadow: 0 6px 20px rgba(44, 24, 16, 0.03);
+
+}
+
+.movimiento-epoca{
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #9c8e7d;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.movimiento-nombre{
+    font-family: "Playfair Display", "Georgia", serif;
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin: 0 0 12px 0;
+    color: #2c1810;
+}
+
+.movimiento-descripcion{
+    font-family: system-ui, sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #5a5045;
+    margin: 0 0 24px 0;
+}
+
+.movimiento-link{
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #704c38;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+}
+
+.movimiento-link .flecha{
+    transition: transform 0.2s ease;
+}
+
+.movimiento-link:hover .flecha{
+    transform: translateX(4px);
+}
