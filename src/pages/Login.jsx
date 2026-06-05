@@ -20,7 +20,7 @@ function Login(){
 
         try{
             // Aquí es donde hacemos la petición al backend para autenticar al usuario
-            const response = await axios.post('http://localhost:8080/api/auth/login', {
+            const respuesta = await axios.post('http://localhost:8080/api/auth/login', {
                 username:username,
                 password: password
             });

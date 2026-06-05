@@ -52,7 +52,7 @@ function Navbar({onToggleMenu}) {
                 </div>
 
                 {/* Perfil del Usuario (Link temporal a /admin para poder entrar a probar) */}
-                <Link to="/admin" style={{ 
+                <Link to="/login" style={{ 
                     textDecoration: 'none', 
                     color: '#1a1a1a', 
                     display: 'flex', 

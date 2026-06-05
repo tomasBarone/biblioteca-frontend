@@ -5,6 +5,8 @@ import MenuOverlay from './components/MenuOverlay/MenuOverlay';
 import Hero from './components/Hero/Hero'; 
 import CatalogoLibros from './components/CatalogoLibros';
 import AdminDashboard from './pages/AdminDashboard';
+import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
 
@@ -36,9 +38,16 @@ function App() {
               <CatalogoLibros />
             </>
           } />
-
+             
+             {/* RUTA DE LOGIN (pública) */}
+             <Route path="/login" element={<Login />} />
+             
           {/* RUTA ADMINISTRATIVA */}
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
 
         </Routes>
       </div> 
