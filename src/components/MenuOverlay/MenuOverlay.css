@@ -1,98 +1,226 @@
-/* --- NAVBAR FIJA SUPERIOR --- */
-.navbar-fija {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 70px;
-  background-color: #1a1a1a;
-  color: #ffffff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 40px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  z-index: 999; /* Por debajo del overlay que abre */
+/* Contenedor total en pantalla completa */
+.fullscreen-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0b0a09; /* Negro mate premium idéntico a la foto */
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    color: #fdfbf7;
+    box-sizing: border-box;
 }
 
-.navbar-logo h2 {
-  font-size: 1.4rem;
-  font-weight: 600;
+/* Encabezado del menú */
+.menu-overlay-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 60px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Línea divisoria muy sutil */
 }
 
-.menu-icon-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 2rem;
-  cursor: pointer;
-  transition: color 0.2s;
+.menu-logo {
+    font-family: "Playfair Display", serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
-.menu-icon-btn:hover {
-  color: #a51c30;
+.menu-close-btn {
+    background: none;
+    border: none;
+    color: #fdfbf7;
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* --- OVERLAY PANTALLA COMPLETA --- */
-.fullscreen-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(26, 26, 26, 0.98); /* Fondo oscuro casi opaco */
-  z-index: 1000; /* Arriba de absolutamente todo */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-  /* Efecto de transición para la cortina */
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease-in-out;
+.menu-close-btn span {
+    font-size: 1.2rem;
+    line-height: 1;
 }
 
-/* Cuando el estado mapea 'open', se muestra */
-.fullscreen-overlay.open {
-  opacity: 1;
-  pointer-events: auto;
+/* Cuerpo partido a la mitad */
+.menu-overlay-body {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 85px);
 }
 
-/* Botón de cerrar (X) */
-.close-btn {
-  position: absolute;
-  top: 20px;
-  right: 45px;
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 3.5rem;
-  cursor: pointer;
-  transition: color 0.2s;
+/* --- COLUMNA IZQUIERDA --- */
+.menu-col-left {
+    flex: 1;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 60px 60px 40px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.close-btn:hover {
-  color: #a51c30;
+.menu-section-subtitle {
+    font-family: system-ui, sans-serif;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #8a7a6e;
+    font-weight: 700;
+    margin-bottom: 24px;
+    display: block;
 }
 
-/* Contenedor de links en vertical */
-.overlay-links {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 25px;
+.menu-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.overlay-links a {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 2rem; /* Tamaño grande de diseño premium */
-  font-weight: 600;
-  letter-spacing: 2px;
-  transition: transform 0.2s, color 0.2s;
+.menu-nav-item {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    opacity: 0.3; /* Efecto apagado de las no seleccionadas */
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.overlay-links a:hover {
-  color: #a51c30;
-  transform: scale(1.1); /* Ligero zoom al pasar el mouse */
+/* Al pasar el mouse o estar activa, se ilumina por completo */
+.menu-nav-item:hover, .menu-nav-item.active {
+    opacity: 1;
+    transform: translateX(6px);
+}
+
+.menu-nav-link {
+    font-family: "Playfair Display", serif;
+    font-size: 3.2rem; /* Tipografía gigante de la foto */
+    color: #fdfbf7;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.menu-nav-year {
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: #8a7a6e;
+}
+
+/* Enlaces del pie de la columna izquierda */
+.menu-col-footer-links {
+    display: flex;
+    gap: 24px;
+    margin-top: auto;
+}
+
+.menu-col-footer-links a {
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fdfbf7;
+    text-decoration: none;
+    letter-spacing: 1.5px;
+}
+
+/* --- COLUMNA DERECHA (PREVISUALIZACIÓN) --- */
+.menu-col-right {
+    flex: 1;
+    background-color: #0e0d0c; /* Un tono imperceptiblemente más oscuro para dar contraste */
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.preview-epoca {
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: #8a7a6e;
+    font-weight: 600;
+}
+
+.preview-nombre {
+    font-family: "Playfair Display", serif;
+    font-size: 2.2rem;
+    margin: 8px 0 12px 0;
+    font-weight: 400;
+}
+
+.preview-descripcion {
+    font-family: system-ui, sans-serif;
+    font-size: 0.9rem;
+    color: #a69a8e;
+    max-width: 450px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+}
+
+/* Listado de filas de libros */
+.preview-books-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 550px;
+}
+
+.preview-book-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: padding-left 0.2s ease;
+}
+
+.preview-book-row:hover {
+    padding-left: 8px;
+}
+
+.preview-book-title {
+    font-family: "Playfair Display", serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    margin: 0 0 4px 0;
+}
+
+.preview-book-meta {
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #7a7065;
+    margin: 0;
+}
+
+.book-row-arrow {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 1rem;
+    transition: color 0.2s ease;
+}
+
+.preview-book-row:hover .book-row-arrow {
+    color: #fdfbf7;
+}
+
+/* Botón de acción global del fondo */
+.view-all-movement-btn {
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #fdfbf7;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 30px;
 }
