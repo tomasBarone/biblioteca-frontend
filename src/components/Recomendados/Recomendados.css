@@ -1,0 +1,99 @@
+.recomendados-section {
+  background-color: #f4efe9; /* Fondo crema característico de tu app */
+  padding: 80px 10%;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.section-title {
+  color: #2a1f18;
+  font-size: 2.2rem;
+  font-weight: 500;
+  margin-bottom: 40px;
+  letter-spacing: -0.5px;
+}
+
+/* Grilla adaptable */
+.libros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 40px;
+}
+
+/* Tarjeta contenedora */
+.libro-card-rec {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Estilización de la Portada Física */
+.libro-portada {
+  height: 320px;
+  border-radius: 3px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 12px 24px rgba(42, 31, 24, 0.15); /* Sombra suave pero con presencia */
+  color: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.libro-portada:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 32px rgba(42, 31, 24, 0.22);
+}
+
+/* Textos dentro de la portada */
+.libro-anio-top {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  font-weight: 300;
+}
+
+.libro-titulo-cover {
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 20px 0 auto 0; /* Lo empuja hacia arriba pero con margen */
+}
+
+.libro-autor-bottom {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  align-self: flex-end; /* Lo alinea a la derecha abajo */
+  opacity: 0.9;
+}
+
+/* Información del pie de la tarjeta */
+.libro-info-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.libro-titulo-text {
+  font-size: 1.1rem;
+  color: #2a1f18;
+  margin: 0;
+  font-weight: 600;
+}
+
+.libro-autor-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: #6e655f;
+  margin: 0;
+}
+
+.libro-precio {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: #2a1f18;
+  font-weight: 600;
+  margin-top: 4px;
+}
