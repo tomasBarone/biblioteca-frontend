@@ -56,7 +56,7 @@ const AdminDashboard = () => {
     const handleEliminarLibro = async (id) => {
         if (window.confirm("¿Está seguro de eliminar este registro?")) {
             try {
-                await libroService.eliminarLibro(id);
+                await libroService.eliminar(id);
                 // Refrescamos la lista respetando el filtro actual
                 if (corrienteSeleccionada === '') {
                     cargarLibros();
@@ -71,29 +71,29 @@ const AdminDashboard = () => {
     };
 
     return (
-        <div style={{ backgroundColor: '#11111b', minHeight: '100vh', padding: '40px', color: '#cdd6f4' }}>
+        <div style={{ backgroundColor: '#fbf9f4', minHeight: '100vh', padding: '40px', color: '#202022' }}>
             
             {/* ENCABEZADO CONTROLADOR */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
                 <div>
-                    <h1 style={{ fontSize: '2rem', fontWeight: '700', color: '#b4befe', margin: 0 }}> Panel de Control</h1>
-                    <p style={{ color: '#a6adc8', margin: '5px 0 0 0' }}>Gestión de inventario literario de nivel empresarial.</p>
+                    <h1 style={{ fontSize: '2rem', fontWeight: '700', color: '#000000', margin: 0 }}> Panel de Control</h1>
+                    <p style={{ color: '#000000', margin: '5px 0 0 0' }}>Gestión de inventario literario</p>
                 </div>
                 <button 
                     onClick={() => setIsModalOpen(true)}
-                    style={{ backgroundColor: '#b4befe', color: '#11111b', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', transition: 'opacity 0.2s' }}
+                    style={{ backgroundColor: '#c7c7c634', color: '#11111b', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', transition: 'opacity 0.2s' }}
                 >
                     + Registrar Nuevo Libro
                 </button>
             </div>
 
             {/* BARRA DE FILTROS (Sección Reactiva) */}
-            <div style={{ backgroundColor: '#1e1e2e', padding: '16px', borderRadius: '8px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid #313244' }}>
-                <label style={{ fontSize: '0.9rem', color: '#a6adc8', fontWeight: '500' }}>Filtrar por Corriente:</label>
+            <div style={{ backgroundColor: '#c7c7c634', padding: '16px', borderRadius: '8px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid #313244' }}>
+                <label style={{ fontSize: '0.9rem', color: '#000000', fontWeight: '500' }}>Filtrar por Corriente:</label>
                 <select 
                     value={corrienteSeleccionada} 
                     onChange={handleFiltroChange}
-                    style={{ backgroundColor: '#11111b', color: '#cdd6f4', border: '1px solid #45475a', padding: '8px 14px', borderRadius: '6px', outline: 'none', cursor: 'pointer', fontSize: '0.9rem' }}
+                    style={{ backgroundColor: '#fbf9f4', color: '#000000', border: '1px solid #45475a', padding: '8px 14px', borderRadius: '6px', outline: 'none', cursor: 'pointer', fontSize: '0.9rem' }}
                 >
                     <option value=""> Mostrar Todas las Corrientes</option>
                     {corrientes.map(c => (
@@ -103,10 +103,10 @@ const AdminDashboard = () => {
             </div>
 
             {/* TABLA DE REGISTROS */}
-            <div style={{ overflowX: 'auto', background: '#1e1e2e', borderRadius: '8px', padding: '16px', border: '1px solid #313244' }}>
+            <div style={{ overflowX: 'auto', background: '#c7c7c634', borderRadius: '8px', padding: '16px', border: '1px solid #313244' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                     <thead>
-                        <tr style={{ borderBottom: '2px solid #45475a', color: '#a6adc8', fontSize: '0.9rem' }}>
+                        <tr style={{ borderBottom: '2px solid #45475a', color: '#000000', fontSize: '0.9rem' }}>
                             <th style={{ padding: '12px' }}>ID</th>
                             <th style={{ padding: '12px' }}>Título</th>
                             <th style={{ padding: '12px' }}>Autor</th>
@@ -130,7 +130,7 @@ const AdminDashboard = () => {
                                 <td style={{ padding: '12px', textAlign: 'center' }}>
                                     <button 
                                         onClick={() => handleEliminarLibro(libro.id)}
-                                        style={{ background: '#f38ba8', color: '#11111b', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: '500' }}
+                                        style={{ background: '#c7c7c634', color: '#11111b', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: '500' }}
                                     >
                                         Eliminar
                                     </button>
@@ -148,8 +148,8 @@ const AdminDashboard = () => {
 
             {/* MODAL DEL FORMULARIO */}
             {isModalOpen && (
-                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(17, 17, 27, 0.85)', display: 'flex', justifyContent: 'center', alignItems: 'center', backdropFilter: 'blur(4px)', zIndex: 1000 }}>
-                    <div style={{ backgroundColor: '#1e1e2e', width: '550px', padding: '30px', borderRadius: '12px', border: '1px solid #45475a', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(34, 34, 34, 0.84)', display: 'flex', justifyContent: 'center', alignItems: 'center', backdropFilter: 'blur(4px)', zIndex: 1000 }}>
+                    <div style={{ backgroundColor: 'rgb(223, 216, 206)', width: '550px', paddingBottom: '1px', borderRadius: '10px', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
                         {/* Pasamos cerrarModal para que el formulario controle la salida */}
                         <FormularioLibro 
                             cerrarModal={() => setIsModalOpen(false)} 

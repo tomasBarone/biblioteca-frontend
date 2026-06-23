@@ -3,7 +3,7 @@ import corrienteLiterariaService from '../services/corrienteLiterariaService';
 import API from '../services/api'; 
 import subgeneroService from '../services/subgeneroService';
 
-function FormularioLibro({ onLibroCreado }) {
+function FormularioLibro({ cerrarModal, refrescarLista }) {
     const [formData, setFormData] = useState({
         isbn: '',
         titulo: '',
@@ -79,31 +79,25 @@ function FormularioLibro({ onLibroCreado }) {
                 titulo: formData.titulo.trim(),
                 autor: formData.autor.trim(),
                 ejemplares: parseInt(formData.ejemplares, 10) || 1,
-                // Tu backend sigue recibiendo el entero que necesita Hibernate gracias al parseInt
                 corrienteId: parseInt(formData.corrienteId, 10), 
-                subgeneroId: parseInt(formData.subgeneroId, 10), 
+                subgeneroId: parseInt(formData.subgeneroId, 10) || null, 
                 anioPublicacion: parseInt(formData.anioPublicacion, 10) || 2026,
                 precio: parseFloat(formData.precio) || 0.0,
                 sinopsis: formData.sinopsis.trim()
             };
 
-            await onLibroCreado(libroParaEnviar);
+            // IMPACTAMOS LA DB: Pegamos al endpoint POST de tu Spring Boot
+            await API.post('/libros/crear', libroParaEnviar);
 
-            // Reseteamos el formulario limpiamente
-            setFormData({
-                isbn : '',
-                titulo: '',
-                autor: '',
-                ejemplares : '',
-                corrienteId : corrientes.length > 0 ? corrientes[0].id.toString() : '',
-                subgeneroId : subgeneros.length > 0 ? subgeneros[0].id.toString() : '',
-                anioPublicacion: '',
-                precio : '',
-                sinopsis : ''
-            });
             alert('¡Libro creado con éxito!');
+            
+            // CONTRATO CON EL PADRE: Refrescamos la grilla y cerramos el modal de forma limpia
+            if (typeof refrescarLista === 'function') refrescarLista();
+            if (typeof cerrarModal === 'function') cerrarModal();
+
         } catch (err) {
             console.error("Error al enviar el formulario:", err);
+            // Si tenés validaciones con @Valid de Spring, acá podés capturar los mensajes específicos
             alert('Error al crear el libro. Revisa las validaciones del backend.');
         } finally {
             setEnviando(false);
@@ -116,8 +110,8 @@ function FormularioLibro({ onLibroCreado }) {
         padding: '10px',
         borderRadius: '6px',
         border: '1px solid #f7f8ff',
-        background: '#424246',
-        color: '#cdd6f4',
+        background: '#c6c6cf',
+        color: '#3d3f46',
         boxSizing: 'border-box'
     };
 
@@ -130,8 +124,8 @@ function FormularioLibro({ onLibroCreado }) {
 
     return (
         <div style={{
-            background: '#dfd8ce',
-            border: '1px solid #353638',
+            background: '#c7c7c634',
+            border: '1px solid #c1c4cc',
             borderRadius: '12px',
             padding: '24px',
             marginBottom: '32px',
@@ -207,7 +201,7 @@ function FormularioLibro({ onLibroCreado }) {
                         )}
                     </div>
                     
-                    {/* Mantengo este como input para que no se rompa nada hasta que repitas el proceso con Subgéneros */}
+                    
                     <div style={{ flex: 1 }}>
                         <label style={labelStyle}>ID Subgénero Lit.</label>
                         {cargandoSubgeneros ? (
@@ -272,6 +266,18 @@ function FormularioLibro({ onLibroCreado }) {
                 >
                     {enviando ? 'Ejecutando transacción en Spring...' : 'Guardar e Insertar Libro'}
                 </button>
+
+                {/* Al final de tu <form>, junto al botón de enviar */}
+<div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '10px' }}>
+    <button 
+        type="button" 
+        onClick={cerrarModal} 
+        style={{ background: 'transparent', color: '#6a6d63', border: '1px solid #353638', padding: '12px 20px', borderRadius: '6px', cursor: 'pointer' }}
+    >
+        Cancelar
+    </button>
+   
+</div>
             </form>
         </div>
     );
