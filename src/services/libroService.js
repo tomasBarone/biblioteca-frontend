@@ -12,6 +12,11 @@ export const libroService = {
     }
   },
 
+  getLibrosPorCorriente: async (movimientoId) => {
+        const response = await api.get(`/libros/movimiento/${movimientoId}`);
+        return response.data;
+    },
+
   filtrarAvanzado: async (inicio, fin, pagina = 0, tamano = 10) => {
     const response = await api.get('/libros/filtrar-avanzado', {
       params: { inicio, fin, page: pagina, size: tamano }
