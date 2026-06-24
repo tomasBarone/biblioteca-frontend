@@ -224,3 +224,36 @@
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding-top: 30px;
 }
+
+/* 1. Aseguramos que la lista de corrientes permita scroll si los elementos exceden el alto */
+.menu-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;                  /* Espaciado limpio entre ítems */
+  max-height: 60vh;           /* Le da un límite de altura proporcional a la pantalla */
+  overflow-y: auto;           /* ¡ESTA ES LA MAGIA! Habilita el scroll vertical solo en la lista */
+  padding-right: 10px;        /* Espacio para que la barra de scroll no pise el texto */
+}
+
+/* 2. (Opcional) Ponemos la barra de scroll invisible o minimalista para no arruinar la estética de Albatros */
+.menu-nav-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.menu-nav-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.menu-nav-list::-webkit-scrollbar-thumb {
+  background: #353638;       /* Un color sutil que combine con tu paleta oscura */
+  border-radius: 2px;
+}
+
+/* 3. Aseguramos que la columna izquierda entera use flexbox estructural correcto */
+.menu-col-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;               /* Toma el alto total del contenedor del cuerpo */
+  overflow: hidden;           /* Evita que la columna entera se rompa */
+}

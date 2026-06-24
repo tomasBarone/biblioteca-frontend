@@ -9,6 +9,8 @@ import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Recomendados } from './components/Recomendados/Recomendados';
 import { Footer } from './components/Footer/Footer';
+import VistaCorriente from './pages/VistaCorriente';
+import DetalleLibro from './pages/DetalleLibro';
 
 function App() {
   // Estado global para abrir/cerrar el menú
@@ -47,7 +49,8 @@ function App() {
                  
             {/* RUTA DE LOGIN (pública) */}
             <Route path="/login" element={<Login />} />
-                 
+             <Route path="/corriente/:id" element={<VistaCorriente />} />    
+             <Route path="/libro/:id" element={<DetalleLibro />} />
             {/* RUTA ADMINISTRATIVA */}
             <Route path="/admin" element={
               <ProtectedRoute>

@@ -12,6 +12,16 @@ export const libroService = {
     }
   },
 
+  obtenerPorId: async (id) => {
+    try {
+      const response = await api.get(`/libros/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error al obtener el libro con ID ${id}:`, error);
+      throw error;
+    }
+  },
+
   getLibrosPorCorriente: async (movimientoId) => {
         const response = await api.get(`/libros/movimiento/${movimientoId}`);
         return response.data;
@@ -35,6 +45,8 @@ export const libroService = {
     const response = await api.delete(`/libros/eliminar/${id}`); 
     return response.data;
   }
+
+
 };
 
 export default libroService;
