@@ -3,19 +3,20 @@ import { useParams, Link } from 'react-router-dom';
 import libroService from '../services/libroService';
 
 const DetalleLibro = () => {
-   
-    const { id } = useParams(); // Captura el ID desde la URL (Ej: /libro/15)
+    const { id } = useParams(); 
     const [libro, setLibro] = useState(null);
     const [cargando, setCargando] = useState(true);
+    // Estado local para manejar si la imagen real falla en el servidor
+    const [errorImagen, setErrorImagen] = useState(false);
 
     useEffect(() => {
         const obtenerDatosLibro = async () => {
             setCargando(true);
             try {
-                // Aquí usamos tu servicio que pega a tu endpoint de Spring Boot (ej: GET /api/libros/{id})
                 const data = await libroService.obtenerPorId(id); 
-                console.log("Datos del libro obtenidos:", data); // Para depuración
+                console.log("Datos del libro obtenidos:", data);
                 setLibro(data);
+                setErrorImagen(false); // Resetear estado al cambiar de libro
             } catch (error) {
                 console.error("Error al cargar el detalle del libro:", error);
             } finally {
@@ -33,14 +34,16 @@ const DetalleLibro = () => {
         return <div style={{ padding: '60px', textAlign: 'center', background: '#fcfaf2', minHeight: '100vh', fontFamily: 'serif' }}>Obra no encontrada.</div>;
     }
 
+    // CONDICIÓN: ¿Usamos la imagen real o el diseño tipográfico?
+    // Si tiene URL de imagen y no dio error previo de carga, intentamos mostrarla
+    const mostrarImagenReal = libro.imagenUrl && !errorImagen;
+
     return (
         <div style={{ backgroundColor: '#fcfaf2', minHeight: '100vh', fontFamily: '"Playfair Display", Georgia, serif', padding: '40px 10%', color: '#1a1917' }}>
             
-           
             <div style={{ fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#70695d', marginBottom: '40px' }}>
                 <Link to="/catalogo" style={{ color: '#70695d', textDecoration: 'none' }}>CATÁLOGO</Link> 
                 <span style={{ margin: '0 8px' }}>/</span> 
-                {/* Asumiendo que tu DTO trae el objeto o nombre de la corriente */}
                 <Link to={`/corriente/${libro.corrienteId || ''}`} style={{ color: '#70695d', textDecoration: 'none' }}>
                     {libro.nombreCorriente || 'ILUSTRACIÓN'}
                 </Link>
@@ -49,33 +52,59 @@ const DetalleLibro = () => {
             {/* CONTENEDOR PRINCIPAL: DOS COLUMNAS */}
             <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 420px) 1fr', gap: '60px', alignItems: 'start' }}>
                 
-                {/* COLUMNA IZQUIERDA: DISEÑO DE LA TAPA */}
+                {/* COLUMNA IZQUIERDA: PORTADA INTELIGENTE */}
                 <div style={{ 
-                    background: 'linear-gradient(135deg, #44403c 0%, #292524 100%)', // Simulación del degradado sutil de la foto
+                    position: 'relative',
                     height: '560px', 
                     borderRadius: '4px', 
-                    padding: '30px', 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    justifyContent: 'space-between',
                     boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
-                    position: 'relative'
+                    overflow: 'hidden' // Para que la imagen respete los bordes redondeados
                 }}>
-                    <div>
-                        <span style={{ color: '#fcfaf2', fontSize: '0.85rem', opacity: 0.6, fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>
-                            {libro.anioPublicacion || libro.ano || '1721'}
-                        </span>
-                        <h2 style={{ color: '#fcfaf2', fontSize: '2.2rem', margin: 0, fontWeight: '400', lineHeight: '1.2' }}>
-                            {libro.titulo}
-                        </h2>
-                    </div>
-                    <span style={{ color: '#fcfaf2', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.8, fontWeight: 'bold' }}>
-                        {libro.autor}
-                    </span>
+                    {mostrarImagenReal ? (
+                        /* OPCIÓN A: SE RENDERIZA LA PORTADA SUBIDA POR EL USUARIO */
+                        <img 
+                            src={libro.imagenUrl} 
+                            alt={`Portada de ${libro.titulo}`}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover', // Mantiene la proporción cubriendo el contenedor
+                                display: 'block'
+                            }}
+                            onError={() => { 
+                                // Si la imagen se borró del disco o tira 404, activamos el salvavidas
+                                setErrorImagen(true); 
+                            }}
+                        />
+                    ) : (
+                        /* OPCIÓN B: TU ESTILO TIPOGRÁFICO ORIGINAL (SI NO HAY IMAGEN O TRUCO EN DISCO) */
+                        <div style={{
+                            background: 'linear-gradient(135deg, #44403c 0%, #292524 100%)',
+                            width: '100%',
+                            height: '100%',
+                            padding: '30px',
+                            boxSizing: 'border-box',
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            justifyContent: 'space-between'
+                        }}>
+                            <div>
+                                <span style={{ color: '#fcfaf2', fontSize: '0.85rem', opacity: 0.6, fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>
+                                    {libro.anioPublicacion || libro.ano || '1721'}
+                                </span>
+                                <h2 style={{ color: '#fcfaf2', fontSize: '2.2rem', margin: 0, fontWeight: '400', lineHeight: '1.2' }}>
+                                    {libro.titulo}
+                                </h2>
+                            </div>
+                            <span style={{ color: '#fcfaf2', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.8, fontWeight: 'bold' }}>
+                                {libro.autor}
+                            </span>
+                        </div>
+                    )}
                 </div>
 
                 {/* COLUMNA DERECHA: INFORMACIÓN DETALLADA */}
-                <div style={{ paddingWrap: '10px' }}>
+                <div style={{ padding: '10px 0' }}>
                     <span style={{ fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '6px' }}>
                         {libro.nombreCorriente || 'ILUSTRACIÓN'} · {libro.anioPublicacion || libro.ano || '1721'}
                     </span>
@@ -117,7 +146,6 @@ const DetalleLibro = () => {
                         <span style={{ fontSize: '2rem', fontWeight: '400' }}>
                             {libro.precio ? Number(libro.precio).toFixed(2) : '0.00'} €
                         </span>
-                        {/* Control de Stock lógico */}
                         <span style={{ fontSize: '0.8rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#2e7d32', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
                             ✓ EN STOCK
                         </span>
@@ -161,7 +189,7 @@ const DetalleLibro = () => {
                 </div>
             </div>
 
-            {/* SECCIÓN INFERIOR: RECOMENDACIONES (Próximo paso si querés) */}
+            {/* SECCIÓN INFERIOR: RECOMENDACIONES */}
             <div style={{ marginTop: '80px', borderTop: '1px solid #e5dec9', paddingTop: '40px' }}>
                 <h3 style={{ fontSize: '1.8rem', fontWeight: '400', margin: 0 }}>
                     Más de {libro.nombreCorriente?.toLowerCase() || 'ilustración'}

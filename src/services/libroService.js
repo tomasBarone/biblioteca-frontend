@@ -1,4 +1,5 @@
 import api from './api';
+import axios from 'axios';
 
 export const libroService = {
   obtenerTodos: async () => {
@@ -57,7 +58,7 @@ export const libroService = {
       formData.append('imagen', archivoImagen);
     }
 
-    const response = await axios.post(`${API_BASE_URL}/con-foto`, formData, {
+    const response = await api.post(`/libros/con-foto`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         // Si usás interceptores para el token Bearer, Axios lo inyecta solo.
