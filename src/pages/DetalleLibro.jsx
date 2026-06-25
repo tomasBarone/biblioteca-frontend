@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import libroService from '../services/libroService';
 
 const DetalleLibro = () => {
+   
     const { id } = useParams(); // Captura el ID desde la URL (Ej: /libro/15)
     const [libro, setLibro] = useState(null);
     const [cargando, setCargando] = useState(true);

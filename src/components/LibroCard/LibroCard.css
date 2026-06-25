@@ -1,60 +1,182 @@
-.libro-card {
-    background-color: #ffffff; /* Fondo blanco limpio para resaltar sobre el fondo crema */
-    border: 1px solid #e8e2d5; /* Un borde sutil color arena, como el del Navbar */
-    border-radius: 4px; /* Bordes casi rectos, muy de catálogo premium */
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 8px rgba(44, 24, 16, 0.04); /* Sombra casi invisible */
+/* Contenedor principal de la tarjeta completa */
+.libro-card-container {
+    display: flex !important;
+    flex-direction: column !important;
+    background-color: transparent !important;
+    width: 100% !important;
+    max-width: 240px; /* Evita que la tarjeta se ensanche de más en pantallas grandes */
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
-/* Efecto sutil al pasar el mouse por encima */
-.libro-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(44, 24, 16, 0.08);
+/* Enlace contenedor */
+.libro-card-link {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
 }
 
-.libro-genero {
-    font-family: system-ui, sans-serif;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #8a7a6e; /* Color tierra suave para la corriente/género */
-    font-weight: 600;
-    margin-bottom: 12px;
+/* LA PORTADA DEL LIBRO (Efecto Objeto Físico 3D) */
+.libro-card-portada {
+    background: linear-gradient(135deg, #44403c 0%, #292524 100%);
+    height: 320px !important; 
+    width: 100% !important;    
+    border-radius: 3px 6px 6px 3px !important; /* Bordes levemente más rectos a la izquierda (lomo) y curvos a la derecha */
+    padding: 24px 20px 24px 28px !important; /* Más margen a la izquierda para respetar el lomo */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important; 
+    margin-bottom: 14px !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    
+    /* Sombra realista: simula que el libro está apoyado y proyecta sombra hacia abajo y la derecha */
+    box-shadow: 
+        3px 3px 0px #1a1917, /* El "grosor" de la contratapa trasera */
+        8px 12px 20px rgba(44, 24, 16, 0.25) !important; /* Sombra ambiental suave */
+        
+    transition: box-shadow 0.3s ease, transform 0.3s ease !important;
 }
 
-.libro-titulo {
-    font-family: "Playfair Display", "Georgia", serif;
-    font-size: 1.3rem;
-    color: #2c1810;
-    margin: 0 0 8px 0;
-    font-weight: 500;
-    line-height: 1.3;
+/* EFECTO HOVER: Simula que el libro se levanta hacia el lector */
+.libro-card-container:hover .libro-card-portada {
+    transform: translateY(-6px) rotate(-1deg); /* Se eleva y se inclina sutilmente, muy orgánico */
+    box-shadow: 
+        4px 5px 0px #1a1917,
+        14px 20px 28px rgba(44, 24, 16, 0.35) !important;
 }
 
-.libro-autor {
-    font-family: system-ui, sans-serif;
-    font-size: 0.9rem;
-    color: #666666;
-    margin-bottom: 20px;
-    font-style: italic;
+/* EL LOMO DEL LIBRO (Simula el pliegue y la costura del encuadernado) */
+.libro-card-portada::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 12px; /* Ancho del pliegue del lomo */
+    /* Degradado que genera la textura cilíndrica del lomo y su sombra interior */
+    background: linear-gradient(to right, 
+        rgba(0, 0, 0, 0.3) 0%, 
+        rgba(0, 0, 0, 0.0) 25%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        rgba(0, 0, 0, 0.25) 100%
+    );
+    border-radius: 3px 0 0 3px;
+    pointer-events: none; /* No interfiere con los clicks */
 }
 
+/* EL COMPAGINADO DE HOJAS (Efecto de páginas internas en el canto derecho) */
+.libro-card-portada::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 2px;
+    bottom: 4px;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.2); /* Línea brillante que emula el borde de las hojas compactas */
+    box-shadow: -1px 0 2px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+}
+
+/* Agrupador superior dentro de la tapa */
+.libro-portada-top {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+    width: 100% !important;
+}
+
+.libro-portada-anio {
+    color: #fcfaf2 !important;
+    font-size: 0.7rem !important;
+    opacity: 0.6 !important;
+    font-weight: bold !important;
+    letter-spacing: 0.05em !important;
+    font-family: system-ui, sans-serif !important;
+}
+
+.libro-portada-titulo {
+    color: #fcfaf2 !important; 
+    font-size: 1.25rem !important; 
+    margin: 0 !important; 
+    font-weight: 400 !important; 
+    line-height: 1.2 !important;
+    text-align: left !important;
+    font-family: "Playfair Display", Georgia, serif !important;
+}
+
+.libro-portada-autor {
+    color: #fcfaf2 !important; 
+    font-size: 0.65rem !important; 
+    letter-spacing: 0.1em !important; 
+    text-transform: uppercase !important; 
+    opacity: 0.8 !important; 
+    font-weight: bold !important;
+    text-align: left !important;
+    font-family: system-ui, sans-serif !important;
+}
+
+/* METADATOS INFERIORES (Debajo del Libro) */
+.libro-meta-inferior {
+    display: flex !important;
+    flex-direction: column !important;
+    margin-bottom: 6px !important;
+    width: 100% !important;
+}
+
+.libro-txt-titulo {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #1a1917 !important;
+    margin-bottom: 2px !important;
+    font-family: "Playfair Display", Georgia, serif !important;
+    text-align: left !important;
+}
+
+.libro-txt-autor {
+    font-size: 0.8rem !important;
+    color: #70695d !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    margin-bottom: 0px !important;
+    font-family: system-ui, sans-serif !important;
+    text-align: left !important;
+}
+
+/* FOOTER (Precio y Botón) */
 .libro-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-    padding-top: 16px;
-    border-top: 1px solid #f4f0e6;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-top: 4px !important;
+    width: 100% !important;
 }
 
 .libro-precio {
-    font-family: system-ui, sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2c1810;
+    font-size: 0.95rem !important;
+    font-weight: bold !important;
+    color: #1a1917 !important;
+    font-family: system-ui, sans-serif !important;
+}
+
+/* Botón eliminar para administración */
+.libro-btn-eliminar {
+    background: #f38ba8 !important;
+    color: #11111b !important;
+    border: none !important;
+    padding: 6px 12px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    font-size: 0.8rem !important;
+    font-family: system-ui, sans-serif !important;
+    transition: background 0.2s ease !important;
+}
+
+.libro-btn-eliminar:hover {
+    background: #e78284 !important;
 }

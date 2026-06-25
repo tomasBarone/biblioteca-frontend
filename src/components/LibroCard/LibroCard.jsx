@@ -1,48 +1,79 @@
 import React from 'react';
-import './LibroCard.css'; // Usamos las clases de este archivo para moldear la estética
+import { Link } from 'react-router-dom';
+import './LibroCard.css';
 
-function LibroCard({ id, titulo, autor, precio, generoNombre, onEliminar }) {
+// Paleta de colores premium y editoriales 
+const PALETA_COLORES = [
+  { inicio: '#5c2c2c', fin: '#2b1414' }, // Burdeos / Vino profundo
+  { inicio: '#1e323b', fin: '#0d181d' }, // Azul Biblioteca / Petróleo
+  { inicio: '#243b2f', fin: '#101f18' }, // Verde Musgo / Oliva oscuro
+  { inicio: '#453229', fin: '#241914' }, // Café Cuero / Tabaco antiguo
+  { inicio: '#362447', fin: '#1b1026' }, // Berenjena / Púrpura Imperial
+  { inicio: '#54352b', fin: '#2b1813' }  // Terracota / Óxido profundo
+];
+
+// Función matemática para asignar siempre el mismo color al mismo libro basándose en las letras del título
+const obtenerDegradadoDinamico = (titulo) => {
+  if (!titulo) return 'linear-gradient(135deg, #5c2c2c 0%, #2b1414 100%)';
+  
+  let hash = 0;
+  for (let i = 0; i < titulo.length; i++) {
+    hash = titulo.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  
+  const indice = Math.abs(hash) % PALETA_COLORES.length;
+  const color = PALETA_COLORES[indice];
+  
+  return `linear-gradient(135deg, ${color.inicio} 0%, ${color.fin} 100%)`;
+};
+
+function LibroCard({ id, titulo, autor, precio, generoNombre, anioPublicacion, ano, onEliminar }) {
+  const anioMostrado = anioPublicacion || ano || '1721';
+  
+  // Calculamos el degradado cromático único para este libro
+  const fondoPortada = obtenerDegradadoDinamico(titulo);
+
   return (
-    <div className="libro-card">
-      <div>
-        {/* Etiqueta del Género / Corriente literaria */}
-        <span className="libro-genero">
-          {generoNombre}
-        </span>
+    <div className="libro-card-container">
+      <Link to={`/libro/${id}`} className="libro-card-link">
         
-        {/* Título y Autor */}
-        <h3 className="libro-titulo">{titulo}</h3>
-        <p className="libro-autor">{autor}</p>
-      </div>
+        {/* CRUCIAL: Aplicamos el background dinámico aquí con style */}
+        <div className="libro-card-portada" style={{ background: fondoPortada }}>
+          
+          {/* Bloque Superior Interno */}
+          <div className="libro-portada-top">
+            <span className="libro-portada-anio">{anioMostrado}</span>
+            <h4 className="libro-portada-titulo">{titulo}</h4>
+          </div>
 
-      {/* Footer de la tarjeta con precio y acciones */}
+          {/* Bloque Inferior Interno */}
+          <span className="libro-portada-autor">{autor}</span>
+        </div>
+
+        {/* Metadatos Inferiores (Fuera del libro) */}
+        <div className="libro-meta-inferior">
+          <span className="libro-txt-titulo">{titulo}</span>
+          <span className="libro-txt-autor">{autor}</span>
+        </div>
+      </Link>
+
+      {/* Footer con precio */}
       <div className="libro-footer">
         <span className="libro-precio">
-          ${precio}
+          {precio != null && typeof precio === 'number' 
+            ? precio.toFixed(2) 
+            : (Number(precio) ? Number(precio).toFixed(2) : "0.00")} €
         </span>
         
-        {/* CONTROL DE SEGURIDAD VISUAL: El botón solo existe si se pasa la función onEliminar */}
         {onEliminar && (
           <button 
-            onClick={() => {
-              if(window.confirm(`¿Seguro que querés eliminar "${titulo}" del catálogo central?`)) {
+            className="libro-btn-eliminar"
+            onClick={(e) => {
+              e.preventDefault();
+              if(window.confirm(`¿Seguro que querés eliminar "${titulo}"?`)) {
                 onEliminar(id);
               }
             }}
-            style={{
-              background: '#f38ba8', // Color rojizo suave para acciones destructivas en el ABM
-              color: '#11111b',
-              border: 'none',
-              padding: '6px 12px',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              fontSize: '0.8rem',
-              fontFamily: 'system-ui, sans-serif',
-              transition: 'background 0.2s'
-            }}
-            onMouseOver={(e) => e.target.style.background = '#e78284'}
-            onMouseOut={(e) => e.target.style.background = '#f38ba8'}
           >
             Eliminar
           </button>

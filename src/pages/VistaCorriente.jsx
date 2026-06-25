@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import libroService from '../services/libroService';
 import corrienteLiterariaService from '../services/corrienteLiterariaService';
+import LibroCard from '../components/LibroCard/LibroCard';
 
 const VistaCorriente = () => {
     // 1. Capturamos el ID de la corriente desde la URL (Ej: /corriente/2)
@@ -68,55 +69,20 @@ const VistaCorriente = () => {
                     {libros.length} {libros.length === 1 ? 'Título' : 'Títulos'}
                 </p>
 
-                {/* Grid de Cards Literarias */}
+                {/* Grid de Cards Literarias usando el componente desacoplado */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '30px' }}>
                     {libros.map((libro) => (
-                        /* ENLACE AL DETALLE: Envolvemos la tarjeta completa */
-                        <Link 
-                            key={libro.id} 
-                            to={`/libro/${libro.id}`} 
-                            style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
-                        >
-                            <div style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
-                                
-                                {/* Simulador de Libro / Tapa Estética (con degradado sofisticado de la foto) */}
-                                <div style={{ 
-                                    background: 'linear-gradient(135deg, #44403c 0%, #292524 100%)', 
-                                    height: '320px', 
-                                    borderRadius: '4px', 
-                                    padding: '20px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                    boxShadow: '0 10px 20px rgba(0,0,0,0.12)',
-                                    marginBottom: '14px',
-                                    position: 'relative'
-                                }}>
-                                    <span style={{ color: '#fcfaf2', fontSize: '0.75rem', opacity: 0.6, fontWeight: 'bold' }}>
-                                        {libro.anioPublicacion || libro.ano || '1721'}
-                                    </span>
-                                    <h4 style={{ color: '#fcfaf2', fontSize: '1.3rem', margin: 0, fontWeight: '500', lineHeight: '1.3' }}>
-                                        {libro.titulo}
-                                    </h4>
-                                    <span style={{ color: '#fcfaf2', fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', opacity: 0.8 }}>
-                                        {libro.autor}
-                                    </span>
-                                </div>
-
-                                {/* Metadatos inferiores */}
-                                <span style={{ fontSize: '1rem', fontWeight: '600', color: '#1a1917', marginBottom: '2px' }}>
-                                    {libro.titulo}
-                                </span>
-                                <span style={{ fontSize: '0.8rem', color: '#70695d', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
-                                    {libro.autor}
-                                </span>
-                                <span style={{ fontSize: '0.95rem', fontWeight: 'bold', color: '#1a1917' }}>
-                                    {libro.precio != null && typeof libro.precio === 'number' 
-                                        ? libro.precio.toFixed(2) 
-                                        : (Number(libro.precio) ? Number(libro.precio).toFixed(2) : "0.00")} €
-                                </span>
-                            </div>
-                        </Link>
+                        <LibroCard 
+                            key={libro.id}
+                            id={libro.id}
+                            titulo={libro.titulo}
+                            autor={libro.autor}
+                            precio={libro.precio}
+                            anioPublicacion={libro.anioPublicacion}
+                            ano={libro.ano}
+                            generoNombre={corriente?.nombre}
+                            /* No pasamos onEliminar acá para mantener la vista pública segura */
+                        />
                     ))}
                 </div>
 
