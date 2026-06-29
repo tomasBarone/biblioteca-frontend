@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './LibroCard.css';
 
-// Paleta de colores premium y editoriales 
+// Paleta de colores premium y editoriales (Mantenida intacta)
 const PALETA_COLORES = [
   { inicio: '#5c2c2c', fin: '#2b1414' }, // Burdeos / Vino profundo
   { inicio: '#1e323b', fin: '#0d181d' }, // Azul Biblioteca / Petróleo
@@ -12,7 +12,7 @@ const PALETA_COLORES = [
   { inicio: '#54352b', fin: '#2b1813' }  // Terracota / Óxido profundo
 ];
 
-// Función matemática para asignar siempre el mismo color al mismo libro basándose en las letras del título
+// Función matemática original (Mantenida intacta)
 const obtenerDegradadoDinamico = (titulo) => {
   if (!titulo) return 'linear-gradient(135deg, #5c2c2c 0%, #2b1414 100%)';
   
@@ -27,37 +27,57 @@ const obtenerDegradadoDinamico = (titulo) => {
   return `linear-gradient(135deg, ${color.inicio} 0%, ${color.fin} 100%)`;
 };
 
-function LibroCard({ id, titulo, autor, precio, generoNombre, anioPublicacion, ano, onEliminar }) {
+function LibroCard({ id, titulo, autor, precio, generoNombre, anioPublicacion, ano, imagenUrl, onEliminar }) {
+  console.log("URL que llega a la tarjeta:", imagenUrl);
   const anioMostrado = anioPublicacion || ano || '1721';
   
-  // Calculamos el degradado cromático único para este libro
-  const fondoPortada = obtenerDegradadoDinamico(titulo);
+  // Calculamos el degradado dinámico por si no hay portada
+  const fondoDegradado = obtenerDegradadoDinamico(titulo);
+  
+  // Evaluamos directamente si viene la URL desde Spring Boot
+  const tienePortada = imagenUrl !== null && imagenUrl !== undefined && imagenUrl !== '';
+
+  // Definimos el estilo del contenedor de la tapa
+  const estiloContenedorPortada = tienePortada
+    ? { 
+        backgroundImage: `url(${imagenUrl})`, 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }
+    : { 
+        background: fondoDegradado 
+      };
 
   return (
     <div className="libro-card-container">
       <Link to={`/libro/${id}`} className="libro-card-link">
         
-        {/* CRUCIAL: Aplicamos el background dinámico aquí con style */}
-        <div className="libro-card-portada" style={{ background: fondoPortada }}>
+        {/* Contenedor de la tapa del libro */}
+        <div className="libro-card-portada" style={estiloContenedorPortada}>
           
-          {/* Bloque Superior Interno */}
-          <div className="libro-portada-top">
-            <span className="libro-portada-anio">{anioMostrado}</span>
-            <h4 className="libro-portada-titulo">{titulo}</h4>
-          </div>
-
-          {/* Bloque Inferior Interno */}
-          <span className="libro-portada-autor">{autor}</span>
+          {/* RENDERIZADO CONDICIONAL: 
+              Si NO tiene portada, mostramos el diseño de colores con los textos internos.
+              Si SI tiene portada, este bloque se vacía y solo luce la imagen de fondo. */}
+          {!tienePortada && (
+            <>
+              <div className="libro-portada-top">
+                <span className="libro-portada-anio">{anioMostrado}</span>
+                <h4 className="libro-portada-titulo">{titulo}</h4>
+              </div>
+              <span className="libro-portada-autor">{autor}</span>
+            </>
+          )}
         </div>
 
-        {/* Metadatos Inferiores (Fuera del libro) */}
+        {/* Metadatos Inferiores (Siempre visibles fuera de la tapa, ideal para cuando hay foto) */}
         <div className="libro-meta-inferior">
           <span className="libro-txt-titulo">{titulo}</span>
           <span className="libro-txt-autor">{autor}</span>
         </div>
       </Link>
 
-      {/* Footer con precio */}
+      {/* Footer con precio y botón eliminar */}
       <div className="libro-footer">
         <span className="libro-precio">
           {precio != null && typeof precio === 'number' 

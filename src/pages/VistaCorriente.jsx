@@ -80,6 +80,7 @@ const VistaCorriente = () => {
                             precio={libro.precio}
                             anioPublicacion={libro.anioPublicacion}
                             ano={libro.ano}
+                            imagenUrl={libro.imagenUrl}
                             generoNombre={corriente?.nombre}
                             /* No pasamos onEliminar acá para mantener la vista pública segura */
                         />
