@@ -78,7 +78,7 @@ function MenuOverlay({ isOpen, onClose }) {
                   <Link to={`/corriente/${mov.id}`} onClick={onClose} className="menu-nav-link">
                     {mov.nombre}
                   </Link>
-                  <span className="menu-nav-year">{mov.siglo || mov.epoca || 'S. Época'}</span>
+                  <span className="menu-nav-year">{mov.periodo || mov.epoca || 'S. Época'}</span>
                 </div>
               ))}
             </nav>
@@ -97,9 +97,9 @@ function MenuOverlay({ isOpen, onClose }) {
           {movimientoActivo && (
             <>
               <div className="preview-movement-info">
-                <span className="preview-epoca">{movimientoActivo.siglo || movimientoActivo.epoca || 'S. Época'}</span>
+                <span className="preview-epoca">{movimientoActivo.periodo || movimientoActivo.epoca || 'S. Época'}</span>
                 <h2 className="preview-nombre">{movimientoActivo.nombre}</h2>
-                <p className="preview-descripcion">{movimientoActivo.descripcion || 'Sin descripción disponible por el momento.'}</p>
+                <p className="preview-descripcion">{movimientoActivo.fundamentos || 'Sin descripción disponible por el momento.'}</p>
               </div>
 
               <div className="preview-books-list">

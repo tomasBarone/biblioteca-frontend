@@ -1,5 +1,8 @@
 import React from 'react';
 import './MovimientoCard.css';
+import { Link } from 'react-router-dom';
+import libroService from '../../services/libroService'; 
+import corrienteLiterariaService from '../../services/corrienteLiterariaService';
 
 function MovimientoCard({ epoca, nombre, descripcion}){
 
