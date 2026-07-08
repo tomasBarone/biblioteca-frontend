@@ -12,6 +12,7 @@ import { Footer } from './components/Footer/Footer';
 import VistaCorriente from './pages/VistaCorriente';
 import DetalleLibro from './pages/DetalleLibro';
 import PantallaAnalisis from './pages/PantallaAnalisis/PantallaAnalisis';
+import AdminAnalisisForm from './pages/Admin-Analisis-Form/AdminAnalisisForm';
 
 function App() {
   // Estado global para abrir/cerrar el menú
@@ -56,6 +57,7 @@ function App() {
             {/* RUTA ADMINISTRATIVA */}
             <Route path="/admin" element={
               <ProtectedRoute>
+                <Route path="/admin/analisis/:id" element={<AdminAnalisisForm />} />
                 <AdminDashboard />
               </ProtectedRoute>
             } />
