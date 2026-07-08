@@ -11,6 +11,7 @@ import { Recomendados } from './components/Recomendados/Recomendados';
 import { Footer } from './components/Footer/Footer';
 import VistaCorriente from './pages/VistaCorriente';
 import DetalleLibro from './pages/DetalleLibro';
+import PantallaAnalisis from './pages/PantallaAnalisis/PantallaAnalisis';
 
 function App() {
   // Estado global para abrir/cerrar el menú
@@ -51,6 +52,7 @@ function App() {
             <Route path="/login" element={<Login />} />
              <Route path="/corriente/:id" element={<VistaCorriente />} />    
              <Route path="/libro/:id" element={<DetalleLibro />} />
+             <Route path="/libro/:id/analisis" element={<PantallaAnalisis />} />
             {/* RUTA ADMINISTRATIVA */}
             <Route path="/admin" element={
               <ProtectedRoute>

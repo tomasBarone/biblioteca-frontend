@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate} from 'react-router-dom';
 import libroService from '../services/libroService';
+
 
 const DetalleLibro = () => {
     const { id } = useParams(); 
+    const navigate = useNavigate();
     const [libro, setLibro] = useState(null);
     const [cargando, setCargando] = useState(true);
     // Estado local para manejar si la imagen real falla en el servidor
@@ -120,6 +122,16 @@ const DetalleLibro = () => {
                     <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#1a1917', marginBottom: '40px', maxWidth: '650px', fontWeight: 'normal' }}>
                         {libro.sinopsis || 'Sin sinopsis disponible.'}
                     </p>
+
+                    <div className="seccion-academica-link">
+                <p>¿Estudias esta obra? Accedé a la perspectiva crítica y al mapa psicológico de los personajes.</p>
+                <button 
+                    className="btn-ir-analisis" 
+                    onClick={() => navigate(`/libro/${libro.id}/analisis`)}
+                >
+                    Ver Análisis Académico
+                </button>
+                </div>
 
                     {/* TABLA DE METADATOS TÉCNICOS */}
                     <div style={{ borderTop: '1px solid #e5dec9', borderBottom: '1px solid #e5dec9', padding: '15px 0', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '40px' }}>

@@ -1,0 +1,14 @@
+.texto-format {
+    white-space: pre-line; /* Respetará los ENTERs y saltos que guardaste desde Postman */
+    line-height: 1.6;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    text-align: justify;
+}
+.ficha-tecnica-academica {
+    background-color: #f8f9fa;
+    border-left: 4px solid #3498db;
+    padding: 15px;
+    margin-bottom: 30px;
+    border-radius: 4px;
+}
