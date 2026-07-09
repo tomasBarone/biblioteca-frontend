@@ -78,6 +78,7 @@ function AdminAnalisisForm() {
             }
         } catch (error) {
             setMensaje({ texto: 'Hubo un error al guardar la información académica.', tipo: 'error' });
+            console.error('Error al enviar el formulario de análisis:', error);
         }
     };
 

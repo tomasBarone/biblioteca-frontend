@@ -54,14 +54,19 @@ function App() {
              <Route path="/corriente/:id" element={<VistaCorriente />} />    
              <Route path="/libro/:id" element={<DetalleLibro />} />
              <Route path="/libro/:id/analisis" element={<PantallaAnalisis />} />
-            {/* RUTA ADMINISTRATIVA */}
+          
+            {/* RUTAS ADMINISTRATIVAS PROTEGIDAS */}
             <Route path="/admin" element={
               <ProtectedRoute>
-                <Route path="/admin/analisis/:id" element={<AdminAnalisisForm />} />
                 <AdminDashboard />
               </ProtectedRoute>
             } />
 
+            <Route path="/admin/analisis/:id" element={
+              <ProtectedRoute>
+                <AdminAnalisisForm />
+              </ProtectedRoute>
+            } />
           </Routes>
         </div>
 

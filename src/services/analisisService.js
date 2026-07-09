@@ -17,7 +17,7 @@ const analisisService = {
     crearAnalisis: async (analisisData) => {
        
             
-            const response = await api.post(`/analisis`, analisisData, config);
+            const response = await api.post(`analisis/crear`, analisisData);
             console.log('Respuesta del servidor al crear análisis:', response.data);
             return response.data;
            

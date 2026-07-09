@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import libroService from '../services/libroService';
 import corrienteLiterariaService from '../services/corrienteLiterariaService';
 import FormularioLibro from '../components/FormularioLibro';
+import { useNavigate } from 'react-router-dom';
+
 
 const AdminDashboard = () => {
+    const navigate = useNavigate();
     const [libros, setLibros] = useState([]);
     const [corrientes, setCorrientes] = useState([]);
     const [corrienteSeleccionada, setCorrienteSeleccionada] = useState('');
@@ -133,6 +136,17 @@ const AdminDashboard = () => {
                                         style={{ background: '#c7c7c634', color: '#11111b', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: '500' }}
                                     >
                                         Eliminar
+                                    </button>
+                                </td>
+                                <td>
+                                
+
+                                    <button
+                                        className="btn-accion-analisis"
+                                        onClick={() => navigate(`/admin/analisis/${libro.id}`)}
+                                        style={{ marginLeft: '10px', backgroundColor: '#9b59b6', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                    >
+                                        📚 Análisis
                                     </button>
                                 </td>
                             </tr>
