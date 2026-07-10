@@ -22,7 +22,19 @@ const analisisService = {
             return response.data;
            
         
-    }
+    },
+
+    actualizarAnalisis: async (analisisData) => {
+        try {
+            const response = await api.put(`analisis/actualizar/${analisisData.id}`, analisisData);
+            console.log('Respuesta del servidor al actualizar análisis:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error en analisisService.actualizarAnalisis:', error);
+            throw error;
+        }
+    }   
+
 };
 
 export default analisisService;

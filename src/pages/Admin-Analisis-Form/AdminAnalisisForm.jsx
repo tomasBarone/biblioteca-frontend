@@ -66,10 +66,7 @@ function AdminAnalisisForm() {
 
         try {
             if (esEdicion) {
-                // TODO: En el futuro podés mapear un PUT si querés separar la lógica en Spring.
-                // Por ahora, si tu método 'crear' usa un save() de JPA que pisa los datos si el ID coincide, 
-                // podés usar el mismo endpoint.
-                await analisisService.crearAnalisis(payload);
+                await analisisService.actualizarAnalisis(payload);
                 setMensaje({ texto: '¡Análisis actualizado con éxito!', tipo: 'exito' });
             } else {
                 await analisisService.crearAnalisis(payload);
@@ -86,7 +83,7 @@ function AdminAnalisisForm() {
 
     return (
         <div className="admin-form-container">
-            <button className="btn-back" onClick={() => navigate('/admin-dashboard')}>
+            <button className="btn-back" onClick={() => navigate('/admin')}>
                 ← Volver al Dashboard
             </button>
 

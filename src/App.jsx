@@ -13,67 +13,71 @@ import VistaCorriente from './pages/VistaCorriente';
 import DetalleLibro from './pages/DetalleLibro';
 import PantallaAnalisis from './pages/PantallaAnalisis/PantallaAnalisis';
 import AdminAnalisisForm from './pages/Admin-Analisis-Form/AdminAnalisisForm';
+import { AuthProvider } from './context/AuthContext'; // Importamos el Provider del contexto de autenticación
 
 function App() {
-  // Estado global para abrir/cerrar el menú
+  // Estado global para abrir/cerrar el menú (se mantiene intacto)
   const [menuAbierto, setMenuAbierto] = useState(false);
 
   return (
-    <Router>
-     
-      <div style={{ 
-        backgroundColor: '#fbf9f4', 
-        minHeight: '100vh', 
-        color: '#1a1a1a', 
-        fontFamily: '"Playfair Display", "Georgia", system-ui, sans-serif',
-        display: 'flex',          
-        flexDirection: 'column'
-      }}>
-        
-        {/* El Navbar queda fijo arriba de todas las páginas */}
-        <Navbar onToggleMenu={() => setMenuAbierto(!menuAbierto)} />
-
-        {/* Menu overlay para cuando se abra el menú */}
-        <MenuOverlay isOpen={menuAbierto} onClose={() => setMenuAbierto(false)} />
-
-        {/* Contenedor principal para que crezca y empuje al footer */}
-        <div style={{ flex: 1 }}>
-          <Routes>
-            
-            {/* RUTA PÚBLICA PRINCIPAL */}
-            <Route path="/" element={
-              <>
-                <Hero />
-                <CatalogoLibros />
-                <Recomendados /> 
-              </>
-            } />
-                 
-            {/* RUTA DE LOGIN (pública) */}
-            <Route path="/login" element={<Login />} />
-             <Route path="/corriente/:id" element={<VistaCorriente />} />    
-             <Route path="/libro/:id" element={<DetalleLibro />} />
-             <Route path="/libro/:id/analisis" element={<PantallaAnalisis />} />
+    // 2. ENVOLVEMOS TODO CON EL PROVIDER
+    <AuthProvider> 
+      <Router>
+       
+        <div style={{ 
+          backgroundColor: '#fbf9f4', 
+          minHeight: '100vh', 
+          color: '#1a1a1a', 
+          fontFamily: '"Playfair Display", "Georgia", system-ui, sans-serif',
+          display: 'flex',          
+          flexDirection: 'column'
+        }}>
           
-            {/* RUTAS ADMINISTRATIVAS PROTEGIDAS */}
-            <Route path="/admin" element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            } />
+          {/* El Navbar queda fijo arriba de todas las páginas */}
+          <Navbar onToggleMenu={() => setMenuAbierto(!menuAbierto)} />
 
-            <Route path="/admin/analisis/:id" element={
-              <ProtectedRoute>
-                <AdminAnalisisForm />
-              </ProtectedRoute>
-            } />
-          </Routes>
-        </div>
+          {/* Menu overlay para cuando se abra el menú */}
+          <MenuOverlay isOpen={menuAbierto} onClose={() => setMenuAbierto(false)} />
 
-        {/* EL FOOTER QUEDA ACÁ AFUERA: Siempre visible al final de cualquier página */}
-        <Footer />
-      </div> 
-    </Router>
+          {/* Contenedor principal para que crezca y empuje al footer */}
+          <div style={{ flex: 1 }}>
+            <Routes>
+              
+              {/* RUTA PÚBLICA PRINCIPAL */}
+              <Route path="/" element={
+                <>
+                  <Hero />
+                  <CatalogoLibros />
+                  <Recomendados /> 
+                </>
+              } />
+                   
+              {/* RUTA DE LOGIN (pública) */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/corriente/:id" element={<VistaCorriente />} />    
+              <Route path="/libro/:id" element={<DetalleLibro />} />
+              <Route path="/libro/:id/analisis" element={<PantallaAnalisis />} />
+            
+              {/* RUTAS ADMINISTRATIVAS PROTEGIDAS */}
+              <Route path="/admin" element={
+                <ProtectedRoute allowedRoles={['ROLE_ADMIN']}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } />
+
+              <Route path="/admin/analisis/:id" element={
+                <ProtectedRoute allowedRoles={['ROLE_ADMIN']}>
+                  <AdminAnalisisForm />
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </div>
+
+          {/* EL FOOTER QUEDA ACÁ AFUERA: Siempre visible al final de cualquier página */}
+          <Footer />
+        </div> 
+      </Router>
+    </AuthProvider>
   );
 }
 
