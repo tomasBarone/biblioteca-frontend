@@ -14,6 +14,8 @@ import DetalleLibro from './pages/DetalleLibro';
 import PantallaAnalisis from './pages/PantallaAnalisis/PantallaAnalisis';
 import AdminAnalisisForm from './pages/Admin-Analisis-Form/AdminAnalisisForm';
 import { AuthProvider } from './context/AuthContext'; // Importamos el Provider del contexto de autenticación
+import VistaLibros from './pages/VistaLibros/VistaLibros';
+
 
 function App() {
   // Estado global para abrir/cerrar el menú (se mantiene intacto)
@@ -57,7 +59,9 @@ function App() {
               <Route path="/corriente/:id" element={<VistaCorriente />} />    
               <Route path="/libro/:id" element={<DetalleLibro />} />
               <Route path="/libro/:id/analisis" element={<PantallaAnalisis />} />
-            
+              <Route path="/libros" element={<VistaLibros />} />
+               
+          
               {/* RUTAS ADMINISTRATIVAS PROTEGIDAS */}
               <Route path="/admin" element={
                 <ProtectedRoute allowedRoles={['ROLE_ADMIN']}>

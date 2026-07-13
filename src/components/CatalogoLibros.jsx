@@ -1,22 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MovimientoCard from './MovimientoCard/MovimientoCard';
+import corrienteLiterariaService from '../services/corrienteLiterariaService'; 
 
 function CatalogoLibros() {
-  // Hardcodeamos momentáneamente los datos de tu captura para clavar el diseño visual
-  const movimientos = [
-    { epoca: "S. XVII", nombre: "Barroco", descripcion: "Ingenio, conceptismo y desengaño." },
-    { epoca: "S. XVIII", nombre: "Ilustración", descripcion: "Razón, sátira y enciclopedia." },
-    { epoca: "1800 - 1850", nombre: "Romanticismo", descripcion: "Pasión, libertad y naturaleza." },
-    { epoca: "1850 - 1900", nombre: "Realismo", descripcion: "La vida cotidiana sin adornos." },
-    { epoca: "1880 - 1920", nombre: "Modernismo", descripcion: "Belleza, exotismo y musicalidad." },
-    { epoca: "1910 - 1940", nombre: "Vanguardia", descripcion: "Ruptura y experimentación." },
-    { epoca: "S. XX - XXI", nombre: "Contemporáneo", descripcion: "Voces actuales del mundo." }
-  ];
+  const [movimientos, setMovimientos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const cargarCorrientes = async () => {
+      try {
+        // Asumiendo que tu service expone un método para traer todas las corrientes
+        const data = await corrienteLiterariaService.obtenerTodos();
+        setMovimientos(data);
+      } catch (error) {
+        console.error("Error al cargar las corrientes literarias:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarCorrientes();
+  }, []);
+
+  if (loading) {
+    return <div style={{ textAlign: 'center', padding: '100px', color: '#2c1810' }}>Cargando corrientes...</div>;
+  }
 
   return (
     <main style={{ padding: '6px 40px 80px 40px', maxWidth: '1400px', margin: '0 auto' }}>
       
-      {/* Encabezado de la sección */}
+      {/* Encabezado */}
       <div style={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
@@ -34,29 +49,34 @@ function CatalogoLibros() {
           Explora por género
         </h2>
         
-        <span style={{ 
-          fontFamily: 'system-ui, sans-serif', 
-          fontSize: '0.75rem', 
-          fontWeight: '700', 
-          letterSpacing: '1.5px', 
-          color: '#2c1810',
-          textTransform: 'uppercase',
-          cursor: 'pointer'
-        }}>
+        {/* Ahora este span navega de verdad a la vista del catálogo general */}
+        <span 
+          onClick={() => navigate('/libros')}
+          style={{ 
+            fontFamily: 'system-ui, sans-serif', 
+            fontSize: '0.75rem', 
+            fontWeight: '700', 
+            letterSpacing: '1.5px', 
+            color: '#2c1810',
+            textTransform: 'uppercase',
+            cursor: 'pointer'
+          }}
+        >
           Catálogo completo →
         </span>
       </div>
 
-      {/* Grilla adaptativa idéntica al layout de 3 columnas de tu foto */}
+      {/* Grilla adaptativa dinámica */}
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', 
         gap: '24px' 
       }}>
-        {movimientos.map((mov, index) => (
+        {movimientos.map((mov) => (
           <MovimientoCard 
-            key={index}
-            epoca={mov.epoca}
+            key={mov.id} // Usamos el ID real de la base de datos
+            id={mov.id}
+            epoca={mov.epoca} // Asegurate de que tu objeto del backend use estos nombres o mapealos
             nombre={mov.nombre}
             descripcion={mov.descripcion}
           />

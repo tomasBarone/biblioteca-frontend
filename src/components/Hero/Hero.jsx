@@ -1,7 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Hero.css';
 
 function Hero() {
+  const navigate = useNavigate();
+
   return (
     <div className="hero-section">
       {/* COLUMNA IZQUIERDA: Textos y Acciones */}
@@ -18,10 +21,13 @@ function Hero() {
         </p>
         
         <div className="hero-cta-group">
-          <button className="btn-primary">
+          {/* Navegación al catálogo completo */}
+          <button className="btn-primary" onClick={() => navigate('/libros')}>
             Ver Catálogo <span className="btn-arrow">→</span>
           </button>
-          <button className="btn-secondary">
+          
+          {/* Navegación a novedades / contemporáneo */}
+          <button className="btn-secondary" onClick={() => navigate('/libros?orden=novedades')}>
             Novedades Contemporáneas
           </button>
         </div>
@@ -29,21 +35,20 @@ function Hero() {
 
       {/* COLUMNA DERECHA: Estantería Flotante */}
       <div className="hero-books-right">
-        {/* Libro 1: El Quijote */}
+        {/* Nota: En el futuro, si querés que estas espinas sean interactivas, 
+            podrías envolverlas en un <Link to={`/libro/${idReal}`}> */}
         <div className="book-card-spine book-quijote">
           <span className="book-year">1605</span>
           <h4 className="book-title">El Quijote</h4>
           <span className="book-author">Miguel de Cervantes</span>
         </div>
 
-        {/* Libro 2: Cándido */}
         <div className="book-card-spine book-candido">
           <span className="book-year">1759</span>
           <h4 className="book-title">Cándido</h4>
           <span className="book-author">Voltaire</span>
         </div>
 
-        {/* Libro 3: Cumbres Borrascosas */}
         <div className="book-card-spine book-cumbres">
           <span className="book-year">1847</span>
           <h4 className="book-title">Cumbres borrascosas</h4>

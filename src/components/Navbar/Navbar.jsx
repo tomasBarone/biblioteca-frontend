@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext'; // Importamos tu nuevo contexto
+import { useAuth } from '../../context/AuthContext'; 
 
 function Navbar({ onToggleMenu }) {
-    // Extraemos el usuario dinámico y la función de logout directamente del Contexto Global
     const { user, cerrarSesion } = useAuth();
     const navigate = useNavigate();
+    
+    // Estado para controlar cuándo el mouse está sobre la zona de perfil
+    const [isHovered, setIsHovered] = useState(false);
 
     const handleLogout = () => {
         cerrarSesion();
@@ -61,43 +63,100 @@ function Navbar({ onToggleMenu }) {
                     <span style={{ fontSize: '1.1rem' }}>⌕</span>
                 </div>
 
-                {/* Perfil del Usuario Adaptativo basado en Context */}
+                {/* Perfil del Usuario Adaptativo Estilo HBO Max */}
                 {user ? (
-                    /* --- VISTA CUANDO EL USUARIO ESTÁ LOGEADO --- */
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <Link to="/admin" style={{ 
-                            textDecoration: 'none', 
-                            color: '#2c1810', 
+                    /* --- CONTENEDOR PADRE DEL DESPLEGABLE --- */
+                    <div 
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                        style={{ 
+                            position: 'relative', 
                             display: 'flex', 
-                            alignItems: 'center', 
+                            alignItems: 'center',
+                            padding: '10px 0', /* Zona segura para el mouse */
+                            cursor: 'pointer'
+                        }}
+                    >
+                        {/* El disparador visual (Avatar e Inicial) */}
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
                             gap: '6px',
-                            fontWeight: '600'
+                            fontWeight: '600',
+                            color: '#2c1810'
                         }}>
                             <span>👤</span>
-                            {/* Mostramos el sub/username decodificado del JWT en el Context */}
-                            <span style={{ borderBottom: '1px solid #2c1810' }}>{user.sub || user.username}</span>
-                        </Link>
-                        
-                        <button 
-                            onClick={handleLogout}
-                            style={{
-                                backgroundColor: 'transparent',
-                                color: '#ef4444',
-                                border: '1px solid #fde8ec',
-                                borderRadius: '4px',
-                                padding: '4px 8px',
-                                cursor: 'pointer',
-                                fontSize: '0.75rem',
-                                fontWeight: '600',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px'
-                            }}
-                        >
-                            Salir
-                        </button>
+                            <span style={{ borderBottom: '1px solid #2c1810' }}>
+                                {user.sub || user.username}
+                            </span>
+                            <span style={{ fontSize: '0.7rem', marginLeft: '2px' }}>▾</span>
+                        </div>
+
+                        {/* --- EL MENÚ DESPLEGABLE FLOTANTE --- */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '100%',
+                            right: 0,
+                            backgroundColor: '#ffffff',
+                            border: '1px solid #e8e2d5',
+                            boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+                            borderRadius: '4px',
+                            padding: '12px 0',
+                            minWidth: '180px',
+                            zIndex: 2000,
+                            // Magia de transiciones usando el estado de React
+                            display: isHovered ? 'block' : 'none',
+                        }}>
+                            {/* Info rápida de cuenta */}
+                            <div style={{ padding: '4px 16px', fontSize: '0.8rem', color: '#6e6355' }}>
+                                Cuenta de {user.sub || user.username}
+                            </div>
+                            
+                            <hr style={{ border: 0, height: '1px', backgroundColor: '#e8e2d5', margin: '8px 0' }} />
+                            
+                            {/* Acciones */}
+                            <Link to="/admin" style={{ 
+                                display: 'block', 
+                                padding: '8px 16px', 
+                                color: '#2c1810', 
+                                textDecoration: 'none',
+                                fontSize: '0.85rem'
+                            }}>
+                                Panel de Control
+                            </Link>
+                            
+                            <Link to="/mis-compras" style={{ 
+                                display: 'block', 
+                                padding: '8px 16px', 
+                                color: '#2c1810', 
+                                textDecoration: 'none',
+                                fontSize: '0.85rem'
+                            }}>
+                                Mis Compras
+                            </Link>
+
+                            <button 
+                                onClick={handleLogout}
+                                style={{
+                                    display: 'block',
+                                    width: '100%',
+                                    textAlign: 'left',
+                                    backgroundColor: 'transparent',
+                                    color: '#ef4444',
+                                    border: 'none',
+                                    padding: '8px 16px',
+                                    cursor: 'pointer',
+                                    fontSize: '0.85rem',
+                                    fontWeight: '600',
+                                    fontFamily: 'inherit'
+                                }}
+                            >
+                                Cerrar Sesión
+                            </button>
+                        </div>
                     </div>
                 ) : (
-                    /* --- VISTA CUANDO NO HAY SESIÓN ACTIVA --- */
+                    /* --- VISTA CUANDO NO HAY SESIÓN ACTIVA (Queda idéntica a la tuya) --- */
                     <Link to="/login" style={{ 
                         textDecoration: 'none', 
                         color: '#6e6355', 
