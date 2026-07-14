@@ -9,9 +9,22 @@ function Navbar({ onToggleMenu }) {
     // Estado para controlar cuándo el mouse está sobre la zona de perfil
     const [isHovered, setIsHovered] = useState(false);
 
+    console.log("Datos del usuario en el Navbar:", user);
+
     const handleLogout = () => {
         cerrarSesion();
         navigate('/login');
+    };
+
+    // Estilo base para los enlaces de login / registro
+    const authLinkStyle = {
+        textDecoration: 'none', 
+        color: '#6e6355', 
+        fontWeight: '500',
+        fontSize: '0.85rem', 
+        textTransform: 'uppercase', 
+        letterSpacing: '1px',
+        transition: 'color 0.2s ease'
     };
 
     return (
@@ -63,9 +76,9 @@ function Navbar({ onToggleMenu }) {
                     <span style={{ fontSize: '1.1rem' }}>⌕</span>
                 </div>
 
-                {/* Perfil del Usuario Adaptativo Estilo HBO Max */}
+                {/* Perfil del Usuario Adaptativo */}
                 {user ? (
-                    /* --- CONTENEDOR PADRE DEL DESPLEGABLE --- */
+                    /* --- CONTENEDOR PADRE DEL DESPLEGABLE (SESIÓN ACTIVA) --- */
                     <div 
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
@@ -73,7 +86,7 @@ function Navbar({ onToggleMenu }) {
                             position: 'relative', 
                             display: 'flex', 
                             alignItems: 'center',
-                            padding: '10px 0', /* Zona segura para el mouse */
+                            padding: '10px 0', 
                             cursor: 'pointer'
                         }}
                     >
@@ -104,7 +117,6 @@ function Navbar({ onToggleMenu }) {
                             padding: '12px 0',
                             minWidth: '180px',
                             zIndex: 2000,
-                            // Magia de transiciones usando el estado de React
                             display: isHovered ? 'block' : 'none',
                         }}>
                             {/* Info rápida de cuenta */}
@@ -114,27 +126,47 @@ function Navbar({ onToggleMenu }) {
                             
                             <hr style={{ border: 0, height: '1px', backgroundColor: '#e8e2d5', margin: '8px 0' }} />
                             
-                            {/* Acciones */}
-                            <Link to="/admin" style={{ 
-                                display: 'block', 
-                                padding: '8px 16px', 
-                                color: '#2c1810', 
-                                textDecoration: 'none',
-                                fontSize: '0.85rem'
-                            }}>
-                                Panel de Control
-                            </Link>
-                            
-                            <Link to="/mis-compras" style={{ 
-                                display: 'block', 
-                                padding: '8px 16px', 
-                                color: '#2c1810', 
-                                textDecoration: 'none',
-                                fontSize: '0.85rem'
-                            }}>
-                                Mis Compras
-                            </Link>
+                            {/* --- ENLACES FILTRADOS POR ROL EN EL DESPLEGABLE --- */}
 
+                            {/* 🛠️ Panel de Control: Solo Administradores */}
+                            {user.roles?.includes('ROLE_ADMIN') && (
+                                <Link to="/admin" style={{
+                                    display: 'block',
+                                    padding: '8px 16px',
+                                    color: '#2c1810',
+                                    textDecoration: 'none',
+                                    fontSize: '0.85rem',
+                                    fontWeight: '600'
+                                }}>
+                                    Panel de Control
+                                </Link>
+                            )}
+
+                            {/* 🛒 Secciones del Cliente: Solo Usuarios normales */}
+                            {user.roles?.includes('ROLE_USER') && (
+                                <>
+                                    <Link to="/mis-compras" style={{
+                                        display: 'block',
+                                        padding: '8px 16px',
+                                        color: '#2c1810',
+                                        textDecoration: 'none',
+                                        fontSize: '0.85rem'
+                                    }}>
+                                        Mis Compras
+                                    </Link>
+                                    <Link to="/favoritos" style={{
+                                        display: 'block',
+                                        padding: '8px 16px',
+                                        color: '#2c1810',
+                                        textDecoration: 'none',
+                                        fontSize: '0.85rem'
+                                    }}>
+                                        Lista de Deseos 
+                                    </Link>
+                                </>
+                            )}
+
+                            {/* Botón de cerrar sesión */}
                             <button 
                                 onClick={handleLogout}
                                 style={{
@@ -156,20 +188,22 @@ function Navbar({ onToggleMenu }) {
                         </div>
                     </div>
                 ) : (
-                    /* --- VISTA CUANDO NO HAY SESIÓN ACTIVA (Queda idéntica a la tuya) --- */
-                    <Link to="/login" style={{ 
-                        textDecoration: 'none', 
-                        color: '#6e6355', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '6px',
-                        fontWeight: '500'
-                    }}>
-                        <span>👤</span>
-                        <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                            Ingresar
-                        </span>
-                    </Link>
+                    /* --- VISTA CUANDO NO HAY SESIÓN ACTIVA --- */
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        {/* Link Ingresar */}
+                        <Link to="/login" style={{ ...authLinkStyle, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span>👤</span>
+                            <span>Ingresar</span>
+                        </Link>
+                        
+                        {/* Separador visual sutil */}
+                        <span style={{ color: '#e8e2d5' }}>|</span>
+                        
+                        {/* Link Registrarse */}
+                        <Link to="/register" style={authLinkStyle}>
+                            Registrarse
+                        </Link>
+                    </div>
                 )}
 
                 {/* Icono Carrito */}

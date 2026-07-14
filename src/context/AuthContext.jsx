@@ -15,6 +15,7 @@ export function AuthProvider({ children }) {
             try {
                 // Decodificamos el JWT que viene de Spring Boot
                 const decoded = jwtDecode(token);
+                console.log("CONTENIDO REAL DEL JWT:", decoded);
                 
                 // Verificamos si expiró (exp viene en segundos)
                 if (decoded.exp * 1000 < Date.now()) {
