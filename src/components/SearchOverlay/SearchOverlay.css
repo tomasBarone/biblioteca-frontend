@@ -1,0 +1,226 @@
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(251, 249, 244, 0.96); /* Beige crema translúcido */
+  backdrop-filter: blur(12px); /* Filtro de desenfoque moderno */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  padding-top: 10vh;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(1.02); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.search-close-btn {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #2c1810;
+  cursor: pointer;
+  transition: transform 0.2s;
+  padding: 10px;
+}
+
+.search-close-btn:hover {
+  transform: rotate(90deg);
+}
+
+.search-container {
+  width: 90%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Input de búsqueda elegante */
+.search-input-wrapper {
+  position: relative;
+  border-bottom: 2px solid #2c1810;
+  padding-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.search-large-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: "Playfair Display", "Georgia", serif;
+  font-size: 2.2rem;
+  color: #2c1810;
+  outline: none;
+}
+
+.search-large-input::placeholder {
+  color: #a89d8d;
+  font-style: italic;
+}
+
+/* Spinner animado */
+.search-spinner {
+  width: 25px;
+  height: 25px;
+  border: 2px solid #e1dacb;
+  border-top-color: #2c1810;
+  border-radius: 50%;
+  animation: spinSearch 0.8s infinite linear;
+  position: absolute;
+  right: 10px;
+}
+
+@keyframes spinSearch {
+  to { transform: rotate(360deg); }
+}
+
+/* Grid de resultados de búsqueda */
+.search-results-section {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.search-results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.2s ease, transform 0.15s;
+}
+
+.search-result-item:hover {
+  background-color: #f3eee3;
+  transform: translateX(5px);
+}
+
+.search-mini-portada {
+  width: 50px;
+  height: 75px;
+  border-radius: 2px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.search-mini-portada img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.search-portada-fallback {
+  width: 100%;
+  height: 100%;
+  background-color: #e1dacb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.search-result-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.search-result-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.15rem;
+  color: #2c1810;
+  margin: 0;
+}
+
+.search-result-author {
+  font-size: 0.85rem;
+  color: #705c4e;
+  margin: 0;
+}
+
+.search-result-price {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2c1810;
+  margin-top: 2px;
+}
+
+.search-no-results {
+  font-family: "Playfair Display", serif;
+  font-size: 1.3rem;
+  color: #705c4e;
+}
+
+.query-highlight {
+  font-style: italic;
+  color: #2c1810;
+  font-weight: 600;
+}
+
+/* Sugerencias cuando no hay texto */
+.search-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.suggestions-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8c8273;
+  font-weight: 700;
+}
+
+.suggestions-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.suggestions-tags button {
+  background-color: #f3eee3;
+  border: 1px solid #e1dacb;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #4a3525;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.suggestions-tags button:hover {
+  background-color: #2c1810;
+  color: #fbf9f4;
+  border-color: #2c1810;
+}
+
+/* Personalizar barra de desplazamiento del buscador */
+.search-results-section::-webkit-scrollbar {
+  width: 5px;
+}
+.search-results-section::-webkit-scrollbar-track {
+  background: transparent;
+}
+.search-results-section::-webkit-scrollbar-thumb {
+  background-color: #e1dacb;
+  border-radius: 10px;
+}
