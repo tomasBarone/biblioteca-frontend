@@ -1,14 +1,244 @@
-.texto-format {
-    white-space: pre-line; /* Respetará los ENTERs y saltos que guardaste desde Postman */
-    line-height: 1.6;
-    font-size: 1.1rem;
-    color: #2c3e50;
-    text-align: justify;
+/* Layout Principal */
+.analisis-page-wrapper {
+    background-color: #f9f6f0;
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #2c1810;
+    font-family: system-ui, -apple-system, sans-serif;
 }
-.ficha-tecnica-academica {
-    background-color: #f8f9fa;
-    border-left: 4px solid #3498db;
-    padding: 15px;
-    margin-bottom: 30px;
+
+.analisis-container {
+    max-width: 820px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border: 1px solid #e8e2d5;
+    border-radius: 8px;
+    padding: 48px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+/* Barra Superior de Navegación */
+.analisis-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0eae1;
+}
+
+.btn-volver {
+    background: none;
+    border: none;
+    color: #6e6355;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    padding: 0;
+}
+
+.btn-volver:hover {
+    color: #2c1810;
+}
+
+.controles-lectura {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lectura-label {
+    font-size: 0.8rem;
+    color: #8c8275;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-fontSize {
+    background-color: #f9f6f0;
+    border: 1px solid #e8e2d5;
     border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #2c1810;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-fontSize:hover {
+    background-color: #2c1810;
+    color: #ffffff;
+}
+
+/* Header del Análisis */
+.analisis-header {
+    margin-bottom: 36px;
+}
+
+.badge-academico {
+    display: inline-block;
+    background-color: #f2ede4;
+    color: #8c6d3f;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+.analisis-header h1 {
+    font-family: "Playfair Display", "Georgia", serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #2c1810;
+    margin: 0 0 12px 0;
+    line-height: 1.25;
+}
+
+.analisis-meta-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: #6e6355;
+}
+
+.btn-copiar-cita {
+    background: none;
+    border: none;
+    color: #8c6d3f;
+    cursor: pointer;
+    font-size: 0.85rem;
+    text-decoration: underline;
+    padding: 0;
+}
+
+/* Ficha Técnica / Metadata */
+.ficha-tecnica-academica {
+    background-color: #fbf9f5;
+    border: 1px solid #e8e2d5;
+    border-left: 4px solid #8c6d3f;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+.ficha-titulo {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #8c8275;
+    margin: 0 0 16px 0;
+}
+
+.grid-metadata {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.card-metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.metadata-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #6e6355;
+}
+
+.metadata-valor {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c1810;
+}
+
+/* Cuerpo del Ensayo */
+.analisis-contenido {
+    transition: font-size 0.2s ease;
+}
+
+.bloque-texto {
+    margin-bottom: 40px;
+}
+
+.bloque-texto h2 {
+    font-family: "Playfair Display", "Georgia", serif;
+    font-size: 1.4rem;
+    color: #2c1810;
+    border-bottom: 1px solid #f0eae1;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+.texto-format {
+    white-space: pre-line;
+    line-height: 1.8;
+    color: #382d29;
+    text-align: justify;
+    margin: 0;
+}
+
+/* Estados de Carga y Error */
+.analisis-status-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    color: #6e6355;
+    gap: 16px;
+}
+
+.analisis-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #e8e2d5;
+    border-top-color: #8c6d3f;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.btn-volver-error {
+    background-color: #2c1810;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Footer */
+.analisis-footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid #f0eae1;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #8c8275;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .analisis-container {
+        padding: 24px;
+    }
+    
+    .analisis-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .texto-format {
+        text-align: left;
+    }
 }
