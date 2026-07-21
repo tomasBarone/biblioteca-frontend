@@ -1,244 +1,241 @@
-/* Layout Principal */
-.analisis-page-wrapper {
-    background-color: #f9f6f0;
-    min-height: 100vh;
-    padding: 40px 20px;
-    color: #2c1810;
-    font-family: system-ui, -apple-system, sans-serif;
+/* 1. Wrapper que le da el espacio total al scroll */
+.analisis-hero-wrapper {
+    position: relative;
+    width: 100%;
+    background-color: #ffffff;
 }
 
-.analisis-container {
+/* 2. Imagen de Fondo FIJA EN PANTALLA (Inmóvil) */
+.analisis-hero-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh; /* dvh calcula la pantalla EXACTA descontando barras del navegador */
+    background-image: url('../../assets/analisisAcademico.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+
+.analisis-hero-spacer {
+    height: 100vh;
+    height: 100dvh; /* Asegura que la hoja quede exactamente abajo del viewport */
+    width: 100%;
+}
+
+
+.analisis-sheet-container {
+    position: relative;
+    z-index: 10; /* Z-index mayor para pasar POR ENCIMA del hero fijo */
+    width: 100%;
+    background-color: #ffffff; /* Fondo sólido blanco que tapa todo el ancho */
+    box-shadow: 0 -15px 30px rgba(0, 0, 0, 0.15); /* Sombra superior */
+    padding: 50px 20px 80px 20px;
+    box-sizing: border-box;
+}
+
+/* 5. Contenedor centrado para el texto (Legibilidad) */
+.analisis-content-inner {
     max-width: 820px;
     margin: 0 auto;
-    background-color: #ffffff;
-    border: 1px solid #e8e2d5;
-    border-radius: 8px;
-    padding: 48px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
-/* Barra Superior de Navegación */
-.analisis-top-bar {
+
+/* Oscurecemos un poquito la imagen para que si hay botones o logos arriba se lean bien */
+.analisis-hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.analisis-sheet-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 -20px 40px rgba(0, 0, 0, 0.2);
+    padding: 60px 20px 80px 20px;
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   HEADER DEL ENSAYO
+   ========================================================================== */
+.analisis-header-academic {
+    text-align: center;
+    margin-bottom: 45px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e8e2d5;
+}
+
+.academic-tag {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #8c7b6c;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.analisis-main-title {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 3.2rem;
+    color: #1a1715;
+    font-weight: 400;
+    margin: 0 0 20px 0;
+    line-height: 1.15;
+}
+
+.analisis-meta-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 32px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #f0eae1;
+    font-size: 0.85rem;
+    color: #706256;
+    margin-top: 15px;
 }
 
-.btn-volver {
-    background: none;
-    border: none;
-    color: #6e6355;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: color 0.2s ease;
-    padding: 0;
-}
-
-.btn-volver:hover {
-    color: #2c1810;
-}
-
-.controles-lectura {
+/* Botones de zoom pulidos */
+.controles-zoom {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
-.lectura-label {
-    font-size: 0.8rem;
-    color: #8c8275;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.btn-fontSize {
-    background-color: #f9f6f0;
-    border: 1px solid #e8e2d5;
-    border-radius: 4px;
-    padding: 2px 8px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: #2c1810;
+.controles-zoom button {
+    background: transparent;
+    border: 1px solid #dcd5c7;
+    border-radius: 3px;
+    padding: 3px 8px;
+    font-size: 0.75rem;
     cursor: pointer;
+    color: #2c1810;
     transition: all 0.2s ease;
 }
 
-.btn-fontSize:hover {
+.controles-zoom button:hover {
     background-color: #2c1810;
     color: #ffffff;
 }
 
-/* Header del Análisis */
-.analisis-header {
-    margin-bottom: 36px;
+/* ==========================================================================
+   CUADRO DE EJES TEÓRICOS (INSPIRADO EN HARVARD / VILLA I TATTI)
+   ========================================================================== */
+.ficha-tecnica-harvard {
+    background-color: #f7f3eb; /* Fondo ligeramente contrastado */
+    border: 1px solid #e4dcd0;
+    padding: 32px 36px;
+    margin-top: 35px;
+    margin-bottom: 55px;
+    border-radius: 2px;
 }
 
-.badge-academico {
-    display: inline-block;
-    background-color: #f2ede4;
-    color: #8c6d3f;
+.ficha-harvard-title {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1rem;
+    color: #2c1810;
+    margin: 0 0 24px 0;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    border-bottom: 1px dashed #dcd5c7;
+    padding-bottom: 12px;
+}
+
+.grid-harvard-metadata {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+.item-harvard strong {
+    display: block;
     font-size: 0.75rem;
-    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    padding: 4px 10px;
-    border-radius: 4px;
-    margin-bottom: 12px;
+    color: #8c7b6c;
+    margin-bottom: 8px;
 }
 
-.analisis-header h1 {
-    font-family: "Playfair Display", "Georgia", serif;
-    font-size: 2.2rem;
-    font-weight: 600;
+.item-harvard p {
+    margin: 0;
+    font-size: 0.95rem;
     color: #2c1810;
-    margin: 0 0 12px 0;
-    line-height: 1.25;
+    line-height: 1.6;
+    font-family: Georgia, serif;
 }
 
-.analisis-meta-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.85rem;
-    color: #6e6355;
+.border-left {
+    border-left: 1px solid #e4dcd0;
+    padding-left: 32px;
 }
 
-.btn-copiar-cita {
-    background: none;
-    border: none;
-    color: #8c6d3f;
-    cursor: pointer;
-    font-size: 0.85rem;
-    text-decoration: underline;
-    padding: 0;
+/* ==========================================================================
+   CUERPO DEL TEXTO DEL ENSAYO
+   ========================================================================== */
+.bloque-academico {
+    margin-bottom: 50px;
 }
 
-/* Ficha Técnica / Metadata */
-.ficha-tecnica-academica {
-    background-color: #fbf9f5;
-    border: 1px solid #e8e2d5;
-    border-left: 4px solid #8c6d3f;
-    border-radius: 6px;
-    padding: 20px;
-    margin-bottom: 40px;
-}
-
-.ficha-titulo {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #8c8275;
-    margin: 0 0 16px 0;
-}
-
-.grid-metadata {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
-}
-
-.card-metadata {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.metadata-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #6e6355;
-}
-
-.metadata-valor {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #2c1810;
-}
-
-/* Cuerpo del Ensayo */
-.analisis-contenido {
-    transition: font-size 0.2s ease;
-}
-
-.bloque-texto {
-    margin-bottom: 40px;
-}
-
-.bloque-texto h2 {
-    font-family: "Playfair Display", "Georgia", serif;
-    font-size: 1.4rem;
-    color: #2c1810;
-    border-bottom: 1px solid #f0eae1;
-    padding-bottom: 8px;
-    margin-bottom: 16px;
+.bloque-academico h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.8rem;
+    color: #1a1715;
+    margin-bottom: 20px;
+    font-weight: 400;
 }
 
 .texto-format {
     white-space: pre-line;
-    line-height: 1.8;
-    color: #382d29;
+    line-height: 1.9; /* Interlineado aireado para lectura extendida */
+    color: #2b2623;
     text-align: justify;
-    margin: 0;
+    font-family: Georgia, serif;
+    letter-spacing: 0.1px;
 }
 
-/* Estados de Carga y Error */
-.analisis-status-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 60vh;
-    color: #6e6355;
-    gap: 16px;
-}
-
-.analisis-spinner {
-    width: 36px;
-    height: 36px;
-    border: 3px solid #e8e2d5;
-    border-top-color: #8c6d3f;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.btn-volver-error {
-    background-color: #2c1810;
-    color: #ffffff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* Footer */
-.analisis-footer {
-    margin-top: 60px;
-    padding-top: 20px;
-    border-top: 1px solid #f0eae1;
-    text-align: center;
-    font-size: 0.85rem;
-    color: #8c8275;
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-    .analisis-container {
-        padding: 24px;
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+    .grid-harvard-metadata {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
     
-    .analisis-header h1 {
-        font-size: 1.75rem;
+    .border-left {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid #e4dcd0;
+        padding-top: 20px;
     }
 
-    .texto-format {
-        text-align: left;
+    .analisis-main-title {
+        font-size: 2.2rem;
     }
+
+    .ficha-tecnica-harvard {
+        padding: 20px;
+    }
+}
+
+
+.parrafo-analisis {
+    line-height: 1.9;
+    color: #2b2623;
+    text-align: justify;
+    font-family: Georgia, serif;
+    margin-bottom: 1.2rem;
+}
+
+.keyword-highlight {
+    font-weight: 700;
+    color: #1a1715;
+    letter-spacing: 0.1px;
 }

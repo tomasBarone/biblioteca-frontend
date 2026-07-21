@@ -1,0 +1,240 @@
+/* ==========================================================================
+   PANEL DE CONTROL - LIBRERÍA ALBATROS (ESTILO EDITORIAL)
+   ========================================================================== */
+
+.admin-dashboard-wrapper {
+    background-color: #fbf9f5;
+    min-height: 100vh;
+    padding: 40px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #2c1810;
+}
+
+/* Header */
+.admin-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.admin-dashboard-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1a1715;
+    margin: 0;
+}
+
+.admin-dashboard-subtitle {
+    color: #6b625b;
+    margin: 5px 0 0 0;
+    font-size: 0.95rem;
+}
+
+/* Botón Principal */
+.btn-primary-admin {
+    background-color: #2c1810;
+    color: #fbf9f5;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-primary-admin:hover {
+    background-color: #4a2e22;
+}
+
+.btn-primary-admin:active {
+    transform: scale(0.98);
+}
+
+/* Tarjeta de Filtro */
+.admin-filter-card {
+    background-color: #ffffff;
+    border: 1px solid #e8e2d5;
+    padding: 18px 24px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.filter-label {
+    font-size: 0.9rem;
+    color: #2c1810;
+    font-weight: 600;
+}
+
+.filter-select {
+    background-color: #fbf9f5;
+    color: #2c1810;
+    border: 1px solid #dcd5c7;
+    padding: 8px 14px;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: border-color 0.2s ease;
+}
+
+.filter-select:focus {
+    border-color: #2c1810;
+}
+
+/* Contenedor de Tabla */
+.admin-table-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e8e2d5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table th {
+    background-color: #f7f3eb;
+    border-bottom: 2px solid #e8e2d5;
+    color: #5c524a;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 16px;
+}
+
+.admin-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f0eae1;
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Estilos de Celdas */
+.cell-id {
+    color: #8c827a;
+    font-family: monospace;
+}
+
+.cell-titulo {
+    font-weight: 600;
+    color: #1a1715;
+}
+
+.cell-autor {
+    color: #4a423d;
+}
+
+.cell-precio {
+    font-weight: 700;
+    color: #2b5329; /* Verde bosque noble */
+    font-family: monospace, system-ui;
+    font-size: 1rem;
+}
+
+/* Badges */
+.badge-corriente {
+    background-color: #2c1810;
+    color: #fbf9f5;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+/* Botones de Acción */
+.actions-cell-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-action-delete {
+    background-color: #fff2f2;
+    color: #a94442;
+    border: 1px solid #f2dede;
+    padding: 7px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-action-delete:hover {
+    background-color: #a94442;
+    color: #ffffff;
+    border-color: #a94442;
+}
+
+.btn-action-analisis {
+    background-color: #f4eee2;
+    color: #2c1810;
+    border: 1px solid #dcd5c7;
+    padding: 7px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-action-analisis:hover {
+    background-color: #2c1810;
+    color: #ffffff;
+    border-color: #2c1810;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.table-empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #8c827a;
+    font-style: italic;
+}
+
+/* Modal */
+.admin-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(26, 23, 21, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+}
+
+.admin-modal-content {
+    background-color: #ffffff;
+    width: 550px;
+    max-width: 90%;
+    border-radius: 8px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    border: 1px solid #e8e2d5;
+}

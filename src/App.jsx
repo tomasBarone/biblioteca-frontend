@@ -4,7 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import MenuOverlay from './components/MenuOverlay/MenuOverlay';
 import Hero from './components/Hero/Hero'; 
 import CatalogoLibros from './components/CatalogoLibros';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Recomendados } from './components/Recomendados/Recomendados';
@@ -16,14 +16,21 @@ import AdminAnalisisForm from './pages/Admin-Analisis-Form/AdminAnalisisForm';
 import { AuthProvider } from './context/AuthContext'; // Importamos el Provider del contexto de autenticación
 import VistaLibros from './pages/VistaLibros/VistaLibros';
 import Register from './pages/Register';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   // Estado global para abrir/cerrar el menú (se mantiene intacto)
   const [menuAbierto, setMenuAbierto] = useState(false);
 
   return (
+
+  
     // 2. ENVOLVEMOS TODO CON EL PROVIDER
     <AuthProvider> 
+
+   <ToastContainer position="bottom-right" theme="colored" autoClose={3000} />
+
       <Router>
        
         <div style={{ 

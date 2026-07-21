@@ -2,13 +2,29 @@ import api from './api';
 import axios from 'axios';
 
 export const libroService = {
-  obtenerTodos: async () => {
+  obtenerTodos: async (pagina = 0, tamano = 10) => {
     try {
-      // Agregamos el prefijo /libros
-      const response = await api.get('/libros/all'); 
+     
+      const response = await api.get('/libros/all', {
+        params: { page: pagina, size: tamano }
+      });
       return response.data;
     } catch (error) {
       console.error('Error al obtener los libros:', error);
+      throw error;
+    }
+  },
+
+  // 2. Método de conveniencia si algún componente necesita SÓLO el Array de libros
+  obtenerListaPlana: async () => {
+    try {
+      // Pedimos un tamaño grande para traer todo en una sola solicitud
+      const response = await api.get('/libros/all', {
+        params: { page: 0, size: 1000 }
+      });
+      return response.data.content; // Devuelve directamente el Array []
+    } catch (error) {
+      console.error('Error al obtener la lista plana de libros:', error);
       throw error;
     }
   },
@@ -28,9 +44,9 @@ export const libroService = {
         return response.data;
     },
 
-  filtrarAvanzado: async (inicio, fin, pagina = 0, tamano = 10) => {
+  filtrarAvanzado: async (anioInicio, anioFin, pagina = 0, tamano = 10) => {
     const response = await api.get('/libros/filtrar-avanzado', {
-      params: { inicio, fin, page: pagina, size: tamano }
+      params: { inicio: anioInicio, fin: anioFin, page: pagina, size: tamano }
     });
     return response.data;
   },
