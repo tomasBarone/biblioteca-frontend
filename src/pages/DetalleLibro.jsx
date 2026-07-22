@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate} from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import libroService from '../services/libroService';
-
 
 const DetalleLibro = () => {
     const { id } = useParams(); 
     const navigate = useNavigate();
     const [libro, setLibro] = useState(null);
     const [cargando, setCargando] = useState(true);
-    // Estado local para manejar si la imagen real falla en el servidor
     const [errorImagen, setErrorImagen] = useState(false);
+
+    // Ajusta la URL de tu backend Spring Boot y el endpoint estático de imágenes
+    const BASE_URL_BACKEND = 'http://localhost:8080';
 
     useEffect(() => {
         const obtenerDatosLibro = async () => {
@@ -18,7 +19,7 @@ const DetalleLibro = () => {
                 const data = await libroService.obtenerPorId(id); 
                 console.log("Datos del libro obtenidos:", data);
                 setLibro(data);
-                setErrorImagen(false); // Resetear estado al cambiar de libro
+                setErrorImagen(false);
             } catch (error) {
                 console.error("Error al cargar el detalle del libro:", error);
             } finally {
@@ -36,50 +37,57 @@ const DetalleLibro = () => {
         return <div style={{ padding: '60px', textAlign: 'center', background: '#fcfaf2', minHeight: '100vh', fontFamily: 'serif' }}>Obra no encontrada.</div>;
     }
 
-    // CONDICIÓN: ¿Usamos la imagen real o el diseño tipográfico?
-    // Si tiene URL de imagen y no dio error previo de carga, intentamos mostrarla
-    const mostrarImagenReal = libro.imagenUrl && !errorImagen;
+    // Mapeo correcto para la URL estática del Backend
+    const resolverUrlImagen = (path) => {
+        if (!path) return null;
+        if (path.startsWith('http://') || path.startsWith('https://')) return path;
+        // Si usas ResourceHandlerRegistry en Spring para expone la carpeta de archivos:
+        return `${BASE_URL_BACKEND}/uploads/${path}`; 
+    };
+
+    const urlFinalImagen = resolverUrlImagen(libro.imagenUrl);
+    const mostrarImagenReal = Boolean(urlFinalImagen) && !errorImagen;
+    const tieneStock = libro.ejemplares > 0;
 
     return (
         <div style={{ backgroundColor: '#fcfaf2', minHeight: '100vh', fontFamily: '"Playfair Display", Georgia, serif', padding: '40px 10%', color: '#1a1917' }}>
             
+            {/* BREADCRUMB */}
             <div style={{ fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#70695d', marginBottom: '40px' }}>
                 <Link to="/catalogo" style={{ color: '#70695d', textDecoration: 'none' }}>CATÁLOGO</Link> 
                 <span style={{ margin: '0 8px' }}>/</span> 
-                <Link to={`/corriente/${libro.corrienteId || ''}`} style={{ color: '#70695d', textDecoration: 'none' }}>
-                    {libro.nombreCorriente || 'ILUSTRACIÓN'}
-                </Link>
+                <span>{libro.corrienteNombre || 'VANGUARDISMO'}</span>
+                <span style={{ margin: '0 8px' }}>/</span>
+                <span>{libro.generoNombre} ({libro.subgeneroNombre})</span>
             </div>
 
-            {/* CONTENEDOR PRINCIPAL: DOS COLUMNAS */}
+            {/* CONTENEDOR PRINCIPAL */}
             <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 420px) 1fr', gap: '60px', alignItems: 'start' }}>
                 
-                {/* COLUMNA IZQUIERDA: PORTADA INTELIGENTE */}
+                {/* PORTADA */}
                 <div style={{ 
                     position: 'relative',
                     height: '560px', 
                     borderRadius: '4px', 
                     boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
-                    overflow: 'hidden' // Para que la imagen respete los bordes redondeados
+                    overflow: 'hidden'
                 }}>
                     {mostrarImagenReal ? (
-                        /* OPCIÓN A: SE RENDERIZA LA PORTADA SUBIDA POR EL USUARIO */
                         <img 
-                            src={libro.imagenUrl} 
+                            src={urlFinalImagen} 
                             alt={`Portada de ${libro.titulo}`}
                             style={{
                                 width: '100%',
                                 height: '100%',
-                                objectFit: 'cover', // Mantiene la proporción cubriendo el contenedor
+                                objectFit: 'cover',
                                 display: 'block'
                             }}
                             onError={() => { 
-                                // Si la imagen se borró del disco o tira 404, activamos el salvavidas
+                                console.warn("Falló al cargar la imagen desde:", urlFinalImagen);
                                 setErrorImagen(true); 
                             }}
                         />
                     ) : (
-                        /* OPCIÓN B: TU ESTILO TIPOGRÁFICO ORIGINAL (SI NO HAY IMAGEN O TRUCO EN DISCO) */
                         <div style={{
                             background: 'linear-gradient(135deg, #44403c 0%, #292524 100%)',
                             width: '100%',
@@ -92,7 +100,7 @@ const DetalleLibro = () => {
                         }}>
                             <div>
                                 <span style={{ color: '#fcfaf2', fontSize: '0.85rem', opacity: 0.6, fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>
-                                    {libro.anioPublicacion || libro.ano || '1721'}
+                                    {libro.anioPublicacion}
                                 </span>
                                 <h2 style={{ color: '#fcfaf2', fontSize: '2.2rem', margin: 0, fontWeight: '400', lineHeight: '1.2' }}>
                                     {libro.titulo}
@@ -105,107 +113,148 @@ const DetalleLibro = () => {
                     )}
                 </div>
 
-                {/* COLUMNA DERECHA: INFORMACIÓN DETALLADA */}
+                {/* COLUMNA DETALLES */}
                 <div style={{ padding: '10px 0' }}>
                     <span style={{ fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '6px' }}>
-                        {libro.nombreCorriente || 'ILUSTRACIÓN'} · {libro.anioPublicacion || libro.ano || '1721'}
+                        {libro.corrienteNombre} · {libro.anioPublicacion}
                     </span>
                     
                     <h1 style={{ fontSize: '3.5rem', fontWeight: '400', margin: '0 0 8px 0', lineHeight: '1.1' }}>
                         {libro.titulo}
                     </h1>
                     
-                    <h3 style={{ fontSize: '1.3rem', fontWeight: '500', color: '#544f46', margin: '0 0 35px 0' }}>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: '500', color: '#544f46', margin: '0 0 25px 0' }}>
                         {libro.autor}
                     </h3>
 
-                    <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#1a1917', marginBottom: '40px', maxWidth: '650px', fontWeight: 'normal' }}>
-                        {libro.sinopsis || 'Sin sinopsis disponible.'}
+                    <p style={{ fontSize: '1.05rem', lineHeight: '1.6', color: '#1a1917', marginBottom: '30px', maxWidth: '650px' }}>
+                        {libro.sinopsis && libro.sinopsis.length > 5 ? libro.sinopsis : 'Sin descripción disponible para esta edición.'}
                     </p>
 
-                    <div className="seccion-academica-link">
-                <p>¿Estudias esta obra? Accedé a la perspectiva crítica y al mapa psicológico de los personajes.</p>
-                <button 
-                    className="btn-ir-analisis" 
-                    onClick={() => navigate(`/libro/${libro.id}/analisis`)}
-                >
-                    Ver Análisis Académico
-                </button>
-                </div>
+                    {/* TARJETA DESTACADA: ANÁLISIS ACADÉMICO */}
+                    <div style={{
+                        backgroundColor: '#efebe0',
+                        borderLeft: '4px solid #5c3a21',
+                        padding: '18px 22px',
+                        borderRadius: '4px',
+                        marginBottom: '35px',
+                        maxWidth: '650px'
+                    }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
+                            <div>
+                                <span style={{ fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#70695d', fontWeight: 'bold', display: 'block' }}>
+                                    RECURSO ACADÉMICO
+                                </span>
+                                <span style={{ fontSize: '1rem', fontWeight: '600', color: '#1a1917', display: 'block', marginTop: '2px' }}>
+                                    Análisis filosófico, estructura y guía de lectura
+                                </span>
+                            </div>
+                            <button 
+                                onClick={() => navigate(`/libro/${libro.id}/analisis`)}
+                                style={{
+                                    backgroundColor: '#5c3a21',
+                                    color: '#fcfaf2',
+                                    border: 'none',
+                                    padding: '10px 18px',
+                                    borderRadius: '20px',
+                                    fontSize: '0.8rem',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    whiteSpace: 'nowrap'
+                                }}
+                            >
+                                Ver Análisis
+                            </button>
+                        </div>
+                    </div>
 
-                    {/* TABLA DE METADATOS TÉCNICOS */}
-                    <div style={{ borderTop: '1px solid #e5dec9', borderBottom: '1px solid #e5dec9', padding: '15px 0', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '40px' }}>
+                    {/* METADATOS TÉCNICOS */}
+                    <div style={{ borderTop: '1px solid #e5dec9', borderBottom: '1px solid #e5dec9', padding: '15px 0', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '30px' }}>
                         <div>
-                            <span style={{ fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>Páginas</span>
-                            <span style={{ fontSize: '1rem', fontWeight: '600' }}>{libro.paginas || '360'}</span>
+                            <span style={{ fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>Género</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.generoNombre}</span>
                         </div>
                         <div>
-                            <span style={{ fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>Idioma</span>
-                            <span style={{ fontSize: '1rem', fontWeight: '600' }}>{libro.idioma || 'Español'}</span>
+                            <span style={{ fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>Subgénero</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.subgeneroNombre}</span>
                         </div>
                         <div>
                             <span style={{ fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>Año</span>
-                            <span style={{ fontSize: '1rem', fontWeight: '600' }}>{libro.anioPublicacion || libro.ano || '1721'}</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.anioPublicacion}</span>
                         </div>
                         <div>
                             <span style={{ fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>ISBN</span>
-                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.isbn || '978-84-376-3002-9'}</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.isbn}</span>
                         </div>
                     </div>
 
                     {/* PRECIO Y STOCK */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px' }}>
                         <span style={{ fontSize: '2rem', fontWeight: '400' }}>
-                            {libro.precio ? Number(libro.precio).toFixed(2) : '0.00'} €
+                            $ {Number(libro.precio).toLocaleString('es-AR')}
                         </span>
-                        <span style={{ fontSize: '0.8rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#2e7d32', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                            ✓ EN STOCK
+                        <span style={{
+                            fontSize: '0.8rem',
+                            letterSpacing: '0.05em',
+                            textTransform: 'uppercase',
+                            color: tieneStock ? '#2e7d32' : '#c62828',
+                            fontWeight: 'bold'
+                        }}>
+                            {tieneStock ? `✓ EN STOCK (${libro.ejemplares} unidades)` : '✕ SIN STOCK'}
                         </span>
                     </div>
 
-                    {/* ACCIONES DE COMPRA */}
-                    <div style={{ display: 'flex', gap: '15px' }}>
-                        <button style={{ 
-                            backgroundColor: '#5c3a21', 
-                            color: '#fcfaf2', 
-                            border: 'none', 
-                            padding: '14px 28px', 
-                            borderRadius: '30px', 
-                            fontSize: '0.9rem', 
-                            fontWeight: '600', 
-                            letterSpacing: '0.05em', 
-                            textTransform: 'uppercase', 
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px'
-                        }}>
-                            🛅 AÑADIR AL CARRITO
+                    {/* BOTONES DE COMPRA Y NAVEGACIÓN */}
+                    <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                        {/* Botón Principal: Agregar al Carrito */}
+                        <button
+                            disabled={!tieneStock}
+                            style={{
+                                backgroundColor: tieneStock ? '#5c3a21' : '#a39e93',
+                                color: '#fcfaf2',
+                                border: 'none',
+                                padding: '14px 28px',
+                                borderRadius: '30px',
+                                fontSize: '0.9rem',
+                                fontWeight: '600',
+                                letterSpacing: '0.05em',
+                                textTransform: 'uppercase',
+                                cursor: tieneStock ? 'pointer' : 'not-allowed',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                transition: 'background-color 0.2s ease'
+                            }}
+                            onClick={() => {
+                                console.log("Añadido al carrito:", libro.id);
+                                // Aquí puedes conectar tu estado global de carrito o Context
+                            }}
+                        >
+                            🛒 AÑADIR AL CARRITO
                         </button>
-                        
-                        <button style={{ 
-                            backgroundColor: 'transparent', 
-                            color: '#1a1917', 
-                            border: '1px solid #1a1917', 
-                            padding: '14px 28px', 
-                            borderRadius: '30px', 
-                            fontSize: '0.9rem', 
-                            fontWeight: '600', 
-                            letterSpacing: '0.05em', 
-                            textTransform: 'uppercase', 
-                            cursor: 'pointer'
-                        }}>
+
+                        {/* Botón Secundario: Comprar Ahora (Directo a Checkout) */}
+                        <button
+                            disabled={!tieneStock}
+                            style={{
+                                backgroundColor: 'transparent',
+                                color: tieneStock ? '#1a1917' : '#a39e93',
+                                border: `1px solid ${tieneStock ? '#1a1917' : '#a39e93'}`,
+                                padding: '14px 28px',
+                                borderRadius: '30px',
+                                fontSize: '0.9rem',
+                                fontWeight: '600',
+                                letterSpacing: '0.05em',
+                                textTransform: 'uppercase',
+                                cursor: tieneStock ? 'pointer' : 'not-allowed',
+                                transition: 'all 0.2s ease'
+                            }}
+                            onClick={() => navigate('/checkout', { state: { libro, cantidad: 1 } })}
+                        >
                             COMPRAR AHORA
                         </button>
                     </div>
                 </div>
-            </div>
-
-            {/* SECCIÓN INFERIOR: RECOMENDACIONES */}
-            <div style={{ marginTop: '80px', borderTop: '1px solid #e5dec9', paddingTop: '40px' }}>
-                <h3 style={{ fontSize: '1.8rem', fontWeight: '400', margin: 0 }}>
-                    Más de {libro.nombreCorriente?.toLowerCase() || 'ilustración'}
-                </h3>
             </div>
         </div>
     );

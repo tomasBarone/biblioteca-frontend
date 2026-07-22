@@ -18,6 +18,7 @@ import VistaLibros from './pages/VistaLibros/VistaLibros';
 import Register from './pages/Register';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Checkout from './pages/Checkout';
 
 function App() {
   // Estado global para abrir/cerrar el menú (se mantiene intacto)
@@ -68,6 +69,7 @@ function App() {
               <Route path="/libro/:id" element={<DetalleLibro />} />
               <Route path="/libro/:id/analisis" element={<PantallaAnalisis />} />
               <Route path="/libros" element={<VistaLibros />} />
+              <Route path="/checkout" element={<Checkout />} />
               
                
           
