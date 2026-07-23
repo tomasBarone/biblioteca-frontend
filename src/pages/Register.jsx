@@ -3,9 +3,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api'
 
 function Register() {
+
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
+        email: '',
         password: '',
         confirmPassword: ''
     });
@@ -37,9 +39,11 @@ function Register() {
         setCargando(true);
 
         try {
-            // Ajustá la URL según tu gateway o puerto de Spring Boot (ej: http://localhost:8080)
+            
+            console.log("Intentando registrar usuario:", formData);
             await api.post('auth/register', {
                 username: formData.username,
+                email: formData.email,
                 password: formData.password
             });
 
@@ -96,9 +100,30 @@ function Register() {
                 )}
 
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                         <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#6e6355', textTransform: 'uppercase' }}>
-                            Usuario o Email
+                           Email
+                        </label>
+                        <input
+                            type="text"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            style={{
+                                padding: '10px',
+                                border: '1px solid #e8e2d5',
+                                borderRadius: '4px',
+                                fontSize: '0.9rem',
+                                outline: 'none'
+                            }}
+                            placeholder="Ej: geralt_witcher@hotmail.com"
+                        />
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#6e6355', textTransform: 'uppercase' }}>
+                           Nombre de Usuario
                         </label>
                         <input
                             type="text"
@@ -112,7 +137,7 @@ function Register() {
                                 fontSize: '0.9rem',
                                 outline: 'none'
                             }}
-                            placeholder="Ej: tomas.gonzalez"
+                            placeholder="Ej: Geralt de Rivia"
                         />
                     </div>
 
