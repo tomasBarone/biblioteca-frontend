@@ -38,6 +38,7 @@ const Checkout = () => {
         ? libro.imagenUrl 
         : `${BASE_URL_BACKEND}/uploads/${libro.imagenUrl}`;
 
+    
     const precioUnitario = Number(libro.precio) || 0;
     const subtotal = precioUnitario * cantidad;
     const envio = 3500; // Costo fijo simulado de envío
@@ -62,7 +63,7 @@ const Checkout = () => {
         ];
 
         // Disparamos la petición HTTP al servidor Spring Boot
-        const ordenCreada = await crearOrden(payload);
+        const ordenCreada = await crearOrden(payload, formData.email);
 
         alert(`¡Compra realizada con éxito! Orden #${ordenCreada.id || 'confirmada'}. Gracias por adquirir ${libro.titulo}.`);
         
