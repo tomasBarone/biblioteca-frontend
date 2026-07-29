@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar'; 
 import MenuOverlay from './components/MenuOverlay/MenuOverlay';
 import Hero from './components/Hero/Hero'; 
-import CatalogoLibros from './components/CatalogoLibros';
+import MovimientoSection from './components/MovimientoCard/MovimientoSection';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -57,7 +57,7 @@ function App() {
               <Route path="/" element={
                 <>
                   <Hero />
-                  <CatalogoLibros />
+                  <MovimientoSection />
                   <Recomendados /> 
                 </>
               } />

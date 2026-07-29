@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MovimientoCard from './MovimientoCard/MovimientoCard';
-import corrienteLiterariaService from '../services/corrienteLiterariaService'; 
+import MovimientoCard from './MovimientoCard';
+import corrienteLiterariaService from '../../services/corrienteLiterariaService'; 
 
 function CatalogoLibros() {
   const [movimientos, setMovimientos] = useState([]);

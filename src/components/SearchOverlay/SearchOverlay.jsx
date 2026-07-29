@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import libroService from '../../services/libroService';
 import './SearchOverlay.css';
 
+
+
 function SearchOverlay({ isOpen, onClose }) {
   const [query, setQuery] = useState('');
   const [resultados, setResultados] = useState([]);
@@ -29,24 +31,20 @@ function SearchOverlay({ isOpen, onClose }) {
     }
 
     const delayDebounceFn = setTimeout(async () => {
+      
       setCargando(true);
+      
       try {
-        // Obtenemos todos los libros y filtramos en frontend para una búsqueda rápida y flexible.
-        // (Si tu catálogo crece a miles de libros, luego lo migramos a un endpoint de búsqueda específico)
-        const todosLosLibros = await libroService.obtenerTodos();
-        
-        // Filtramos por título o por el nombre del autor
-        const filtrados = todosLosLibros.filter(libro => {
-          const tituloMatches = libro.titulo.toLowerCase().includes(query.toLowerCase());
-          const autorNombre = libro.autor?.nombre || '';
-          const autorMatches = autorNombre.toLowerCase().includes(query.toLowerCase());
-          return tituloMatches || autorMatches;
-        });
 
-        setResultados(filtrados);
+        // El backend hace la consulta SQL optimizada buscando en ambos campos
+      const resultadosBusqueda = await libroService.buscar(query);
+      setResultados(resultadosBusqueda);
+
       } catch (error) {
+
         console.error("Error buscando libros:", error);
-      } finally {
+      } 
+      finally {
         setCargando(false);
       }
     }, 300);

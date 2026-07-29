@@ -58,6 +58,12 @@ export const libroService = {
     return response.data;
   },
 
+  buscar: async(query) => {
+    const response = await api.get('/libros/buscar', {
+      params: { query }
+    });
+    return response.data;
+  },
 
   // 2. NUEVO MÉTODO: Especializado para procesar la imagen física
   crearConFoto: async (libroData, archivoImagen) => {
