@@ -44,12 +44,21 @@ export const libroService = {
         return response.data;
     },
 
-  filtrarAvanzado: async (anioInicio, anioFin, pagina = 0, tamano = 10) => {
-    const response = await api.get('/libros/filtrar-avanzado', {
-      params: { inicio: anioInicio, fin: anioFin, page: pagina, size: tamano }
-    });
-    return response.data;
-  },
+
+
+  filtrarAvanzado: async (queryText, anioInicio, anioFin, page = 0, size = 10) => {
+        const response = await api.get('/libros/filtrar-avanzado', {
+            params: {
+                query: queryText || undefined,
+                anioInicio: anioInicio || undefined,
+                anioFin: anioFin || undefined,
+                page: page,
+                size: size
+            }
+        });
+        return response.data; // Devuelve directamente el Page<LibroResponseDTO>
+    },
+
 
   crear: async (libroDTO) => {
     console.log('Enviando libroDTO al servidor:', libroDTO);
