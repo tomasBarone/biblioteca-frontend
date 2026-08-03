@@ -2,93 +2,108 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import libroService from '../../services/libroService';
 
-function VistaLibros() {
+const VistaLibros = () => {
   const [libros, setLibros] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
-  // Estados para la paginación
-  const [paginaActual, setPaginaActual] = useState(0);
-  const [totalPaginas, setTotalPaginas] = useState(1);
-  const TAMANO_PAGINA = 10; // Cantidad de libros por página
+  // URL Base del Backend para archivos locales
+  const BASE_URL_BACKEND = 'http://localhost:8080';
 
   useEffect(() => {
-    const obtenerLibros = async () => {
-      setLoading(true);
+    const cargarLibros = async () => {
+      setCargando(true);
       try {
-        // Solicitamos la página activa enviando los parámetros a Spring
-        const data = await libroService.obtenerTodos(paginaActual, TAMANO_PAGINA);
-        console.log("Datos recibidos de la API:", data);
-
-        if (data && Array.isArray(data.content)) {
-          setLibros(data.content);
-          setTotalPaginas(data.totalPages);
-        } else if (Array.isArray(data)) {
-          // Fallback por si la API retorna array plano
-          setLibros(data);
-          setTotalPaginas(1);
-        } else {
-          setLibros([]);
-        }
+        const data = await libroService.obtenerTodos();
+        // Soportamos respuesta paginada (data.content) o lista directa (data)
+        const listaLibros = data.content ? data.content : data;
+        setLibros(listaLibros);
+        setError(null);
       } catch (err) {
-        console.error("Error al traer los libros del catálogo:", err);
-        setError("No pudimos cargar el catálogo. Por favor, intentá más tarde.");
+        console.error("Error al cargar la lista de libros:", err);
+        setError("No se pudieron cargar los libros del catálogo.");
       } finally {
-        setLoading(false);
+        setCargando(false);
       }
     };
 
-    obtenerLibros();
-    // Scroll suave hacia arriba cada vez que cambia la página
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [paginaActual]); // Se ejecuta al montar y cada vez que cambia paginaActual
+    cargarLibros();
+  }, []);
 
-  if (loading && libros.length === 0) {
-    return (
-      <div style={{ textAlign: 'center', padding: '100px', color: '#2c1810', fontFamily: 'system-ui, sans-serif' }}>
-        Cargando nuestro catálogo...
-      </div>
-    );
+ const resolverUrlImagen = (libro) => {
+  if (!libro) return null;
+
+  // 1. Evaluamos todos los posibles campos donde el backend mueva la imagen
+  let path = libro.imagenUrl || libro.imagenNombre || libro.imagen || libro.portada;
+
+  if (!path) return null;
+
+  // 2. Si el string contiene la estructura de Cloudinary o arranca con res.cloudinary
+  if (path.includes('cloudinary.com') || path.includes('res.cloudinary')) {
+    // Caso A: Si arranca con "https:/" o "http:/" (le falta una barra)
+    if (path.startsWith('https:/') && !path.startsWith('https://')) {
+      return path.replace('https:/', 'https://');
+    }
+    if (path.startsWith('http:/') && !path.startsWith('http://')) {
+      return path.replace('http:/', 'http://');
+    }
+    // Caso B: Si viene sin protocolo ("res.cloudinary.com/...")
+    if (!path.startsWith('http')) {
+      return `https://${path}`;
+    }
+    // Caso C: Viene perfecta con "https://"
+    return path;
   }
 
-  if (error) {
-    return (
-      <div style={{ textAlign: 'center', padding: '100px', color: '#8b0000', fontFamily: 'system-ui, sans-serif' }}>
-        {error}
-      </div>
-    );
+  // 3. Si es cualquier otra URL absoluta válida (S3, externa, etc.)
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    return path;
   }
 
+  // 4. Si es un archivo local alojado en Spring Boot (ej: "portada123.jpg")
+  return `${BASE_URL_BACKEND}/uploads/${path}`;
+};
   return (
-    <div style={{ padding: '40px', maxWidth: '1400px', margin: '0 auto' }}>
-      <h1 style={{ 
-        fontFamily: '"Playfair Display", serif', 
-        fontSize: '2.8rem', 
-        color: '#2c1810', 
-        fontWeight: '400',
-        marginBottom: '40px'
-      }}>
-        Catálogo Completo
-      </h1>
+    <div style={{ backgroundColor: '#fcfaf2', minHeight: '100vh', fontFamily: '"Playfair Display", Georgia, serif', padding: '40px 8%', color: '#1a1917' }}>
+      
+      {/* CABECERA DE LA VISTA */}
+      <div style={{ marginBottom: '40px', borderBottom: '1px solid #e5dec9', paddingBottom: '20px' }}>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: '400', margin: '0 0 10px 0' }}>Catálogo de Obras</h1>
+        <p style={{ color: '#70695d', margin: 0, fontSize: '1rem' }}>Explorá nuestra colección académica y literaria</p>
+      </div>
 
-      {/* Grilla de libros */}
+      {/* GRILLA DE LIBROS */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-        gap: '40px 32px',
-        opacity: loading ? 0.6 : 1, // Feedback visual mientras carga la nueva página
-        transition: 'opacity 0.2s'
+        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+        gap: '35px',
+        alignItems: 'start'
       }}>
-        {libros.length === 0 ? (
-          <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#705c4e' }}>
-            No hay libros disponibles en este momento.
-          </div>
-        ) : (
-          libros.map((libro) => (
-            <Link to={`/libro/${libro.id}`} key={libro.id} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', cursor: 'pointer' }}>
-                
-                {/* Portada del libro */}
+        {libros.map((libro) => {
+
+          console.log("DATOS DEL LIBRO EN CATALOGO:", {
+    id: libro.id,
+    titulo: libro.titulo,
+    imagenUrl: libro.imagenUrl,
+    imagenNombre: libro.imagenNombre,
+    objetoCompleto: libro
+  });
+          const urlFinalImagen = resolverUrlImagen(libro);
+
+          return (
+            <div 
+              key={libro.id} 
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%'
+              }}
+            >
+              <Link 
+                to={`/libro/${libro.id}`} 
+                style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+              >
+                {/* PORTADA DEL LIBRO */}
                 <div style={{
                   aspectRatio: '2/3',
                   backgroundColor: '#f4f1ea',
@@ -97,117 +112,61 @@ function VistaLibros() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: libro.imagenUrl ? '0' : '20px',
+                  padding: urlFinalImagen ? '0' : '20px',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-                  transition: 'transform 0.2s ease',
-                  overflow: 'hidden'
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  overflow: 'hidden',
+                  marginBottom: '15px'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.12)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+                }}
                 >
-                  {libro.imagenUrl ? (
+                  {urlFinalImagen ? (
                     <img 
-                      src={libro.imagenUrl} 
+                      src={urlFinalImagen} 
                       alt={`Portada de ${libro.titulo}`} 
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      onError={(e) => {
+                        // Fallback si la imagen rompe al cargar
+                        e.target.style.display = 'none';
+                      }}
                     />
                   ) : (
-                    <span style={{ fontFamily: '"Playfair Display", serif', fontSize: '1.1rem', color: '#4a3525', textAlign: 'center' }}>
+                    <span style={{ fontFamily: '"Playfair Display", serif', fontSize: '1rem', color: '#4a3525', textAlign: 'center' }}>
                       {libro.titulo}
                     </span>
                   )}
                 </div>
 
-                {/* Info del libro */}
-                <div>
-                  <h4 style={{ margin: '0 0 4px 0', fontFamily: 'system-ui, sans-serif', fontSize: '1rem', color: '#2c1810', fontWeight: '600' }}>
-                    {libro.titulo}
-                  </h4>
-                  <p style={{ margin: '0 0 8px 0', fontFamily: 'system-ui, sans-serif', fontSize: '0.85rem', color: '#705c4e' }}>
-                    {libro.autor?.nombre || "Autor Desconocido"}
-                  </p>
-                  <span style={{ fontFamily: 'system-ui, sans-serif', fontSize: '0.95rem', fontWeight: '700', color: '#2c1810' }}>
-                    ${libro.precio}
-                  </span>
+                {/* METADATOS Y TITULO */}
+                <span style={{ fontSize: '0.75rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>
+                  {libro.corrienteNombre || 'LITERATURA'}
+                </span>
+
+                <h3 style={{ fontSize: '1.1rem', fontWeight: '600', margin: '0 0 6px 0', lineHeight: '1.3', color: '#1a1917' }}>
+                  {libro.titulo}
+                </h3>
+
+                <p style={{ fontSize: '0.85rem', color: '#544f46', margin: '0 0 10px 0' }}>
+                  {libro.autor}
+                </p>
+
+                <div style={{ marginTop: 'auto', paddingTop: '6px', fontSize: '1.05rem', fontWeight: '500' }}>
+                  $ {Number(libro.precio).toLocaleString('es-AR')}
                 </div>
-              </div>
-            </Link>
-          ))
-        )}
+              </Link>
+            </div>
+          );
+        })}
       </div>
-
-      {/* Control de Paginación UI (Solo se muestra si hay más de 1 página) */}
-      {totalPaginas > 1 && (
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '8px',
-          marginTop: '60px',
-          fontFamily: 'system-ui, sans-serif'
-        }}>
-          {/* Botón Anterior */}
-          <button
-            disabled={paginaActual === 0}
-            onClick={() => setPaginaActual(prev => prev - 1)}
-            style={{
-              padding: '8px 16px',
-              border: '1px solid #e1dacb',
-              backgroundColor: paginaActual === 0 ? '#f9f8f6' : '#fff',
-              color: paginaActual === 0 ? '#c0b8b0' : '#2c1810',
-              cursor: paginaActual === 0 ? 'not-allowed' : 'pointer',
-              borderRadius: '2px',
-              fontSize: '0.9rem',
-              transition: 'all 0.2s'
-            }}
-          >
-            ← Anterior
-          </button>
-
-          {/* Números de Página */}
-          {Array.from({ length: totalPaginas }, (_, index) => (
-            <button
-              key={index}
-              onClick={() => setPaginaActual(index)}
-              style={{
-                width: '38px',
-                height: '38px',
-                border: '1px solid',
-                borderColor: paginaActual === index ? '#2c1810' : '#e1dacb',
-                backgroundColor: paginaActual === index ? '#2c1810' : '#fff',
-                color: paginaActual === index ? '#fff' : '#2c1810',
-                borderRadius: '2px',
-                cursor: 'pointer',
-                fontWeight: paginaActual === index ? '600' : '400',
-                fontSize: '0.9rem',
-                transition: 'all 0.15s'
-              }}
-            >
-              {index + 1}
-            </button>
-          ))}
-
-          {/* Botón Siguiente */}
-          <button
-            disabled={paginaActual >= totalPaginas - 1}
-            onClick={() => setPaginaActual(prev => prev + 1)}
-            style={{
-              padding: '8px 16px',
-              border: '1px solid #e1dacb',
-              backgroundColor: paginaActual >= totalPaginas - 1 ? '#f9f8f6' : '#fff',
-              color: paginaActual >= totalPaginas - 1 ? '#c0b8b0' : '#2c1810',
-              cursor: paginaActual >= totalPaginas - 1 ? 'not-allowed' : 'pointer',
-              borderRadius: '2px',
-              fontSize: '0.9rem',
-              transition: 'all 0.2s'
-            }}
-          >
-            Siguiente →
-          </button>
-        </div>
-      )}
     </div>
   );
-}
+};
 
 export default VistaLibros;
