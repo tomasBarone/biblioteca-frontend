@@ -9,15 +9,11 @@ const DetalleLibro = () => {
     const [cargando, setCargando] = useState(true);
     const [errorImagen, setErrorImagen] = useState(false);
 
-    // Ajusta la URL de tu backend Spring Boot y el endpoint estático de imágenes
-    const BASE_URL_BACKEND = 'http://localhost:8080';
-
     useEffect(() => {
         const obtenerDatosLibro = async () => {
             setCargando(true);
             try {
                 const data = await libroService.obtenerPorId(id); 
-                console.log("Datos del libro obtenidos:", data);
                 setLibro(data);
                 setErrorImagen(false);
             } catch (error) {
@@ -37,16 +33,7 @@ const DetalleLibro = () => {
         return <div style={{ padding: '60px', textAlign: 'center', background: '#fcfaf2', minHeight: '100vh', fontFamily: 'serif' }}>Obra no encontrada.</div>;
     }
 
-    // Mapeo correcto para la URL estática del Backend
-    const resolverUrlImagen = (path) => {
-        if (!path) return null;
-        if (path.startsWith('http://') || path.startsWith('https://')) return path;
-        // Si usas ResourceHandlerRegistry en Spring para expone la carpeta de archivos:
-        return `${BASE_URL_BACKEND}/uploads/${path}`; 
-    };
-
-    const urlFinalImagen = resolverUrlImagen(libro.imagenUrl);
-    const mostrarImagenReal = Boolean(urlFinalImagen) && !errorImagen;
+    const mostrarImagenReal = Boolean(libro.imagenUrl) && !errorImagen;
     const tieneStock = libro.ejemplares > 0;
 
     return (
@@ -74,7 +61,7 @@ const DetalleLibro = () => {
                 }}>
                     {mostrarImagenReal ? (
                         <img 
-                            src={urlFinalImagen} 
+                            src={libro.imagenUrl} 
                             alt={`Portada de ${libro.titulo}`}
                             style={{
                                 width: '100%',
@@ -82,10 +69,7 @@ const DetalleLibro = () => {
                                 objectFit: 'cover',
                                 display: 'block'
                             }}
-                            onError={() => { 
-                                console.warn("Falló al cargar la imagen desde:", urlFinalImagen);
-                                setErrorImagen(true); 
-                            }}
+                            onError={() => setErrorImagen(true)}
                         />
                     ) : (
                         <div style={{
@@ -206,7 +190,6 @@ const DetalleLibro = () => {
 
                     {/* BOTONES DE COMPRA Y NAVEGACIÓN */}
                     <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
-                        {/* Botón Principal: Agregar al Carrito */}
                         <button
                             disabled={!tieneStock}
                             style={{
@@ -227,13 +210,11 @@ const DetalleLibro = () => {
                             }}
                             onClick={() => {
                                 console.log("Añadido al carrito:", libro.id);
-                                // Aquí puedes conectar tu estado global de carrito o Context
                             }}
                         >
                             🛒 AÑADIR AL CARRITO
                         </button>
 
-                        {/* Botón Secundario: Comprar Ahora (Directo a Checkout) */}
                         <button
                             disabled={!tieneStock}
                             style={{

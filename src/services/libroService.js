@@ -74,7 +74,6 @@ export const libroService = {
     return response.data;
   },
 
-  // 2. NUEVO MÉTODO: Especializado para procesar la imagen física
   crearConFoto: async (libroData, archivoImagen) => {
     const formData = new FormData();
 
@@ -92,12 +91,11 @@ export const libroService = {
     const response = await api.post(`/libros/con-foto`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        // Si usás interceptores para el token Bearer, Axios lo inyecta solo.
-        // Si no, agregá acá el Header de Authorization si es necesario.
+        
       },
     });
 
-    return response.data; // Retorna tu LibroResponseDTO con la 'imagenUrl'
+    return response.data; 
   },
 
   eliminar: async (id) => {
