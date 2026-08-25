@@ -129,7 +129,7 @@ function SearchOverlay({ isOpen, onClose }) {
               <span className="suggestions-label">Búsquedas sugeridas</span>
               <div className="suggestions-tags">
                 <button onClick={() => setQuery('Quijote')}>El Quijote</button>
-                <button onClick={() => setQuery('Novela')}>Novelas</button>
+                <button onClick={() => setQuery('El Retrato de Dorian Gray')}>El Retrato de Dorian Gray</button>
                 <button onClick={() => setQuery('Realismo')}>Realismo Mágico</button>
               </div>
             </div>

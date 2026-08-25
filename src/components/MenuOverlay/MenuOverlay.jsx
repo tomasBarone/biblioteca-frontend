@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import corrienteLiterariaService from '../../services/corrienteLiterariaService';
-import libroService from '../../services/libroService'; // <-- Asegúrate de importar tu libroService acá
+import libroService from '../../services/libroService'; 
 import './MenuOverlay.css';
 
 function MenuOverlay({ isOpen, onClose }) {
@@ -26,7 +26,7 @@ function MenuOverlay({ isOpen, onClose }) {
     }
   }, [isOpen]);
 
-  // FUNCIÓN MÁGICA: Busca los libros en tiempo real al pasar el mouse
+  //  Busca los libros en tiempo real al pasar el mouse
   const cargarLibrosPrevisualizacion = async (mov) => {
     setMovimientoActivo(mov);
     
