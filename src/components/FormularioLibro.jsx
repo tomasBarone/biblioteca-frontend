@@ -57,6 +57,7 @@ export const FormularioLibro = ({ cerrarModal, refrescarLista }) => {
 
   // Manejador para inputs de texto, números y selectores
   const handleInputChange = (e) => {
+    
     setLibro({ ...libro, [e.target.name]: e.target.value });
   };
 

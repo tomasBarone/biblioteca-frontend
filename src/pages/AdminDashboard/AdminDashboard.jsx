@@ -185,6 +185,13 @@ const confirmarEliminacion = (id, titulo) => {
                                         >
                                             📚 Análisis
                                         </button>
+
+                                        <button
+                                            className="btn-action-editar"
+                                            onClick={() => navigate(`/admin/editar/${libro.id}`)}
+                                        >
+                                            Editar
+                                        </button>
                                     </div>
                                 </td>
                             </tr>

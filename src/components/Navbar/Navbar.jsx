@@ -63,7 +63,7 @@ function Navbar({ onToggleMenu }) {
                         color: '#2c1810',
                         letterSpacing: '0.5px'
                     }}>
-                        Librería Albatros
+                        Librería Shámata
                     </h1>
                 </Link>
 

@@ -32,6 +32,7 @@ export const libroService = {
   obtenerPorId: async (id) => {
     try {
       const response = await api.get(`/libros/${id}`);
+      console.log(`Datos obtenidos para el libro con ID ${id}:`, response.data);
       return response.data;
     } catch (error) {
       console.error(`Error al obtener el libro con ID ${id}:`, error);
@@ -101,8 +102,14 @@ export const libroService = {
   eliminar: async (id) => {
     const response = await api.delete(`/libros/eliminar/${id}`); 
     return response.data;
-  }
+  },
 
+ 
+  actualizar: async (id, libroDTO) => {
+    console.log('Enviando libroDTO al servidor para actualizar:', libroDTO);
+    const response = await api.put(`/libros/actualizar/${id}`, libroDTO);
+    return response.data;
+  }
 
 };
 

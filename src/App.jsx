@@ -19,6 +19,7 @@ import Register from './pages/Register';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Checkout from './pages/Checkout';
+import AdminEditarForm from './pages/Admin-Editar-Form/AdminEditarForm';
 
 function App() {
   // Estado global para abrir/cerrar el menú (se mantiene intacto)
@@ -83,6 +84,12 @@ function App() {
               <Route path="/admin/analisis/:id" element={
                 <ProtectedRoute allowedRoles={['ROLE_ADMIN']}>
                   <AdminAnalisisForm />
+                </ProtectedRoute>
+              } />
+
+              <Route path="/admin/editar/:id" element={
+                <ProtectedRoute allowedRoles={['ROLE_ADMIN']}>
+                  <AdminEditarForm />
                 </ProtectedRoute>
               } />
             </Routes>

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PANEL DE CONTROL - LIBRERÍA ALBATROS (ESTILO EDITORIAL)
+   PANEL DE CONTROL - LIBRERÍA SHÁMATA (ESTILO EDITORIAL)
    ========================================================================== */
 
 .admin-dashboard-wrapper {
@@ -199,6 +199,24 @@
 
 .btn-action-analisis:hover {
     background-color: #2c1810;
+    color: #ffffff;
+    border-color: #2c1810;
+}
+
+.btn-action-editar{
+    background-color: #f4eee2;
+    color: #2c1810;
+    border: 1px solid #dcd5c7;
+    padding: 7px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-action-editar:hover{
+    background-color: #000000;
     color: #ffffff;
     border-color: #2c1810;
 }
