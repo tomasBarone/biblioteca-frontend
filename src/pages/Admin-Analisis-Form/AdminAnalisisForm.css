@@ -43,10 +43,10 @@
     font-family: inherit;
 }
 .btn-submit {
-    background-color: #2ecc71;
-    color: white;
+    background-color: #ffff;
+    color: rgb(0, 0, 0);
     padding: 14px 28px;
-    border: none;
+    border: 1px solid #191f1b;
     border-radius: 6px;
     font-size: 1.1rem;
     font-weight: bold;
@@ -54,8 +54,28 @@
     transition: background 0.2s;
 }
 .btn-submit:hover {
-    background-color: #27ae60;
+    background-color: #4e9c6f;
+    color: #fff;
 }
+
+.btn-analisis {
+    background-color: #ffff;
+    color: rgb(0, 0, 0);
+    padding: 14px 28px;
+    border: 1px solid #191f1b;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: 10px; /* Added margin for spacing */
+}
+
+.btn-analisis:hover {
+    background-color: #2980b9;
+    color: #fff;
+}
+
 .alerta {
     padding: 15px;
     border-radius: 6px;

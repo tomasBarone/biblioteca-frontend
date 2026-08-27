@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import analisisService from '../../services/analisisService';
+import PantallaAnalisis from '../PantallaAnalisis/PantallaAnalisis';
 import './AdminAnalisisForm.css';
 
 function AdminAnalisisForm() {
@@ -68,6 +69,7 @@ function AdminAnalisisForm() {
             if (esEdicion) {
                 await analisisService.actualizarAnalisis(payload);
                 setMensaje({ texto: '¡Análisis actualizado con éxito!', tipo: 'exito' });
+               
             } else {
                 await analisisService.crearAnalisis(payload);
                 setMensaje({ texto: '¡Análisis creado y vinculado con éxito!', tipo: 'exito' });
@@ -158,6 +160,7 @@ function AdminAnalisisForm() {
                 <button type="submit" className="btn-submit">
                     {esEdicion ? 'Guardar Cambios' : 'Dar de Alta Análisis'}
                 </button>
+                 <button class="btn-analisis" onClick={() => navigate(`/libro/${id}/analisis`)}>Ir al Análisis</button>
             </form>
         </div>
     );
