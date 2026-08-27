@@ -8,35 +8,49 @@ import './AdminEditarForm.css';
 function AdminEditarForm() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const corrienteService = corrienteLiterariaService; // Alias para mayor claridad
-    const subgeneroServiceInstance = subgeneroService; // Alias para mayor claridad
+
     const [formData, setFormData] = useState({
         isbn: '',
         titulo: '',
         autor: '',
         ejemplares: '',
-        corrienteNombre: '',
-        subgeneroNombre: '',
+        corrienteId: '',
+        subgeneroId: '',
         anioPublicacion: '',
         generoNombre: '',
         precio: '',
         sinopsis: ''
     });
 
+    const [corrientes, setCorrientes] = useState([]);
+    const [subgeneros, setSubgeneros] = useState([]);
     const [cargando, setCargando] = useState(true);
 
+    // Cargar corrientes y subgéneros al montar
+    useEffect(() => {
+        Promise.all([
+            corrienteLiterariaService.obtenerTodos(),
+            subgeneroService.obtenerTodos()
+        ])
+        .then(([corrientesData, subgenerosData]) => {
+            setCorrientes(corrientesData);
+            setSubgeneros(subgenerosData);
+        })
+        .catch(err => console.error("Error al obtener listas de referencia:", err));
+    }, []);
+
+    // Cargar datos del libro por ID
     useEffect(() => {
         setCargando(true);
-
         libroService.obtenerPorId(id)
             .then(data => {
                 console.log("Datos del libro obtenidos:", data);
                 setFormData({
-                    isbn : data.isbn || '',
+                    isbn: data.isbn || '',
                     titulo: data.titulo || '',
                     autor: data.autor || '',
-                    corrienteNombre: data.corrienteNombre || '',
-                    subgeneroNombre: data.subgeneroNombre || '',
+                    corrienteId: data.corrienteId || (data.corriente ? data.corriente.id : ''),
+                    subgeneroId: data.subgeneroId || (data.subgenero ? data.subgenero.id : ''),
                     generoNombre: data.generoNombre || '',
                     ejemplares: data.ejemplares || '',
                     anioPublicacion: data.anioPublicacion || '',
@@ -44,36 +58,13 @@ function AdminEditarForm() {
                     sinopsis: data.sinopsis || ''
                 });
                 setCargando(false);
-            }
-            )
+            })
             .catch(err => {
                 console.error("Error al obtener el libro:", err);
                 setCargando(false);
             });
     }, [id]);
 
-    useEffect(() => {
-
-        corrienteLiterariaService.obtenerTodos()
-            .then(data => {
-                console.log("Corrientes literarias obtenidas:", data);
-            })
-            .catch(err => {
-                console.error("Error al obtener corrientes literarias:", err);
-            });
-    }, []);
-
-    useEffect(() => {
-        subgeneroService.obtenerTodos()
-            .then(data => {
-                console.log("Subgéneros obtenidos:", data);
-            })
-            .catch(err => {
-                console.error("Error al obtener subgéneros:", err);
-            });
-    }, []);
-
-    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -83,35 +74,17 @@ function AdminEditarForm() {
     };
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
-        let corrienteAux;
-        let subgeneroAux;
-         
-      for (const corriente of await corrienteService.obtenerTodos()) {
-            if (corriente.nombre === formData.corrienteNombre) {
-                corrienteAux = corriente.id;
-                break;
-            }
-        }
 
-        for (const subgenero of await subgeneroServiceInstance.obtenerTodos()) {
-            if (subgenero.nombre === formData.subgeneroNombre) {
-                subgeneroAux = subgenero.id;
-                break;
-            }
-        }    
-         
-
-      const libroDTO = {
+        const libroDTO = {
             isbn: formData.isbn,
             titulo: formData.titulo,
             autor: formData.autor,
-            corrienteId: corrienteAux,
-            subgeneroId: subgeneroAux,
-            ejemplares: formData.ejemplares,
-            anioPublicacion: formData.anioPublicacion,
-            precio: formData.precio,
+            corrienteId: formData.corrienteId ? parseInt(formData.corrienteId, 10) : null,
+            subgeneroId: formData.subgeneroId ? parseInt(formData.subgeneroId, 10) : null,
+            ejemplares: formData.ejemplares ? parseInt(formData.ejemplares, 10) : 0,
+            anioPublicacion: formData.anioPublicacion ? parseInt(formData.anioPublicacion, 10) : null,
+            precio: formData.precio ? parseFloat(formData.precio) : 0.0,
             sinopsis: formData.sinopsis
         };
 
@@ -143,8 +116,10 @@ function AdminEditarForm() {
                         name="titulo"
                         value={formData.titulo}
                         onChange={handleChange}
+                        required
                     />
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="autor">Autor:</label>
                     <input
@@ -153,47 +128,79 @@ function AdminEditarForm() {
                         name="autor"
                         value={formData.autor}
                         onChange={handleChange}
+                        required
                     />
                 </div>
+
                 <div className="form-group">
-                    <label htmlFor="corrienteNombre">Corriente Literaria:</label>
-                    <input
-                        type="text"
-                        id="corrienteNombre"
-                        name="corrienteNombre"
-                        value={formData.corrienteNombre}
+                    <label htmlFor="corrienteId">Corriente Literaria:</label>
+                    <select
+                        id="corrienteId"
+                        name="corrienteId"
+                        value={formData.corrienteId}
                         onChange={handleChange}
-                    />
+                        required
+                    >
+                        <option value="">-- Seleccione una Corriente --</option>
+                        {corrientes.map(c => (
+                            <option key={c.id} value={c.id}>
+                                {c.nombre}
+                            </option>
+                        ))}
+                    </select>
                 </div>
+
+                <div className="form-group">
+                    <label htmlFor="subgeneroId">Subgénero:</label>
+                    <select
+                        id="subgeneroId"
+                        name="subgeneroId"
+                        value={formData.subgeneroId}
+                        onChange={handleChange}
+                        required
+                    >
+                        <option value="">-- Seleccione un Subgénero --</option>
+                        {subgeneros.map(s => (
+                            <option key={s.id} value={s.id}>
+                                {s.nombre}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
                 <div className="form-group">
                     <label htmlFor="anioPublicacion">Año de Publicación:</label>
                     <input
-                        type="text"
+                        type="number"
                         id="anioPublicacion"
                         name="anioPublicacion"
                         value={formData.anioPublicacion}
                         onChange={handleChange}
                     />
                 </div>
+
                 <div className="form-group">
-                    <label htmlFor="descripcion">Sinopsis:</label>
+                    <label htmlFor="sinopsis">Sinopsis:</label>
                     <textarea
-                        id="descripcion"
-                        name="descripcion"
+                        id="sinopsis"
+                        name="sinopsis"
                         value={formData.sinopsis}
                         onChange={handleChange}
                     />
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="precio">Precio:</label>
                     <input
                         type="number"
+                        step="0.01"
                         id="precio"
                         name="precio"
                         value={formData.precio}
                         onChange={handleChange}
                     />
                 </div>
+
                 <div className="form-group">
                     <label htmlFor="ejemplares">Ejemplares:</label>
                     <input
@@ -204,16 +211,7 @@ function AdminEditarForm() {
                         onChange={handleChange}
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="subgeneroNombre">Subgénero:</label>
-                    <input
-                        type="text"
-                        id="subgeneroNombre"
-                        name="subgeneroNombre"
-                        value={formData.subgeneroNombre}
-                        onChange={handleChange}
-                    />
-                </div>
+
                 <div className="form-group">
                     <label htmlFor="isbn">ISBN:</label>
                     <input
@@ -224,21 +222,11 @@ function AdminEditarForm() {
                         onChange={handleChange}
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="generoNombre">Género:</label>
-                    <input
-                        type="text"
-                        id="generoNombre"
-                        name="generoNombre"
-                        value={formData.generoNombre}
-                        onChange={handleChange}
-                    />
-                </div>
+
                 <button type="submit">Actualizar Libro</button>
             </form>
         </div>
     );
-
 }
 
 export default AdminEditarForm;
