@@ -118,14 +118,15 @@ function AdminAnalisisForm() {
 
                     <div className="form-group">
                         <label htmlFor="ejePsicologico">Eje Psicológico</label>
-                        <input
-                            type="text"
+                        <textarea
                             id="ejePsicologico"
                             name="ejePsicologico"
                             value={formData.ejePsicologico}
                             onChange={handleChange}
+                            rows="3"
                             placeholder="Ej: Complejo de Edipo, Dualidad de la psique..."
                             required
+  
                         />
                     </div>
                 </div>
