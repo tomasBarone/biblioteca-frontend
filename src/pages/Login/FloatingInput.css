@@ -1,0 +1,47 @@
+.floating-group {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.floating-input {
+  width: 100%;
+  height: 56px;
+  padding: 20px 16px 6px 16px; /* Deja espacio arriba para que entre la etiqueta achicada */
+  border: 1px solid #e2dacb;
+  border-radius: 4px;
+  background-color: #fdfbf7;
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  color: #2c1810;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.floating-input:focus {
+  border-color: #2c1810;
+}
+
+/* La etiqueta (label) por defecto aparece centrada verticalmente como un placeholder */
+.floating-label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9c8e7d;
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+  pointer-events: none; /* Permite hacer clic "a través" del label hacia el input */
+  transition: all 0.2s ease-in-out;
+}
+
+
+.floating-input:focus ~ .floating-label,
+.floating-input:not(:placeholder-shown) ~ .floating-label {
+  top: 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #6e6355;
+}

@@ -5,7 +5,7 @@ import MenuOverlay from './components/MenuOverlay/MenuOverlay';
 import Hero from './components/Hero/Hero'; 
 import MovimientoSection from './components/MovimientoCard/MovimientoSection';
 import AdminDashboard from './pages/AdminDashboard/AdminDashboard';
-import Login from './pages/Login';
+import Login from './pages/Login/Login.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Recomendados } from './components/Recomendados/Recomendados';
 import { Footer } from './components/Footer/Footer';

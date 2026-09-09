@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api'; // Usamos tu Axios configurado con interceptores
-import { useAuth } from '../context/AuthContext'; // Importamos tu contexto
+import api from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
+import './FloatingInput.css'; 
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -9,11 +10,9 @@ function Login() {
     const [error, setError] = useState('');
     const [cargando, setCargando] = useState(false);
     
-    // Obtenemos los estados y métodos globales de autenticación
     const { user, iniciarSesion, cerrarSesion } = useAuth();
     const navigate = useNavigate();
 
-    // Reemplazamos la flag local 'isLoggedIn' simplemente evaluando si el objeto 'user' existe globalmente
     const isLoggedIn = !!user;
 
     const handleSubmit = async (e) => {
@@ -22,18 +21,15 @@ function Login() {
         setCargando(true);
 
         try {
-            // El endpoint mapea directo a la baseURL configurada en services/api.js
             const respuesta = await api.post('/auth/login', { username, password });
             const token = respuesta.data.token || respuesta.data.jwt || respuesta.data; 
 
             if (token) {
-                // El contexto guarda el token, decodifica claims (roles, sub) y actualiza de inmediato
                 iniciarSesion(token);
                 navigate('/admin');
             } else {
                 setError('No se recibió un token válido del servidor.');
             }
-
         } catch (err) {
             console.error('Error durante el login:', err);
             setError('Error al iniciar sesión. Por favor, verifica tus credenciales.');
@@ -58,7 +54,6 @@ function Login() {
             padding: '20px'
         }}>
             {isLoggedIn ? (
-                /* --- INTERFAZ CUANDO YA ESTÁ LOGEADO --- */
                 <div style={{
                     backgroundColor: '#ffffff',
                     border: '1px solid #e2dacb',
@@ -132,7 +127,6 @@ function Login() {
                     </div>
                 </div>
             ) : (
-                /* --- INTERFAZ DEL FORMULARIO TRADICIONAL (NO LOGEADO) --- */
                 <form onSubmit={handleSubmit} style={{
                     backgroundColor: '#ffffff',
                     border: '1px solid #e2dacb',
@@ -150,7 +144,7 @@ function Login() {
                         textAlign: 'center',
                         fontWeight: '400'
                     }}>
-                        Ingreso Administrativo
+                        Iniciar Sesión
                     </h2>
 
                     {error && (
@@ -167,46 +161,36 @@ function Login() {
                         </div>
                     )}
 
-                    <div style={{ marginBottom: '20px' }}>
-                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px', color: '#9c8e7d', marginBottom: '6px' }}>
-                            Usuario
-                        </label>
+                    {/* INPUT USUARIO CON FLOATING LABEL */}
+                    <div className="floating-group">
                         <input 
+                            id="username"
                             type="text" 
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            placeholder=" "
                             required
-                            style={{
-                                width: '100%',
-                                padding: '10px',
-                                border: '1px solid #e2dacb',
-                                borderRadius: '4px',
-                                backgroundColor: '#fdfbf7',
-                                fontFamily: 'system-ui, sans-serif',
-                                boxSizing: 'border-box'
-                            }}
+                            className="floating-input"
                         />
+                        <label htmlFor="username" className="floating-label">
+                            Usuario o Email
+                        </label>
                     </div>
 
-                    <div style={{ marginBottom: '28px' }}>
-                        <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '1px', color: '#9c8e7d', marginBottom: '6px' }}>
-                            Contraseña
-                        </label>
+                    {/* INPUT CONTRASEÑA CON FLOATING LABEL */}
+                    <div className="floating-group">
                         <input 
+                            id="password"
                             type="password" 
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            placeholder=" "
                             required
-                            style={{
-                                width: '100%',
-                                padding: '10px',
-                                border: '1px solid #e2dacb',
-                                borderRadius: '4px',
-                                backgroundColor: '#fdfbf7',
-                                fontFamily: 'system-ui, sans-serif',
-                                boxSizing: 'border-box'
-                            }}
+                            className="floating-input"
                         />
+                        <label htmlFor="password" className="floating-label">
+                            Contraseña
+                        </label>
                     </div>
 
                     <button 
@@ -225,7 +209,8 @@ function Login() {
                             cursor: 'pointer',
                             textTransform: 'uppercase',
                             fontSize: '0.85rem',
-                            opacity: cargando ? 0.7 : 1
+                            opacity: cargando ? 0.7 : 1,
+                            marginTop: '8px'
                         }}
                     >
                         {cargando ? 'Autenticando...' : 'Ingresar'}

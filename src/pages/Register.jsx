@@ -51,8 +51,33 @@ function Register() {
             navigate('/login');
         } catch (err) {
             console.error("Error en el registro:", err);
-            setError(err.response?.data?.message || 'Error al registrar el usuario. El nombre de usuario podría estar duplicado.');
-        } finally {
+            
+            const data = err.response?.data;
+
+           if (data) {
+        // 1. Si viene un objeto de ErrorDetalles (priorizamos la propiedad de mensaje explícita)
+        if (data.mensaje) {
+            setError(data.mensaje);
+        } else if (data.message) {
+            setError(data.message);
+        }
+        // 2. Si Spring Boot devuelve un Map de errores por campo (@Valid) -> { email: "...", username: "..." }
+        else if (typeof data === 'object' && !Array.isArray(data)) {
+            const mensajes = Object.values(data).join(' | ');
+            setError(mensajes);
+        }
+        // 3. Si devuelve una cadena de texto plana
+        else if (typeof data === 'string') {
+            setError(data);
+        } 
+        else {
+            setError('Error al registrar el usuario. Verifique los datos ingresados.');
+        }
+    } else {
+        setError('Error de conexión con el servidor.');
+    }
+}
+    finally {
             setCargando(false);
         }
     };
