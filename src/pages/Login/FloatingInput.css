@@ -45,3 +45,19 @@
   letter-spacing: 0.5px;
   color: #6e6355;
 }
+
+/* Sobrescribe el fondo celeste por defecto de WebKit/Chrome en campos autocompletados */
+.floating-input:-webkit-autofill,
+.floating-input:-webkit-autofill:hover, 
+.floating-input:-webkit-autofill:focus,
+.floating-input:-webkit-autofill:active {
+    -webkit-text-fill-color: #2c1810 !important;
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Manejo del Floating Label cuando el campo contiene valor por autocompletado */
+.floating-input:-webkit-autofill + .floating-label {
+    transform: translateY(-120%) scale(0.85);
+    color: #2c1810;
+}
