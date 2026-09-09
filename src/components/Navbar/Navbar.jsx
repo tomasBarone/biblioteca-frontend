@@ -212,7 +212,7 @@ function Navbar({ onToggleMenu }) {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                             {/* Link Ingresar */}
                             <Link to="/login" style={{ ...authLinkStyle, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span>👤</span>
+                                
                                 <span>Ingresar</span>
                             </Link>
                             
