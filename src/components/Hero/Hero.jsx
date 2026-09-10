@@ -35,8 +35,7 @@ function Hero() {
 
       {/* COLUMNA DERECHA: Estantería Flotante */}
       <div className="hero-books-right">
-        {/* Nota: En el futuro, si querés que estas espinas sean interactivas, 
-            podrías envolverlas en un <Link to={`/libro/${idReal}`}> */}
+     
         <div className="book-card-spine book-quijote">
           <span className="book-year">1605</span>
           <h4 className="book-title">El Quijote</h4>
