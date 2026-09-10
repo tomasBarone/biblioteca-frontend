@@ -1,14 +1,59 @@
-/* src/components/Hero/Hero.css */
+
+
+.reveal-wrapper {
+    overflow: hidden;
+    display: block;
+}
+
+.reveal-item {
+    display: block;
+    opacity: 0;
+    transform: translateY(110%) scale(0.95);
+    /* animation-fill-mode: forwards asegura que se quede visible al terminar */
+    animation: harvardReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity;
+}
+
+/* Animación de emergencia desde el fondo */
+@keyframes harvardReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(110%) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%) scale(1);
+    }
+}
+
+/* Escalado de tiempos (Delays) para la entrada progresiva */
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.35s; }
+.delay-3 { animation-delay: 0.55s; }
+.delay-4 { animation-delay: 0.75s; }
+
+/* Auxiliares Flexbox para mantener los botones y los libros alineados */
+.flex-cta {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.flex-books {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
 
 /* Contenedor general */
 .hero-section {
     display: flex;
-    justify-Content: space-between;
-    align-Items: center;
+    justify-content: space-between;
+    align-items: center;
     padding: 60px 80px;
     max-width: 1400px;
     margin: 0 auto;
-    background-color: transparent; /* Hereda el crema fbf9f4 de App.jsx */
+    background-color: transparent;
     gap: 40px;
 }
 
@@ -32,7 +77,7 @@
 
 .hero-main-title {
     font-family: "Playfair Display", "Georgia", serif;
-    font-size: 4rem; /* Tamaño masivo e imponente */
+    font-size: 4rem;
     line-height: 1.1;
     color: #1a1a1a;
     font-weight: 400;
@@ -40,10 +85,9 @@
     letter-spacing: -1px;
 }
 
-/* La cursiva marrón del modelo */
 .hero-main-title .title-italic {
     font-style: italic;
-    color: #704c38; /* Marrón orgánico de Albatros */
+    color: #704c38;
 }
 
 .hero-description {
@@ -64,7 +108,7 @@
 }
 
 .btn-primary {
-    background-color: #5c3826; /* Marrón oscuro sólido */
+    background-color: #5c3826;
     color: #fdfbf7;
     border: none;
     padding: 14px 28px;
@@ -73,7 +117,7 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    border-radius: 30px; /* Botón bien redondeado */
+    border-radius: 30px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -121,7 +165,6 @@
     padding-left: 40px;
 }
 
-/* Estilo base de los lomos/portadas */
 .book-card-spine {
     width: 135px;
     height: 230px;
@@ -165,18 +208,76 @@
     font-weight: 700;
 }
 
-/* Colores y Desplazamientos específicos de cada libro de la foto */
 .book-quijote {
-    background: linear-gradient(135deg, #59311f 0%, #402113 100%); /* Marrón terracota */
+    background: linear-gradient(135deg, #59311f 0%, #402113 100%);
     transform: translateY(0px);
 }
 
 .book-candido {
-    background: linear-gradient(135deg, #5c543c 0%, #453e2b 100%); /* Verde seco / oliva militar */
-    transform: translateY(20px); /* Escalonado hacia abajo */
+    background: linear-gradient(135deg, #5c543c 0%, #453e2b 100%);
+    transform: translateY(20px);
 }
 
 .book-cumbres {
-    background: linear-gradient(135deg, #322e3d 0%, #221f2b 100%); /* Berenjena / Grafito oscuro */
-    transform: translateY(40px); /* Más escalonado hacia abajo */
+    background: linear-gradient(135deg, #322e3d 0%, #221f2b 100%);
+    transform: translateY(40px);
+}
+
+
+/* --- ADAPTACIÓN RESPONSIVE (MÓVIL Y TABLET) --- */
+@media (max-width: 968px) {
+    .hero-section {
+        flex-direction: column;
+        padding: 40px 20px;
+        gap: 32px;
+        text-align: center;
+    }
+
+    .hero-content-left {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .hero-main-title {
+        font-size: 2.6rem;
+        letter-spacing: -0.5px;
+    }
+
+    .hero-description {
+        max-width: 100%;
+        margin: 0 auto 28px auto;
+    }
+
+    .hero-cta-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hero-books-right {
+        justify-content: center;
+        padding-left: 0;
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 20px;
+    }
+
+    .book-card-spine {
+        width: 110px;
+        height: 190px;
+        padding: 15px 12px;
+    }
+
+    .book-title {
+        font-size: 1rem;
+        margin: 20px 0 auto 0;
+    }
+
+    .book-candido, .book-cumbres {
+        transform: translateY(0px); /* En mobile alineamos la estantería horizontalmente */
+    }
 }
