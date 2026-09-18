@@ -53,9 +53,12 @@
     padding: 60px 80px;
     max-width: 1400px;
     margin: 0 auto;
-    background-color: transparent;
+    
     gap: 40px;
+    height: calc(100dvh - var(--navbar-height));
+         
 }
+
 
 /* --- COLUMNA IZQUIERDA --- */
 .hero-content-left {

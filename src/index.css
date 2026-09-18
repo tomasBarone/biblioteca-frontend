@@ -11,3 +11,6 @@ body{
   overflow-x: hidden;
 }
 
+:root {
+  --navbar-height: 65px; /* Altura calculada para tu Navbar */
+}

@@ -6,6 +6,7 @@ function Hero() {
   const navigate = useNavigate();
 
   return (
+    <section className="hero-wrapper">
     <div className="hero-section">
       {/* COLUMNA IZQUIERDA: Textos y Acciones */}
       <div className="hero-content-left">
@@ -73,6 +74,7 @@ function Hero() {
         </div>
       </div>
     </div>
+    </section>
   );
 }
 
