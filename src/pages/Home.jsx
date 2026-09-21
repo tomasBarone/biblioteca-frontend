@@ -7,6 +7,7 @@ import SeccionImagenParallax from '../components/SeccionImagenParallax/SeccionIm
 
 import fotoHero from '../assets/libreriaHero.jpg';
 import fotoHero2 from '../assets/homeFoto2.jpg';
+import garden from '../assets/garden.jpg';
 
 function Home() {
   return (
@@ -31,6 +32,10 @@ function Home() {
 
       {/* 5. Tu sección de Recomendados intacta */}
       <Recomendados />
+
+        <SeccionImagenParallax 
+        imagenUrl={garden}
+      />
     </main>
   );
 }
