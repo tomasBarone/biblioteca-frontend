@@ -13,7 +13,7 @@ function Hero() {
         {/* BADGE */}
         <div className="reveal-wrapper">
           <span className="hero-badge reveal-item delay-1">
-            Desde 1978 · Madrid
+            Desde 2026 · San Isidro, Buenos Aires
           </span>
         </div>
         
