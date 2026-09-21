@@ -1,0 +1,72 @@
+
+.parallax-section-container {
+  position: relative;
+  width: 100%;
+  height: 65vh; 
+  overflow: hidden;
+}
+
+/* Imagen fija que genera el efecto al hacer scroll */
+.parallax-bg-fixed {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-attachment: fixed; 
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sombra suave opcional para legibilidad del texto sobre la foto */
+.parallax-bg-fixed::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Contenido centrado sobre la imagen */
+.parallax-overlay-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #ffffff;
+  padding: 0 20px;
+}
+
+.parallax-subtitle {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  display: block;
+  margin-bottom: 12px;
+  color: #e4dcd0;
+  font-weight: 600;
+}
+
+.parallax-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.8rem;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Adaptación para dispositivos móviles */
+@media (max-width: 768px) {
+  .parallax-section-container {
+    height: 45vh;
+  }
+  
+  .parallax-title {
+    font-size: 2rem;
+  }
+
+  
+  .parallax-bg-fixed {
+    background-attachment: scroll;
+  }
+}

@@ -38,6 +38,7 @@ function Navbar({ onToggleMenu }) {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '18px 40px',
+                height: 'var(--navbar-height)',
                 backgroundColor: '#f9f6f0',
                 borderBottom: '1px solid #e8e2d5',
                 position: 'sticky',

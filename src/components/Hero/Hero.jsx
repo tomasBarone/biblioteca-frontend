@@ -6,6 +6,7 @@ function Hero() {
   const navigate = useNavigate();
 
   return (
+    <section className="hero-wrapper">
     <div className="hero-section">
       {/* COLUMNA IZQUIERDA: Textos y Acciones */}
       <div className="hero-content-left">
@@ -50,29 +51,9 @@ function Hero() {
         </div>
       </div>
 
-      {/* COLUMNA DERECHA: Estantería Flotante */}
-      <div className="hero-books-right reveal-wrapper">
-        <div className="reveal-item delay-3 flex-books">
-          <div className="book-card-spine book-quijote">
-            <span className="book-year">1605</span>
-            <h4 className="book-title">El Quijote</h4>
-            <span className="book-author">Miguel de Cervantes</span>
-          </div>
-
-          <div className="book-card-spine book-candido">
-            <span className="book-year">1759</span>
-            <h4 className="book-title">Cándido</h4>
-            <span className="book-author">Voltaire</span>
-          </div>
-
-          <div className="book-card-spine book-cumbres">
-            <span className="book-year">1847</span>
-            <h4 className="book-title">Cumbres borrascosas</h4>
-            <span className="book-author">Emily Brontë</span>
-          </div>
-        </div>
-      </div>
+      
     </div>
+    </section>
   );
 }
 

@@ -9,14 +9,14 @@ function MenuOverlay({ isOpen, onClose }) {
   const [movimientoActivo, setMovimientoActivo] = useState(null);
   const [cargando, setCargando] = useState(true);
 
+  // Carga inicial de corrientes al abrir el overlay
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && movimientosData.length === 0) {
       setCargando(true);
       corrienteLiterariaService.obtenerTodos()
         .then(data => {
           setMovimientosData(data);
           if (data.length > 0) {
-            // Seteamos la primera corriente por defecto y cargamos sus libros
             setMovimientoActivo(data[0]);
             cargarLibrosPrevisualizacion(data[0]);
           }
@@ -26,31 +26,29 @@ function MenuOverlay({ isOpen, onClose }) {
     }
   }, [isOpen]);
 
-  //  Busca los libros en tiempo real al pasar el mouse
+  // Carga de libros por demanda (Lazy Loading con cache en estado)
   const cargarLibrosPrevisualizacion = async (mov) => {
     setMovimientoActivo(mov);
     
-    // Si la corriente actual no tiene la propiedad 'libros' cargada, la vamos a buscar al backend
+    // Si la corriente ya tiene sus libros guardados en el estado local, no llamamos al servicio
     if (!mov.libros) {
       try {
         const librosDeEstaCorriente = await libroService.getLibrosPorCorriente(mov.id);
         
-        // Inyectamos los libros dentro de la corriente en nuestro estado de React
+        // Guardamos los libros en la lista general para no volver a pedirlos
         setMovimientosData(prevData => 
           prevData.map(item => 
             item.id === mov.id ? { ...item, libros: librosDeEstaCorriente } : item
           )
         );
         
-        // Actualizamos también el foco del panel derecho
-        setMovimientoActivo(prev => ({ ...prev, libros: librosDeEstaCorriente }));
+        // Actualizamos el foco actual en la columna derecha
+        setMovimientoActivo(prev => (prev?.id === mov.id ? { ...prev, libros: librosDeEstaCorriente } : prev));
       } catch (error) {
         console.error("Error al recuperar libros para la vista previa:", error);
       }
     }
   };
-
-  if (!isOpen) return null;
 
   return (
     <div className={`fullscreen-menu-overlay ${isOpen ? 'is-open' : ''}`}>
@@ -62,6 +60,7 @@ function MenuOverlay({ isOpen, onClose }) {
       </header>
 
       <div className="menu-overlay-body">
+        {/* COLUMNA IZQUIERDA */}
         <div className="menu-col-left">
           <span className="menu-section-subtitle">Géneros Literarios</span>
           
@@ -73,7 +72,7 @@ function MenuOverlay({ isOpen, onClose }) {
                 <div 
                   key={mov.id}
                   className={`menu-nav-item ${movimientoActivo?.id === mov.id ? 'active' : ''}`}
-                  onMouseEnter={() => cargarLibrosPrevisualizacion(mov)} // <-- Cambiado por la nueva función reactiva
+                  onMouseEnter={() => cargarLibrosPrevisualizacion(mov)}
                 >
                   <Link to={`/corriente/${mov.id}`} onClick={onClose} className="menu-nav-link">
                     {mov.nombre}
@@ -92,7 +91,7 @@ function MenuOverlay({ isOpen, onClose }) {
           </footer>
         </div>
 
-        {/* COLUMNA DERECHA: Renderizado dinámico exacto */}
+        {/* COLUMNA DERECHA */}
         <div className="menu-col-right">
           {movimientoActivo && (
             <>
@@ -104,7 +103,7 @@ function MenuOverlay({ isOpen, onClose }) {
 
               <div className="preview-books-list">
                 {movimientoActivo.libros && movimientoActivo.libros.slice(0, 3).map((libro, idx) => (
-                  <div key={idx} className="preview-book-row">
+                  <div key={libro.id || idx} className="preview-book-row">
                     <div className="book-row-left">
                       <h4 className="preview-book-title">{libro.titulo}</h4>
                       <p className="preview-book-meta">
@@ -115,7 +114,6 @@ function MenuOverlay({ isOpen, onClose }) {
                   </div>
                 ))}
                 
-                {/* Modificado para asegurar que detecte la carga asíncrona */}
                 {movimientoActivo.libros && movimientoActivo.libros.length === 0 && (
                   <p style={{ color: '#a8a297', fontStyle: 'italic', fontSize: '0.9rem' }}>
                     No hay títulos registrados en esta corriente.

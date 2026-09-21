@@ -20,6 +20,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Checkout from './pages/Checkout';
 import AdminEditarForm from './pages/Admin-Editar-Form/AdminEditarForm';
+import Home from './pages/Home.jsx';
+import './pages/Home';
 
 function App() {
   // Estado global para abrir/cerrar el menú (se mantiene intacto)
@@ -57,9 +59,7 @@ function App() {
               {/* RUTA PÚBLICA PRINCIPAL */}
               <Route path="/" element={
                 <>
-                  <Hero />
-                  <MovimientoSection />
-                  <Recomendados /> 
+                 <Home />
                 </>
               } />
                    
