@@ -1,99 +1,214 @@
 .recomendados-section {
-  background-color: #f4efe9; /* Fondo crema característico de tu app */
-  padding: 80px 10%;
-  font-family: 'Playfair Display', Georgia, serif;
+  background-color: #262b33;
+  padding: 60px 2%;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #ffffff;
+}
+
+.recomendados-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .section-title {
-  color: #2a1f18;
-  font-size: 2.2rem;
+  color: #ffffff;
+  font-size: 1.8rem;
   font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
   margin-bottom: 40px;
-  letter-spacing: -0.5px;
 }
 
-/* Grilla adaptable */
-.libros-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 40px;
-}
-
-/* Tarjeta contenedora */
-.libro-card-rec {
+.carousel-wrapper {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.carousel-stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Enlace contenedor */
+.libro-card-link {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  flex: 1;
+  max-width: 390px;
+}
+
+.card-side {
+  opacity: 0.7;
+  transform: scale(0.92);
+}
+
+.card-center {
+  opacity: 1;
+  transform: scale(1.04);
+  z-index: 2;
+}
+
+/* ESTRUCTURA HORIZONTAL COMPACTA DE LA TARJETA */
+.libro-card-horizontal {
+  display: flex;
+  height: 270px;
+  background-color: #3b424d;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+/* Lado Izquierdo: Contenedor de la Portada */
+.card-media-side {
+  width: 50%;
+  height: 100%;
+  background-color: #1e2228;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* CLAVE PARA QUE NO SE CORTE LA PORTADA */
+.portada-img-contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ajusta la portada completa manteniendo su proporcion */
+  filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.4));
+}
+
+.portada-fallback {
+  padding: 16px;
+  text-align: center;
+  color: #d1d5db;
+}
+
+.fallback-titulo {
+  font-family: Georgia, serif;
+  font-size: 1rem;
+}
+
+/* Lado Derecho: Contenedor de Información */
+.card-info-side {
+  width: 50%;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: left;
+  box-sizing: border-box;
+  background-color: #383f4a;
+}
+
+.card-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #e2e8f0;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-author {
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  margin: 0 0 8px 0;
+  font-style: italic;
+}
+
+.card-synopsis {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  margin: 0 0 12px 0;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-price-tag {
+  margin-top: auto;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Botones de Control */
+.carousel-controls-bottom {
+  display: flex;
+  align-items: center;
   gap: 16px;
 }
 
-/* Estilización de la Portada Física */
-.libro-portada {
-  height: 320px;
-  border-radius: 3px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 12px 24px rgba(42, 31, 24, 0.15); /* Sombra suave pero con presencia */
+.carousel-arrow-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
   color: #ffffff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.carousel-arrow-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  padding: 0;
   cursor: pointer;
 }
 
-.libro-portada:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 32px rgba(42, 31, 24, 0.22);
+.carousel-dot.active {
+  background: #ffffff;
 }
 
-/* Textos dentro de la portada */
-.libro-anio-top {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  opacity: 0.8;
-  font-weight: 300;
-}
-
-.libro-titulo-cover {
-  font-size: 1.6rem;
-  font-weight: 400;
-  line-height: 1.2;
-  margin: 20px 0 auto 0; /* Lo empuja hacia arriba pero con margen */
-}
-
-.libro-autor-bottom {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  align-self: flex-end; /* Lo alinea a la derecha abajo */
-  opacity: 0.9;
-}
-
-/* Información del pie de la tarjeta */
-.libro-info-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.libro-titulo-text {
-  font-size: 1.1rem;
-  color: #2a1f18;
-  margin: 0;
-  font-weight: 600;
-}
-
-.libro-autor-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  color: #6e655f;
-  margin: 0;
-}
-
-.libro-precio {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
-  color: #2a1f18;
-  font-weight: 600;
-  margin-top: 4px;
+/* Adaptación Mobile */
+@media (max-width: 900px) {
+  .card-side {
+    display: none;
+  }
+  .card-center {
+    max-width: 340px;
+    transform: scale(1);
+  }
 }
