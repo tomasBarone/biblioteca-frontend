@@ -14,3 +14,12 @@ body{
 :root {
   --navbar-height: 65px; /* Altura calculada para tu Navbar */
 }
+
+
+
+html {
+
+  scrollbar-gutter: stable;
+  
+
+}

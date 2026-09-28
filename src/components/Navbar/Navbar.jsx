@@ -1,26 +1,20 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext'; 
-import SearchOverlay from  '../SearchOverlay/SearchOverlay';
+import SearchOverlay from '../SearchOverlay/SearchOverlay';
 
 function Navbar({ onToggleMenu }) {
     const { user, cerrarSesion } = useAuth();
     const navigate = useNavigate();
     
-    // Estado para controlar cuándo el mouse está sobre la zona de perfil
     const [isHovered, setIsHovered] = useState(false);
-    
-    // NUEVO: Estado para abrir/cerrar el overlay de búsqueda
     const [searchOpen, setSearchOpen] = useState(false);
-
-    console.log("Datos del usuario en el Navbar:", user);
 
     const handleLogout = () => {
         cerrarSesion();
         navigate('/login');
     };
 
-    // Estilo base para los enlaces de login / registro
     const authLinkStyle = {
         textDecoration: 'none', 
         color: '#6e6355', 
@@ -54,7 +48,7 @@ function Navbar({ onToggleMenu }) {
                     </span>
                 </div>
 
-                {/* CENTRO: Logo de la Librería */}
+                {/* CENTRO: Logo */}
                 <Link to="/" style={{ textDecoration: 'none' }}>
                     <h1 style={{
                         margin: 0,
@@ -64,7 +58,7 @@ function Navbar({ onToggleMenu }) {
                         color: '#2c1810',
                         letterSpacing: '0.5px'
                     }}>
-                        Librería Shámata
+                        Infinita Deriva
                     </h1>
                 </Link>
 
@@ -77,7 +71,7 @@ function Navbar({ onToggleMenu }) {
                     fontSize: '0.9rem',
                     fontFamily: 'system-ui, sans-serif'
                 }}>
-                    {/* MODIFICADO: Icono Buscador con trigger para abrir el Overlay */}
+                    {/* Icono Buscador */}
                     <div 
                         onClick={() => setSearchOpen(true)}
                         style={{ 
@@ -90,7 +84,6 @@ function Navbar({ onToggleMenu }) {
                         onMouseEnter={(e) => e.currentTarget.style.opacity = '0.7'}
                         onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                     >
-                        {/* Cambiamos el glifo por un SVG estilizado de lupa editorial */}
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -99,7 +92,6 @@ function Navbar({ onToggleMenu }) {
 
                     {/* Perfil del Usuario Adaptativo */}
                     {user ? (
-                        /* --- CONTENEDOR PADRE DEL DESPLEGABLE (SESIÓN ACTIVA) --- */
                         <div 
                             onMouseEnter={() => setIsHovered(true)}
                             onMouseLeave={() => setIsHovered(false)}
@@ -111,7 +103,7 @@ function Navbar({ onToggleMenu }) {
                                 cursor: 'pointer'
                             }}
                         >
-                            {/* El disparador visual (Avatar e Inicial) */}
+                            {/* Avatar / Trigger */}
                             <div style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -126,7 +118,7 @@ function Navbar({ onToggleMenu }) {
                                 <span style={{ fontSize: '0.7rem', marginLeft: '2px' }}>▾</span>
                             </div>
 
-                            {/* --- EL MENÚ DESPLEGABLE FLOTANTE --- */}
+                            {/* Menú Desplegable Flotante */}
                             <div style={{
                                 position: 'absolute',
                                 top: '100%',
@@ -140,16 +132,12 @@ function Navbar({ onToggleMenu }) {
                                 zIndex: 2000,
                                 display: isHovered ? 'block' : 'none',
                             }}>
-                                {/* Info rápida de cuenta */}
                                 <div style={{ padding: '4px 16px', fontSize: '0.8rem', color: '#6e6355' }}>
                                     Cuenta de {user.sub || user.username}
                                 </div>
                                 
                                 <hr style={{ border: 0, height: '1px', backgroundColor: '#e8e2d5', margin: '8px 0' }} />
                                 
-                                {/* --- ENLACES FILTRADOS POR ROL EN EL DESPLEGABLE --- */}
-
-                                {/* 🛠️ Panel de Control: Solo Administradores */}
                                 {user.roles?.includes('ROLE_ADMIN') && (
                                     <Link to="/admin" style={{
                                         display: 'block',
@@ -163,9 +151,18 @@ function Navbar({ onToggleMenu }) {
                                     </Link>
                                 )}
 
-                                {/* 🛒 Secciones del Cliente: Solo Usuarios normales */}
                                 {user.roles?.includes('ROLE_USER') && (
                                     <>
+                                        {/* CARRITO: Añadido dentro del menú desplegable para el cliente */}
+                                        <Link to="/checkout" style={{
+                                            display: 'block',
+                                            padding: '8px 16px',
+                                            color: '#2c1810',
+                                            textDecoration: 'none',
+                                            fontSize: '0.85rem'
+                                        }}>
+                                            💼 Mi Carrito
+                                        </Link>
                                         <Link to="/mis-compras" style={{
                                             display: 'block',
                                             padding: '8px 16px',
@@ -175,19 +172,9 @@ function Navbar({ onToggleMenu }) {
                                         }}>
                                             Mis Compras
                                         </Link>
-                                        <Link to="/favoritos" style={{
-                                            display: 'block',
-                                            padding: '8px 16px',
-                                            color: '#2c1810',
-                                            textDecoration: 'none',
-                                            fontSize: '0.85rem'
-                                        }}>
-                                            Lista de Deseos 
-                                        </Link>
                                     </>
                                 )}
 
-                                {/* Botón de cerrar sesión */}
                                 <button 
                                     onClick={handleLogout}
                                     style={{
@@ -209,34 +196,21 @@ function Navbar({ onToggleMenu }) {
                             </div>
                         </div>
                     ) : (
-                        /* --- VISTA CUANDO NO HAY SESIÓN ACTIVA --- */
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                            {/* Link Ingresar */}
                             <Link to="/login" style={{ ...authLinkStyle, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                
                                 <span>Ingresar</span>
                             </Link>
-                            
-                            {/* Separador visual sutil */}
                             <span style={{ color: '#e8e2d5' }}>|</span>
-                            
-                            {/* Link Registrarse */}
                             <Link to="/register" style={authLinkStyle}>
                                 Registrarse
                             </Link>
                         </div>
                     )}
 
-                    {/* Icono Carrito */}
-                    <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span>💼</span>
-                        <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>Carrito</span>
-                    </div>
                 </div>
 
             </header>
 
-            {/* NUEVO: El componente Overlay de Búsqueda montado fuera del header */}
             <SearchOverlay 
                 isOpen={searchOpen} 
                 onClose={() => setSearchOpen(false)} 

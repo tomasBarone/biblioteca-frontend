@@ -134,7 +134,7 @@ function PantallaAnalisis() {
                     </main>
 
                     <footer className="analisis-footer-editorial">
-                        <p>Librería Shámata — Archivo de Análisis Académicos</p>
+                        <p>Infinita Deriva — Archivo de Análisis Académicos</p>
                     </footer>
 
                 </div>

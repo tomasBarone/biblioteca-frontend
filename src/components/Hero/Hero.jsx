@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Hero.css';
 
-function Hero() {
+function Hero({ onOpenSearch }) {
   const navigate = useNavigate();
 
   return (
@@ -44,9 +44,9 @@ function Hero() {
               Ver Catálogo <span className="btn-arrow">→</span>
             </button>
             
-            <button className="btn-secondary" onClick={() => navigate('/libros?orden=novedades')}>
-              Novedades Contemporáneas
-            </button>
+           <button className="btn-secondary" onClick={onOpenSearch}>
+        Buscar por título o autor
+      </button>
           </div>
         </div>
       </div>
