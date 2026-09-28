@@ -85,7 +85,7 @@ function MenuOverlay({ isOpen, onClose }) {
 
           <footer className="menu-col-footer-links">
             <Link to="/" onClick={onClose}>INICIO</Link>
-            <Link to="/catalogo" onClick={onClose}>CATÁLOGO</Link>
+            <Link to="/libros" onClick={onClose}>CATÁLOGO</Link>
             <Link to="/login" onClick={onClose}>MI CUENTA</Link>
             <Link to="/admin" onClick={onClose} style={{ color: '#f38ba8' }}>⚙️ ADMIN</Link>
           </footer>

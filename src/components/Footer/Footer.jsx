@@ -6,7 +6,7 @@ export const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-brand">
-          <h3 className="footer-logo">Librería Albatros</h3>
+          <h3 className="footer-logo">Infinita Deriva</h3>
           <p className="footer-description">
             Una librería independiente dedicada a la literatura clásica y contemporánea desde 1978.
           </p>
@@ -25,14 +25,15 @@ export const Footer = () => {
           <h4>VISÍTANOS</h4>
           <address>
             Calle del Lector, 12<br />
-            28004 Madrid<br />
+            Buenos Aires, Argentina<br />
+            <a href="mailto:tomas.barone@hotmail.com">tomas.barone@hotmail.com</a><br />
             <span>Lun–Sáb · 10–21h</span>
           </address>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>© 2026 Librería Albatros · Todos los derechos reservados</p>
+        <p>© 2026 Infinita Deriva  · Todos los derechos reservados</p>
       </div>
     </footer>
   );
