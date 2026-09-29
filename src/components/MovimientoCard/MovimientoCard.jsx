@@ -12,7 +12,7 @@ import romanticismoImg from '../../assets/Romanticismo/romanticismo.jpg';
 import realismoImg from '../../assets/Realismo y Naturalismo/realismo.jpg';
 import modernismoImg from '../../assets/Modernismo/modernismo.jpg';
 import vanguardismoImg from '../../assets/Vanguardismo/vanguardismo.jpg';
-import posmodernidadImg from '../../assets/Posmodernidad/posmodernidad3.jpg';
+import posmodernidadImg from '../../assets/Siglo XX y Posmodernidad/posmodernidad3.jpg';
 
 
 // Diccionario de imágenes por nombre exacto o slug
@@ -26,7 +26,7 @@ const IMAGENES_MOVIMIENTOS = {
   'Realismo y Naturalismo': realismoImg,
   'Modernismo': modernismoImg,
   'Vanguardismo': vanguardismoImg,
-  'Posmodernidad': posmodernidadImg,
+  'Siglo XX y Posmodernidad': posmodernidadImg,
 };
 
 function MovimientoCard({ id, epoca, nombre, descripcion }) {
