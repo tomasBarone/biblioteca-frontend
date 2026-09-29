@@ -1,65 +1,107 @@
-.movimiento-card{
-    background-color: #fdfbf7;
-    border: 1px solid #e2dacb;
-    border-radius: 4px;
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 200px;
-    cursor: pointer;
-    transition: all 0.25s ease;
+.movimiento-card-link {
+  display: block;
 }
 
-.movimiento-card:hover{
-    border-color: #c4b59f;
-    box-shadow: 0 6px 20px rgba(44, 24, 16, 0.03);
-
+.movimiento-card {
+  position: relative;
+  width: 100%;
+  height: 340px; /* Altura fija para que todas las tarjetas sean uniformes */
+  border-radius: 4px;
+  overflow: hidden; 
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.movimiento-epoca{
-    font-family: system-ui, sans-serif;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #9c8e7d;
-    display: block;
-    margin-bottom: 12px;
+/* --- EFECTO ZOOM DE IMAGEN AL HACER HOVER --- */
+.movimiento-card-image-wrapper {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.movimiento-nombre{
-    font-family: "Playfair Display", "Georgia", serif;
-    font-size: 1.8rem;
-    font-weight: 500;
-    margin: 0 0 12px 0;
-    color: #2c1810;
+.movimiento-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.movimiento-descripcion{
-    font-family: system-ui, sans-serif;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: #5a5045;
-    margin: 0 0 24px 0;
+/* Al pasar el cursor sobre la tarjeta, la imagen hace un zoom suave */
+.movimiento-card:hover .movimiento-card-image-wrapper {
+  transform: scale(1.08);
 }
 
-.movimiento-link{
-    font-family: system-ui, sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #704c38;
-    letter-spacing: 1.5px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: auto;
+/* --- GRADIENTE OSCURO ESTILO ARCHIVO HISTÓRICO --- */
+.movimiento-card-overlay {
+  position: absolute;
+  inset: 0;
+  /* Oscurece gradualmente hacia abajo para garantizar legibilidad del texto en blanco */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.25) 0%,
+    rgba(0, 0, 0, 0.55) 50%,
+    rgba(0, 0, 0, 0.92) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  color: #ffffff;
+  z-index: 1;
 }
 
-.movimiento-link .flecha{
-    transition: transform 0.2s ease;
+/* --- ETIQUETA / BADGE SUPERIOR ROJO BORGOÑA --- */
+.movimiento-badge {
+  display: inline-block;
+  background-color: #701c28; /* Tono borgoña académico */
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
+  border-radius: 2px;
 }
 
-.movimiento-link:hover .flecha{
-    transform: translateX(4px);
+/* --- TIPOGRAFÍA SOBRE EL GRADIENTE --- */
+.movimiento-nombre {
+  font-family: "Playfair Display", "Georgia", serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.movimiento-descripcion {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #e2dacb; /* Tono crema para contraste suave */
+  margin: 0 0 16px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limita a 2 líneas para mantener la altura limpia */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.movimiento-link {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #f3e9d8;
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.movimiento-link .flecha {
+  transition: transform 0.2s ease;
+}
+
+.movimiento-card:hover .movimiento-link .flecha {
+  transform: translateX(5px);
 }
