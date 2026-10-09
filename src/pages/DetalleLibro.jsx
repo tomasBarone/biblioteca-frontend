@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import libroService from '../services/libroService';
+import BotonGuardarLectura from '../components/Guardar/BotonGuardarLectura';
 
 const DetalleLibro = () => {
     const { id } = useParams(); 
@@ -26,11 +27,19 @@ const DetalleLibro = () => {
     }, [id]);
 
     if (cargando) {
-        return <div style={{ padding: '60px', textAlign: 'center', background: '#fcfaf2', minHeight: '100vh', fontFamily: 'serif' }}>Cargando obra...</div>;
+        return (
+            <div style={{ padding: '60px', textAlign: 'center', background: '#fcfaf2', minHeight: '100vh', fontFamily: 'serif' }}>
+                Cargando obra...
+            </div>
+        );
     }
 
     if (!libro) {
-        return <div style={{ padding: '60px', textAlign: 'center', background: '#fcfaf2', minHeight: '100vh', fontFamily: 'serif' }}>Obra no encontrada.</div>;
+        return (
+            <div style={{ padding: '60px', textAlign: 'center', background: '#fcfaf2', minHeight: '100vh', fontFamily: 'serif' }}>
+                Obra no encontrada.
+            </div>
+        );
     }
 
     const mostrarImagenReal = Boolean(libro.imagenUrl) && !errorImagen;
@@ -39,25 +48,30 @@ const DetalleLibro = () => {
     return (
         <div style={{ backgroundColor: '#fcfaf2', minHeight: '100vh', fontFamily: '"Playfair Display", Georgia, serif', padding: '40px 10%', color: '#1a1917' }}>
             
-            {/* BREADCRUMB */}
-            <div style={{ fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#70695d', marginBottom: '40px' }}>
+            {/* BREADCRUMB EDITORIAL */}
+            <div style={{ fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#70695d', marginBottom: '40px', fontFamily: 'system-ui, sans-serif' }}>
                 <Link to="/catalogo" style={{ color: '#70695d', textDecoration: 'none' }}>CATÁLOGO</Link> 
                 <span style={{ margin: '0 8px' }}>/</span> 
-                <span>{libro.corrienteNombre || 'VANGUARDISMO'}</span>
-                <span style={{ margin: '0 8px' }}>/</span>
-                <span>{libro.generoNombre} ({libro.subgeneroNombre})</span>
+                <span>{libro.corrienteNombre || 'LITERATURA'}</span>
+                {libro.generoNombre && (
+                    <React.Fragment>
+                        <span style={{ margin: '0 8px' }}>/</span>
+                        <span>{libro.generoNombre} {libro.subgeneroNombre ? `(${libro.subgeneroNombre})` : ''}</span>
+                    </React.Fragment>
+                )}
             </div>
 
             {/* CONTENEDOR PRINCIPAL */}
             <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 420px) 1fr', gap: '60px', alignItems: 'start' }}>
                 
-                {/* PORTADA */}
+                {/* PORTADA FÍSICA 3D */}
                 <div style={{ 
                     position: 'relative',
                     height: '560px', 
-                    borderRadius: '4px', 
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
-                    overflow: 'hidden'
+                    borderRadius: '3px 6px 6px 3px', 
+                    boxShadow: '4px 4px 0px #1a1917, 12px 20px 35px rgba(44, 24, 16, 0.25)',
+                    overflow: 'hidden',
+                    backgroundColor: '#44403c'
                 }}>
                     {mostrarImagenReal ? (
                         <img 
@@ -76,21 +90,21 @@ const DetalleLibro = () => {
                             background: 'linear-gradient(135deg, #44403c 0%, #292524 100%)',
                             width: '100%',
                             height: '100%',
-                            padding: '30px',
+                            padding: '40px 30px',
                             boxSizing: 'border-box',
                             display: 'flex', 
                             flexDirection: 'column', 
                             justifyContent: 'space-between'
                         }}>
                             <div>
-                                <span style={{ color: '#fcfaf2', fontSize: '0.85rem', opacity: 0.6, fontWeight: 'bold', display: 'block', marginBottom: '10px' }}>
+                                <span style={{ color: '#fcfaf2', fontSize: '0.85rem', opacity: 0.6, fontWeight: 'bold', display: 'block', marginBottom: '10px', fontFamily: 'system-ui' }}>
                                     {libro.anioPublicacion}
                                 </span>
-                                <h2 style={{ color: '#fcfaf2', fontSize: '2.2rem', margin: 0, fontWeight: '400', lineHeight: '1.2' }}>
+                                <h2 style={{ color: '#fcfaf2', fontSize: '2.5rem', margin: 0, fontWeight: '400', lineHeight: '1.2' }}>
                                     {libro.titulo}
                                 </h2>
                             </div>
-                            <span style={{ color: '#fcfaf2', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.8, fontWeight: 'bold' }}>
+                            <span style={{ color: '#fcfaf2', fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.8, fontWeight: 'bold', fontFamily: 'system-ui' }}>
                                 {libro.autor}
                             </span>
                         </div>
@@ -99,15 +113,15 @@ const DetalleLibro = () => {
 
                 {/* COLUMNA DETALLES */}
                 <div style={{ padding: '10px 0' }}>
-                    <span style={{ fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '6px' }}>
-                        {libro.corrienteNombre} · {libro.anioPublicacion}
+                    <span style={{ fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '6px', fontWeight: '600', fontFamily: 'system-ui' }}>
+                        {libro.corrienteNombre} {libro.anioPublicacion ? `· ${libro.anioPublicacion}` : ''}
                     </span>
                     
                     <h1 style={{ fontSize: '3.5rem', fontWeight: '400', margin: '0 0 8px 0', lineHeight: '1.1' }}>
                         {libro.titulo}
                     </h1>
                     
-                    <h3 style={{ fontSize: '1.3rem', fontWeight: '500', color: '#544f46', margin: '0 0 25px 0' }}>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: '500', color: '#544f46', margin: '0 0 25px 0', fontStyle: 'italic' }}>
                         {libro.autor}
                     </h3>
 
@@ -126,7 +140,7 @@ const DetalleLibro = () => {
                     }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
                             <div>
-                                <span style={{ fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#70695d', fontWeight: 'bold', display: 'block' }}>
+                                <span style={{ fontSize: '0.7rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#70695d', fontWeight: 'bold', display: 'block', fontFamily: 'system-ui' }}>
                                     RECURSO ACADÉMICO
                                 </span>
                                 <span style={{ fontSize: '1rem', fontWeight: '600', color: '#1a1917', display: 'block', marginTop: '2px' }}>
@@ -144,7 +158,8 @@ const DetalleLibro = () => {
                                     fontSize: '0.8rem',
                                     fontWeight: '600',
                                     cursor: 'pointer',
-                                    whiteSpace: 'nowrap'
+                                    whiteSpace: 'nowrap',
+                                    fontFamily: 'system-ui'
                                 }}
                             >
                                 Ver Análisis
@@ -153,29 +168,29 @@ const DetalleLibro = () => {
                     </div>
 
                     {/* METADATOS TÉCNICOS */}
-                    <div style={{ borderTop: '1px solid #e5dec9', borderBottom: '1px solid #e5dec9', padding: '15px 0', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '30px' }}>
+                    <div style={{ borderTop: '1px solid #e5dec9', borderBottom: '1px solid #e5dec9', padding: '15px 0', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '30px', fontFamily: 'system-ui' }}>
                         <div>
                             <span style={{ fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>Género</span>
-                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.generoNombre}</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.generoNombre || '-'}</span>
                         </div>
                         <div>
                             <span style={{ fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>Subgénero</span>
-                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.subgeneroNombre}</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.subgeneroNombre || '-'}</span>
                         </div>
                         <div>
                             <span style={{ fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>Año</span>
-                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.anioPublicacion}</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.anioPublicacion || '-'}</span>
                         </div>
                         <div>
                             <span style={{ fontSize: '0.7rem', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '4px' }}>ISBN</span>
-                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.isbn}</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: '600' }}>{libro.isbn || '-'}</span>
                         </div>
                     </div>
 
                     {/* PRECIO Y STOCK */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px' }}>
-                        <span style={{ fontSize: '2rem', fontWeight: '400' }}>
-                            $ {Number(libro.precio).toLocaleString('es-AR')}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px', fontFamily: 'system-ui' }}>
+                        <span style={{ fontSize: '2rem', fontWeight: '400', fontFamily: '"Playfair Display", Georgia, serif' }}>
+                            $ {Number(libro.precio).toLocaleString('es-AR', { minimumFractionDigits: 2 })}
                         </span>
                         <span style={{
                             fontSize: '0.8rem',
@@ -188,8 +203,8 @@ const DetalleLibro = () => {
                         </span>
                     </div>
 
-                    {/* BOTONES DE COMPRA Y NAVEGACIÓN */}
-                    <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                    {/* BOTONES DE ACCIÓN */}
+                    <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', alignItems: 'center' }}>
                         <button
                             disabled={!tieneStock}
                             style={{
@@ -206,11 +221,9 @@ const DetalleLibro = () => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '8px',
-                                transition: 'background-color 0.2s ease'
+                                fontFamily: 'system-ui'
                             }}
-                            onClick={() => {
-                                console.log("Añadido al carrito:", libro.id);
-                            }}
+                            onClick={() => console.log("Añadido al carrito:", libro.id)}
                         >
                             🛒 AÑADIR AL CARRITO
                         </button>
@@ -228,13 +241,17 @@ const DetalleLibro = () => {
                                 letterSpacing: '0.05em',
                                 textTransform: 'uppercase',
                                 cursor: tieneStock ? 'pointer' : 'not-allowed',
-                                transition: 'all 0.2s ease'
+                                fontFamily: 'system-ui'
                             }}
                             onClick={() => navigate('/checkout', { state: { libro, cantidad: 1 } })}
                         >
                             COMPRAR AHORA
                         </button>
+
+                        {/* BOTÓN GUARDAR LECTURA */}
+                        <BotonGuardarLectura libroId={libro.id} variante="texto" />
                     </div>
+
                 </div>
             </div>
         </div>

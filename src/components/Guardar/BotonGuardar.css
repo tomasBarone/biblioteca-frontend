@@ -1,0 +1,24 @@
+.btn-bookmark {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2b2b2b;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-bookmark svg {
+  width: 22px;
+  height: 22px;
+}
+
+.btn-bookmark:hover {
+  transform: scale(1.15);
+}
+
+.btn-bookmark.guardado {
+  color: #1a1a1a; /* O un tono acentuado que uses en tu paleta */
+}

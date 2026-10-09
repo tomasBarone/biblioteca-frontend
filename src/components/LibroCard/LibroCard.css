@@ -9,6 +9,12 @@
     box-sizing: border-box;
 }
 
+/* Agrupador relativo para posicionar la máquina de escribir sobre la portada */
+.libro-card-wrapper-relativo {
+    position: relative !important;
+    width: 100% !important;
+}
+
 /* Enlace contenedor */
 .libro-card-link {
     text-decoration: none !important;
@@ -57,7 +63,6 @@
     left: 0;
     bottom: 0;
     width: 12px; /* Ancho del pliegue del lomo */
-    /* Degradado que genera la textura cilíndrica del lomo y su sombra interior */
     background: linear-gradient(to right, 
         rgba(0, 0, 0, 0.3) 0%, 
         rgba(0, 0, 0, 0.0) 25%, 
@@ -65,7 +70,7 @@
         rgba(0, 0, 0, 0.25) 100%
     );
     border-radius: 3px 0 0 3px;
-    pointer-events: none; /* No interfiere con los clicks */
+    pointer-events: none;
 }
 
 /* EL COMPAGINADO DE HOJAS (Efecto de páginas internas en el canto derecho) */
@@ -76,7 +81,7 @@
     right: 2px;
     bottom: 4px;
     width: 2px;
-    background: rgba(255, 255, 255, 0.2); /* Línea brillante que emula el borde de las hojas compactas */
+    background: rgba(255, 255, 255, 0.2);
     box-shadow: -1px 0 2px rgba(0, 0, 0, 0.2);
     pointer-events: none;
 }
@@ -120,6 +125,42 @@
     font-family: system-ui, sans-serif !important;
 }
 
+/* BOTÓN FLOTANTE MÁQUINA DE ESCRIBIR */
+.libro-guardar-wrapper {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    z-index: 15 !important;
+}
+
+.btn-maquina-escribir {
+    background: rgba(252, 250, 242, 0.9) !important;
+    border: 1px solid #dcd3be !important;
+    border-radius: 50% !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    color: #1a1917 !important;
+    backdrop-filter: blur(4px) !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+
+.btn-maquina-escribir:hover,
+.btn-maquina-escribir.guardado {
+    background: #1a1917 !important;
+    color: #fcfaf2 !important;
+    border-color: #1a1917 !important;
+}
+
+.btn-maquina-escribir.guardado:hover {
+    background: #c62828 !important;
+    border-color: #c62828 !important;
+}
+
 /* METADATOS INFERIORES (Debajo del Libro) */
 .libro-meta-inferior {
     display: flex !important;
@@ -128,6 +169,12 @@
     width: 100% !important;
 }
 
+.libro-link-titulo {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+/* EFECTO HARVARD: SUBRAYADO PROGRESIVO EN EL TÍTULO AL HOVER */
 .libro-txt-titulo {
     font-size: 1rem !important;
     font-weight: 600 !important;
@@ -135,6 +182,17 @@
     margin-bottom: 2px !important;
     font-family: "Playfair Display", Georgia, serif !important;
     text-align: left !important;
+
+    background-image: linear-gradient(#1a1917, #1a1917) !important;
+    background-position: 0% 100% !important;
+    background-repeat: no-repeat !important;
+    background-size: 0% 1px !important; /* Comienza sin línea */
+    transition: background-size 0.3s ease !important;
+    padding-bottom: 2px !important;
+}
+
+.libro-card-container:hover .libro-txt-titulo {
+    background-size: 100% 1px !important; /* Se subraya suavemente al pasar el mouse por la tarjeta */
 }
 
 .libro-txt-autor {
