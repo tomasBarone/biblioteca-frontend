@@ -53,7 +53,7 @@ function MenuOverlay({ isOpen, onClose }) {
   return (
     <div className={`fullscreen-menu-overlay ${isOpen ? 'is-open' : ''}`}>
       <header className="menu-overlay-header">
-        <span className="menu-logo">Librería Albatros</span>
+        <span className="menu-logo">Infinita Deriva</span>
         <button className="menu-close-btn" onClick={onClose}>
           CERRAR <span>×</span>
         </button>

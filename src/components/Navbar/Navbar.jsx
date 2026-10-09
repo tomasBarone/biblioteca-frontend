@@ -139,6 +139,7 @@ function Navbar({ onToggleMenu }) {
                                 <hr style={{ border: 0, height: '1px', backgroundColor: '#e8e2d5', margin: '8px 0' }} />
                                 
                                 {user.roles?.includes('ROLE_ADMIN') && (
+                                    <>
                                     <Link to="/admin" style={{
                                         display: 'block',
                                         padding: '8px 16px',
@@ -149,6 +150,17 @@ function Navbar({ onToggleMenu }) {
                                     }}>
                                         Panel de Control
                                     </Link>
+                                      <Link to="/biblioteca" style={{
+                                            display: 'block',
+                                            padding: '8px 16px',
+                                            color: '#2c1810',
+                                            textDecoration: 'none',
+                                            fontSize: '0.85rem'
+                                        }}>
+                                            Mis Lecturas
+                                        </Link>
+                                    </>
+
                                 )}
 
                                 {user.roles?.includes('ROLE_USER') && (
@@ -163,14 +175,14 @@ function Navbar({ onToggleMenu }) {
                                         }}>
                                             💼 Mi Carrito
                                         </Link>
-                                        <Link to="/mis-compras" style={{
+                                        <Link to="/biblioteca" style={{
                                             display: 'block',
                                             padding: '8px 16px',
                                             color: '#2c1810',
                                             textDecoration: 'none',
                                             fontSize: '0.85rem'
                                         }}>
-                                            Mis Compras
+                                            Mis Lecturas
                                         </Link>
                                     </>
                                 )}
