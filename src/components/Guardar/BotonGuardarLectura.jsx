@@ -27,7 +27,7 @@ const TypewriterIcon = ({ active = false, size = 15 }) => (
 function BotonGuardarLectura({ libroId, guardadoInicial = false, variante = "icono", onToggleExitoso }) {
   const [guardado, setGuardado] = useState(guardadoInicial);
   const [cargando, setCargando] = useState(false);
-  const { usuario } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
  
@@ -49,32 +49,32 @@ function BotonGuardarLectura({ libroId, guardadoInicial = false, variante = "ico
   }, [libroId]);
 
   const handleToggle = async (e) => {
+  if (e) {
+    e.preventDefault();
     e.stopPropagation();
-    if (!usuario) {
-      toast.info("Debes iniciar sesión para guardar lecturas.");
-      navigate('/login');
-      return;
-    } 
-  
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    if (cargando) return;
+  }
 
-    setCargando(true);
-    try {
-      const response = await bibliotecaService.toggleGuardado(libroId);
-      let estadoNuevo = (response && typeof response.guardado === 'boolean') ? response.guardado : !guardado;
-      setGuardado(estadoNuevo);
+  if (!user) {
+    toast.info("Debes iniciar sesión para guardar lecturas.");
+    navigate('/login');
+    return;
+  } 
 
-      if (onToggleExitoso) onToggleExitoso(libroId, estadoNuevo);
-    } catch (error) {
-      console.error("Error al alternar guardado:", error);
-    } finally {
-      setCargando(false);
-    }
-  };
+  if (cargando) return;
+
+  setCargando(true);
+  try {
+    const response = await bibliotecaService.toggleGuardado(libroId);
+    let estadoNuevo = (response && typeof response.guardado === 'boolean') ? response.guardado : !guardado;
+    setGuardado(estadoNuevo);
+
+    if (onToggleExitoso) onToggleExitoso(libroId, estadoNuevo);
+  } catch (error) {
+    console.error("Error al alternar guardado:", error);
+  } finally {
+    setCargando(false);
+  }
+};
 
   // VARIANTE 1: BOTÓN DE TEXTO COMPLETO PARA DETALLE LIBRO
   if (variante === "texto") {
