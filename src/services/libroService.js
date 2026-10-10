@@ -47,7 +47,7 @@ export const libroService = {
 
 
 
-  filtrarAvanzado: async (queryText, anioInicio, anioFin, page = 0, size = 10) => {
+  filtrarAvanzado: async (queryText, anioInicio, anioFin, page = 0, size = 12) => {
         const response = await api.get('/libros/filtrar-avanzado', {
             params: {
                 query: queryText || undefined,
