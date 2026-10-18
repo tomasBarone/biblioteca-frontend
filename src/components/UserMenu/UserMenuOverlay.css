@@ -1,0 +1,223 @@
+/* OVERLAY FULLSCREEN CON TRANSICIÓN SUAVE DE ENTRADA Y SALIDA */
+.user-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f9f6f0;
+  backdrop-filter: blur(10px);
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px 8%;
+  box-sizing: border-box;
+  
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(100%);
+  
+  /* Curva de animación cinematográfica para entrada y salida */
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), 
+              opacity 0.4s ease, 
+              visibility 0.5s ease;
+}
+
+/* Estado Abierto: entra deslizándose suavemente hacia la izquierda */
+.user-menu-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* HEADER CON LOGO A LA IZQUIERDA Y CERRAR A LA DERECHA */
+.user-overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e8e2d5;
+}
+
+.user-overlay-logo {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #2c1810;
+}
+
+.user-overlay-close-btn {
+  background: none;
+  border: none;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #1a1917;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.2s ease;
+}
+
+.user-overlay-close-btn:hover {
+  opacity: 0.6;
+}
+
+.user-overlay-close-btn span {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/* ESTRUCTURA PRINCIPAL EN 2 COLUMNAS EDITORIALES */
+.user-overlay-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 40px 0;
+}
+
+/* COLUMNA IZQUIERDA: FICHA DEL SOCIO */
+.user-col-left {
+  border-right: 1px solid #e8e2d5;
+  padding-right: 40px;
+}
+
+.user-overlay-subtitle {
+  font-family: system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #70695d;
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.user-overlay-name {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: #2c1810;
+  margin: 0 0 10px 0;
+  line-height: 1;
+}
+
+.user-overlay-id {
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #5c3a21;
+  letter-spacing: 0.1em;
+}
+
+/* COLUMNA DERECHA: ENLACES CON ESPACIADO ELEGANTE */
+.user-col-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  max-height: 380px;
+}
+
+.user-overlay-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.user-overlay-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.user-overlay-link {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: #1a1917;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+  line-height: 1.1;
+}
+
+.user-overlay-link:hover {
+  color: #5c3a21;
+  transform: translateX(10px);
+}
+
+.user-overlay-link.admin {
+  color: #2c1810;
+}
+
+.user-overlay-meta {
+  font-family: system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8c8273;
+  font-weight: 500;
+}
+
+.user-overlay-meta.admin-meta {
+  color: #5c3a21;
+  font-weight: 600;
+}
+
+/* FOOTER / CERRAR SESIÓN */
+.user-overlay-footer {
+  padding-top: 25px;
+  border-top: 1px solid #e8e2d5;
+  margin-top: 20px;
+}
+
+.user-overlay-logout-btn {
+  background: none;
+  border: none;
+  color: #c62828;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.user-overlay-logout-btn:hover {
+  opacity: 0.7;
+}
+
+/* RESPONSIVIDAD PARA CELULARES */
+@media screen and (max-width: 900px) {
+  .user-overlay-body {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 20px 0;
+  }
+  .user-col-left {
+    border-right: none;
+    border-bottom: 1px solid #e8e2d5;
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
+  .user-overlay-name {
+    font-size: 2.5rem;
+  }
+  .user-overlay-link {
+    font-size: 1.6rem;
+  }
+}

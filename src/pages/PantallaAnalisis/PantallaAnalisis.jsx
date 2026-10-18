@@ -88,7 +88,7 @@ function PantallaAnalisis() {
                         <h1 className="analisis-main-title">{analisis.libro}</h1>
                         
                         <div className="analisis-meta-bar">
-                            <span>⏱️ Lectura estimada: {calcularTiempoLectura()} min</span>
+                            
                             <div className="controles-zoom">
                                 <span>Texto:</span>
                                 <button onClick={() => setFontSize(p => Math.max(0.9, p - 0.1))}>A-</button>
@@ -132,10 +132,18 @@ function PantallaAnalisis() {
                             </section>
                         )}
                     </main>
+ 
+
+                  
+                
 
                     <footer className="analisis-footer-editorial">
                         <p>Infinita Deriva — Archivo de Análisis Académicos</p>
                     </footer>
+                  
+                    <button className="btn-volver-bottom" onClick={() => navigate(`/libro/${id}`)}>
+                        ← Volver al libro
+                    </button>
 
                 </div>
             </div>

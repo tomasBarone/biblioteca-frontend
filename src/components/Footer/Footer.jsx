@@ -8,7 +8,7 @@ export const Footer = () => {
         <div className="footer-brand">
           <h3 className="footer-logo">Infinita Deriva</h3>
           <p className="footer-description">
-            Una librería independiente dedicada a la literatura clásica y contemporánea desde 1978.
+            Una biblioteca independiente dedicada a la literatura clásica y contemporánea desde 1978.
           </p>
         </div>
 

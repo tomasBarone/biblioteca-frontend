@@ -10,6 +10,9 @@ const DetalleLibro = () => {
     const [cargando, setCargando] = useState(true);
     const [errorImagen, setErrorImagen] = useState(false);
 
+    // Estado para controlar el mini popup de confirmación
+    const [ultimoReservado, setUltimoReservado] = useState(null);
+
     useEffect(() => {
         const obtenerDatosLibro = async () => {
             setCargando(true);
@@ -25,6 +28,33 @@ const DetalleLibro = () => {
         };
         obtenerDatosLibro();
     }, [id]);
+
+    // Guarda en localStorage y dispara el evento para sincronizar el Navbar
+    const agregarAReservasLocales = (libroObjeto) => {
+        const reservasActuales = JSON.parse(localStorage.getItem('reservas_pendientes')) || [];
+        const existeIndex = reservasActuales.findIndex(item => item.libro.id === libroObjeto.id);
+        
+        if (existeIndex >= 0) {
+            reservasActuales[existeIndex].cantidad += 1;
+        } else {
+            reservasActuales.push({ libro: libroObjeto, cantidad: 1 });
+        }
+
+        localStorage.setItem('reservas_pendientes', JSON.stringify(reservasActuales));
+        window.dispatchEvent(new Event('reservas_updated'));
+    };
+
+    const handleAgregarAReservas = () => {
+        if (!libro) return;
+        agregarAReservasLocales(libro);
+        setUltimoReservado(libro);
+    };
+
+    const handleSolicitudDirecta = () => {
+        if (!libro) return;
+        agregarAReservasLocales(libro);
+        navigate('/checkout', { state: { libro, cantidad: 1 } });
+    };
 
     if (cargando) {
         return (
@@ -46,8 +76,59 @@ const DetalleLibro = () => {
     const tieneStock = libro.ejemplares > 0;
 
     return (
-        <div style={{ backgroundColor: '#fcfaf2', minHeight: '100vh', fontFamily: '"Playfair Display", Georgia, serif', padding: '40px 10%', color: '#1a1917' }}>
+        <div style={{ backgroundColor: '#fcfaf2', minHeight: '100vh', fontFamily: '"Playfair Display", Georgia, serif', padding: '40px 10%', color: '#1a1917', position: 'relative' }}>
             
+            {/* MINI POPUP FLOTANTE (CONFIRMACIÓN DE RESERVA) */}
+            {ultimoReservado && (
+                <div style={popupOverlayStyle}>
+                    <div style={popupCardStyle}>
+                        <div style={popupHeaderStyle}>
+                            <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#1a1917', fontFamily: 'system-ui', paddingRight: '10px'}}>
+                                Agregado a Reservas
+                            </span>
+                            
+                            <span style={{ fontSize: '0.8rem', color: '#70695d', fontFamily: 'system-ui' }}>
+                            </span>
+                            <button 
+                                onClick={() => setUltimoReservado(null)} 
+                                style={popupCloseBtnStyle}
+                                title="Cerrar"
+                            >
+                                   ✕
+                            </button>
+                        </div>
+
+                        <div style={popupBodyStyle}>
+                            <img 
+                                src={ultimoReservado.imagenUrl} 
+                                alt={ultimoReservado.titulo} 
+                                style={{ width: '60px', height: '85px', objectFit: 'cover', borderRadius: '2px', border: '1px solid #e5dec9' }} 
+                            />
+                            <div>
+                                <h4 style={{ margin: '0 0 4px 0', fontSize: '0.95rem', color: '#2c1810', fontWeight: '500' }}>
+                                    {ultimoReservado.titulo}
+                                </h4>
+                                <span style={{ fontSize: '0.85rem', color: '#70695d', display: 'block', fontFamily: 'system-ui' }}>
+                                    {ultimoReservado.autor}
+                                </span>
+                                <span style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginTop: '4px', fontFamily: 'system-ui' }}>
+                                    Préstamo renovable (14 días)
+                                </span>
+                            </div>
+                        </div>
+
+                        <div style={{ padding: '15px 20px', borderTop: '1px solid #efebe0' }}>
+                            <button 
+                                onClick={() => { setUltimoReservado(null); navigate('/reservas'); }}
+                                style={popupActionBtnStyle}
+                            >
+                                Ver Reservas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* BREADCRUMB EDITORIAL */}
             <div style={{ fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#70695d', marginBottom: '40px', fontFamily: 'system-ui, sans-serif' }}>
                 <Link to="/catalogo" style={{ color: '#70695d', textDecoration: 'none' }}>CATÁLOGO</Link> 
@@ -77,12 +158,7 @@ const DetalleLibro = () => {
                         <img 
                             src={libro.imagenUrl} 
                             alt={`Portada de ${libro.titulo}`}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                display: 'block'
-                            }}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                             onError={() => setErrorImagen(true)}
                         />
                     ) : (
@@ -129,13 +205,13 @@ const DetalleLibro = () => {
                         {libro.sinopsis && libro.sinopsis.length > 5 ? libro.sinopsis : 'Sin descripción disponible para esta edición.'}
                     </p>
 
-                    {/* TARJETA DESTACADA: ANÁLISIS ACADÉMICO */}
+                    {/* BLOQUE RECURSO ACADÉMICO / ANÁLISIS */}
                     <div style={{
                         backgroundColor: '#efebe0',
                         borderLeft: '4px solid #5c3a21',
                         padding: '18px 22px',
                         borderRadius: '4px',
-                        marginBottom: '35px',
+                        marginBottom: '30px',
                         maxWidth: '650px'
                     }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '15px' }}>
@@ -187,7 +263,7 @@ const DetalleLibro = () => {
                         </div>
                     </div>
 
-                    {/* PRECIO Y STOCK */}
+                    {/* DISPONIBILIDAD Y ARANCEL */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px', fontFamily: 'system-ui' }}>
                         <span style={{ fontSize: '2rem', fontWeight: '400', fontFamily: '"Playfair Display", Georgia, serif' }}>
                             $ {Number(libro.precio).toLocaleString('es-AR', { minimumFractionDigits: 2 })}
@@ -199,7 +275,7 @@ const DetalleLibro = () => {
                             color: tieneStock ? '#2e7d32' : '#c62828',
                             fontWeight: 'bold'
                         }}>
-                            {tieneStock ? `✓ EN STOCK (${libro.ejemplares} unidades)` : '✕ SIN STOCK'}
+                            {tieneStock ? `✓ EJEMPLARES DISPONIBLES (${libro.ejemplares} unidades)` : '✕ RESERVAS AGOTADAS'}
                         </span>
                     </div>
 
@@ -207,6 +283,7 @@ const DetalleLibro = () => {
                     <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', alignItems: 'center' }}>
                         <button
                             disabled={!tieneStock}
+                            onClick={handleAgregarAReservas}
                             style={{
                                 backgroundColor: tieneStock ? '#5c3a21' : '#a39e93',
                                 color: '#fcfaf2',
@@ -223,13 +300,13 @@ const DetalleLibro = () => {
                                 gap: '8px',
                                 fontFamily: 'system-ui'
                             }}
-                            onClick={() => console.log("Añadido al carrito:", libro.id)}
                         >
-                            🛒 AÑADIR AL CARRITO
+                            Reservar Ejemplar
                         </button>
 
                         <button
                             disabled={!tieneStock}
+                            onClick={handleSolicitudDirecta}
                             style={{
                                 backgroundColor: 'transparent',
                                 color: tieneStock ? '#1a1917' : '#a39e93',
@@ -243,12 +320,10 @@ const DetalleLibro = () => {
                                 cursor: tieneStock ? 'pointer' : 'not-allowed',
                                 fontFamily: 'system-ui'
                             }}
-                            onClick={() => navigate('/checkout', { state: { libro, cantidad: 1 } })}
                         >
-                            COMPRAR AHORA
+                            Solicitar Ahora
                         </button>
 
-                        {/* BOTÓN GUARDAR LECTURA */}
                         <BotonGuardarLectura libroId={libro.id} variante="texto" />
                     </div>
 
@@ -256,6 +331,63 @@ const DetalleLibro = () => {
             </div>
         </div>
     );
+};
+
+// ESTILOS EN LÍNEA PARA EL POPUP ESTILO SHOPPING BAG
+const popupOverlayStyle = {
+    position: 'fixed',
+    top: '75px',
+    right: '40px',
+    zIndex: 2500,
+    animation: 'fadeIn 0.2s ease-out'
+};
+
+const popupCardStyle = {
+    backgroundColor: '#ffffff',
+    border: '1px solid #e8e2d5',
+    boxShadow: '0 12px 30px rgba(0,0,0,0.12)',
+    borderRadius: '4px',
+    width: '320px',
+    fontFamily: '"Playfair Display", Georgia, serif'
+};
+
+const popupHeaderStyle = {
+    padding: '14px 18px',
+    borderBottom: '1px solid #efebe0',
+    display: 'flex',
+    justify: 'space-between',
+    alignItems: 'center'
+};
+
+const popupCloseBtnStyle = {
+    background: 'none',
+    border: 'none',
+    fontSize: '0.9rem',
+    color: '#70695d',
+    cursor: 'pointer',
+    padding: '2px'
+};
+
+const popupBodyStyle = {
+    padding: '16px 18px',
+    display: 'flex',
+    gap: '15px',
+    alignItems: 'center'
+};
+
+const popupActionBtnStyle = {
+    width: '100%',
+    backgroundColor: '#1a1917',
+    color: '#ffffff',
+    border: 'none',
+    padding: '12px',
+    borderRadius: '2px',
+    fontSize: '0.85rem',
+    fontWeight: '600',
+    letterSpacing: '0.05em',
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    fontFamily: 'system-ui, sans-serif'
 };
 
 export default DetalleLibro;
