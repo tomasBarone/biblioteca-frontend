@@ -50,11 +50,7 @@ const DetalleLibro = () => {
         setUltimoReservado(libro);
     };
 
-    const handleSolicitudDirecta = () => {
-        if (!libro) return;
-        agregarAReservasLocales(libro);
-        navigate('/checkout', { state: { libro, cantidad: 1 } });
-    };
+    
 
     if (cargando) {
         return (
@@ -263,11 +259,26 @@ const DetalleLibro = () => {
                         </div>
                     </div>
 
-                    {/* DISPONIBILIDAD Y ARANCEL */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px', fontFamily: 'system-ui' }}>
-                        <span style={{ fontSize: '2rem', fontWeight: '400', fontFamily: '"Playfair Display", Georgia, serif' }}>
-                            $ {Number(libro.precio).toLocaleString('es-AR', { minimumFractionDigits: 2 })}
-                        </span>
+                  {/* REGISTRO DE ARCHIVO Y DISPONIBILIDAD */}
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        borderTop: '1px solid #e5dec9',
+                        borderBottom: '1px solid #e5dec9',
+                        padding: '16px 0',
+                        marginBottom: '30px',
+                        fontFamily: 'system-ui'
+                    }}>
+                        <div>
+                            <span style={{ fontSize: '0.7rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#70695d', display: 'block', marginBottom: '2px' }}>
+                                Registro de Archivo
+                            </span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: '600', color: '#1a1917' }}>
+                                REF: ID-{libro.id} {libro.isbn ? `· ISBN ${libro.isbn}` : ''}
+                            </span>
+                        </div>
+
                         <span style={{
                             fontSize: '0.8rem',
                             letterSpacing: '0.05em',
@@ -275,7 +286,7 @@ const DetalleLibro = () => {
                             color: tieneStock ? '#2e7d32' : '#c62828',
                             fontWeight: 'bold'
                         }}>
-                            {tieneStock ? `✓ EJEMPLARES DISPONIBLES (${libro.ejemplares} unidades)` : '✕ RESERVAS AGOTADAS'}
+                            {tieneStock ? `✓ DISPONIBLE (${libro.ejemplares} ${libro.ejemplares === 1 ? 'UNIDAD' : 'UNIDADES'})` : '✕ EJEMPLARES AGOTADOS'}
                         </span>
                     </div>
 
@@ -304,25 +315,7 @@ const DetalleLibro = () => {
                             Reservar Ejemplar
                         </button>
 
-                        <button
-                            disabled={!tieneStock}
-                            onClick={handleSolicitudDirecta}
-                            style={{
-                                backgroundColor: 'transparent',
-                                color: tieneStock ? '#1a1917' : '#a39e93',
-                                border: `1px solid ${tieneStock ? '#1a1917' : '#a39e93'}`,
-                                padding: '14px 28px',
-                                borderRadius: '30px',
-                                fontSize: '0.9rem',
-                                fontWeight: '600',
-                                letterSpacing: '0.05em',
-                                textTransform: 'uppercase',
-                                cursor: tieneStock ? 'pointer' : 'not-allowed',
-                                fontFamily: 'system-ui'
-                            }}
-                        >
-                            Solicitar Ahora
-                        </button>
+                     
 
                         <BotonGuardarLectura libroId={libro.id} variante="texto" />
                     </div>
