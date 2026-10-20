@@ -21,6 +21,7 @@ import AdminEditarForm from './pages/Admin-Editar-Form/AdminEditarForm';
 import Home from './pages/Home.jsx';
 import './pages/Home';
 import MisLecturas from './pages/MisLecturas/MisLecturas.jsx';
+import MisReservas from './pages/MisReservas.jsx';
 
 function App() {
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -72,6 +73,7 @@ function App() {
               <Route path="/libro/:id/analisis" element={<PantallaAnalisis />} />
               <Route path="/libros" element={<VistaLibros />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/reservas" element={<MisReservas />} />
             
             {/* RUTA PROTEGIDA PARA CUALQUIER USUARIO AUTENTICADO */}
               <Route path="/biblioteca" element={

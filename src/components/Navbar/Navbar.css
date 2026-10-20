@@ -1,0 +1,104 @@
+.navbar-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 40px;
+  height: var(--navbar-height);
+  background-color: #f9f6f0;
+  border-bottom: 1px solid #e8e2d5;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  z-index: 2;
+}
+
+.navbar-menu-icon {
+  font-size: 1.2rem;
+  color: #1a1a1a;
+}
+
+.navbar-menu-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+
+/* CENTRADO ABSOLUTO EN EL HEADER */
+.navbar-logo-link {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-decoration: none;
+  text-align: center;
+  z-index: 1;
+}
+
+.navbar-logo-title {
+  margin: 0;
+  font-family: "Playfair Display", "Georgia", serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #2c1810;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.navbar-utils-inline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: system-ui, sans-serif;
+  z-index: 2;
+}
+
+.nav-text-link {
+  background: none;
+  border: none;
+  color: #5c3a21;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  padding: 0;
+}
+
+.nav-text-link:hover { 
+  opacity: 0.6; 
+}
+
+.nav-text-link.socio-trigger {
+  color: #2c1810;
+  font-weight: 700;
+}
+
+.nav-sep { 
+  color: #d4cebe; 
+  font-size: 0.85rem; 
+}
+
+/* RESPONSIVO MOBILE */
+@media screen and (max-width: 768px) {
+  .navbar-header {
+    padding: 14px 20px;
+  }
+  .navbar-logo-title {
+    font-size: 1.25rem;
+  }
+  .navbar-menu-text {
+    display: none;
+  }
+}
