@@ -1,17 +1,24 @@
+.navbar-wrapper {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
 .navbar-header {
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 40px;
-  height: var(--navbar-height);
+  padding: 0 45px;
+  height: 105px;
   background-color: #f9f6f0;
-  border-bottom: 1px solid #e8e2d5;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  border-bottom: none;
+  box-sizing: border-box;
 }
 
+/* IZQUIERDA: DISPARADOR MENÚ CORRIENTES */
 .navbar-menu-trigger {
   display: flex;
   align-items: center;
@@ -19,6 +26,7 @@
   cursor: pointer;
   user-select: none;
   z-index: 2;
+  padding: 8px 0;
 }
 
 .navbar-menu-icon {
@@ -34,7 +42,7 @@
   color: #1a1a1a;
 }
 
-/* CENTRADO ABSOLUTO EN EL HEADER */
+/* CENTRO: MARCA EDITORIAL */
 .navbar-logo-link {
   position: absolute;
   left: 50%;
@@ -45,60 +53,231 @@
 }
 
 .navbar-logo-title {
-  margin: 0;
-  font-family: "Playfair Display", "Georgia", serif;
-  font-size: 1.6rem;
+  margin: 15px 0 0 0;
+  font-family:  "Playfair Display", Georgia, serif;
+  font-size: 2rem;
   font-weight: 500;
   color: #2c1810;
   letter-spacing: 0.5px;
   white-space: nowrap;
+ 
 }
 
+.navbar-logo-subtitle {
+  
+  padding: 1px 0 0 0;
+  font-family: "Luxurious Script";
+  font-weight: lighter;
+  font-size: 1.75rem;
+  color: #000000;
+  
+  
+}
+
+/* DERECHA: OPCIONES SUPERIORES */
 .navbar-utils-inline {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 16px;
-  font-family: system-ui, sans-serif;
-  z-index: 2;
+  gap: 22px;
+  z-index: 1000; /* Mantiene la barra activa e encendida por encima del backdrop */
+  border-bottom: 1px solid #5c4a235d;
+  
+  padding-bottom: 10px;
 }
 
-.nav-text-link {
+ .nav-utils-inline:hover {
+  border-bottom: 5cap solid #947023;
+}
+
+.nav-dropdown-container {
+  position: relative;
+}
+
+
+.nav-text-btn {
+  position: relative;
   background: none;
   border: none;
-  color: #5c3a21;
-  font-size: 0.8rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  text-decoration: none;
+  color: #5c3a21;
   cursor: pointer;
-  transition: opacity 0.2s ease;
-  padding: 0;
+  padding: 10px 2px;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+
 }
 
-.nav-text-link:hover { 
-  opacity: 0.6; 
+.nav-text-btn::after {
+ border-bottom: 3px solid #5c4a235d;
+ padding-bottom: 35px;
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+ 
 }
 
-.nav-text-link.socio-trigger {
+.nav-text-btn:hover::after,
+.nav-text-btn.active::after {
+  transform: scaleX(1);
+}
+
+.nav-text-btn:hover,
+.nav-text-btn.active {
+  color: #1a1917;
+}
+
+.nav-text-btn.socio-trigger {
   color: #2c1810;
   font-weight: 700;
 }
 
-.nav-sep { 
-  color: #d4cebe; 
-  font-size: 0.85rem; 
+.nav-sep {
+  color: #d4cebe;
+  font-size: 0.85rem;
 }
 
-/* RESPONSIVO MOBILE */
-@media screen and (max-width: 768px) {
-  .navbar-header {
-    padding: 14px 20px;
-  }
-  .navbar-logo-title {
-    font-size: 1.25rem;
-  }
-  .navbar-menu-text {
-    display: none;
-  }
+
+.dropdown-overlay-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 998;
+  animation: fadeIn 0.2s ease-out;
+}
+
+
+.dropdown-drawer-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 52%; /* Agrandado para mayor presencia tipográfica */
+  max-width: 780px;
+  min-width: 440px;
+  height: 100vh;
+  background-color: #fcfaf2;
+  border-left: 1px solid #e8e2d5;
+  box-shadow: -20px 0 50px rgba(0, 0, 0, 0.22);
+  padding: 105px 60px 60px 60px; /* Espaciado amplio */
+  box-sizing: border-box;
+  z-index: 999;
+  overflow-y: auto;
+  animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* TRANSICIÓN FLUIDA DEL CONTENIDO AL NAVEGAR ENTRE PESTAÑAS */
+.fade-in-content {
+  animation: fadeInContent 0.18s ease-in-out;
+}
+
+@keyframes fadeInContent {
+  from { opacity: 0.4; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0.5; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* CONTENIDO INTERNO Y TIPOGRAFÍA IMPONENTE HARVARD */
+.drawer-content-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.drawer-main-col h3 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.95rem; /* Título amplio e imponente */
+  font-weight: 400;
+  color: #2c1810;
+  margin: 0 0 14px 0;
+  letter-spacing: -0.2px;
+}
+
+.drawer-lead {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.95rem;
+  color: #70695d;
+  margin: 0 0 35px 0;
+  line-height: 1.6;
+}
+
+.drawer-links-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  gap: 22px;
+}
+
+
+.drawer-links-grid a {
+  position: relative;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.35rem; 
+  font-weight: 400;
+  color: #2c1810;
+  text-decoration: none; 
+  padding-bottom: 3px;
+  transition: color 0.15s ease;
+}
+
+/* Subrayado borgoña sutil solo en Hover */
+.drawer-links-grid a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #442f13;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-links-grid a:hover::after {
+  transform: scaleX(1); /* Despliega el subrayado de izquierda a derecha */
+}
+
+
+
+/* RECUADRO INFORMATIVO DE ARCHIVO */
+.drawer-side-col {
+  background-color: #efebe0;
+  border-left: 3px solid #31210d;
+  padding: 26px;
+  border-radius: 2px;
+}
+
+.drawer-side-col h4 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #2c1810;
+  margin: 0 0 8px 0;
+}
+
+.drawer-side-col p {
+  font-family: system-ui, sans-serif;
+  font-size: 0.88rem;
+  color: #70695d;
+  line-height: 1.55;
+  margin: 0;
 }
