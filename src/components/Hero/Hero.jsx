@@ -22,7 +22,7 @@ function Hero({ onOpenSearch }) {
         <h1 className="hero-main-title">
           <span className="reveal-wrapper">
             <span className="reveal-item delay-2">
-              Una biblioteca <span className="title-italic">para lectores</span> curiosos.
+              Bienvenido a Infinita Deriva
             </span>
           </span>
         </h1>

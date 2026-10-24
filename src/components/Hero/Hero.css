@@ -65,6 +65,7 @@
     flex: 1;
     max-width: 580px;
     text-align: left;
+    margin: 0 30px 80px 0;
 }
 
 .hero-badge {
@@ -84,8 +85,9 @@
     line-height: 1.1;
     color: #1a1a1a;
     font-weight: 400;
-    margin: 0 0 24px 0;
-    letter-spacing: -1px;
+    margin: 0 0 35px 0;
+    letter-spacing: -2px;
+    width: 100%;
 }
 
 .hero-main-title .title-italic {
@@ -100,7 +102,9 @@
     color: #4a423a;
     font-weight: 500;
     margin-bottom: 36px;
+    
     max-width: 480px;
+   
 }
 
 /* Botones */

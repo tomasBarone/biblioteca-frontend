@@ -59,7 +59,7 @@ const VistaLibros = () => {
   const totalPaginas = librosPage?.totalPages || 1;
 
   return (
-    <div style={{ backgroundColor: '#fcfaf2', minHeight: '100vh', fontFamily: '"Playfair Display", Georgia, serif', padding: '40px 8%', color: '#1a1917' }}>
+    <div style={{ backgroundColor: '#f9f9f9;', minHeight: '100vh', fontFamily: '"Playfair Display", Georgia, serif', padding: '40px 8%', color: '#1a1917' }}>
 
       {/* CABECERA EDITORIAL */}
       <div style={{ marginBottom: '30px', borderBottom: '1px solid #e5dec9', paddingBottom: '20px' }}>
