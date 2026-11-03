@@ -1,10 +1,9 @@
 import React from 'react';
 import './SeccionImagenParallax.css';
 
-function SeccionImagenParallax({ imagenUrl, titulo, subtitulo, altText }) {
+function SeccionImagenParallax({ imagenUrl, titulo, subtitulo, altText, fullHeight }) {
   return (
-    <div className="parallax-section-container">
-      {/* Imagen fija al fondo */}
+    <div className={`parallax-section-container ${fullHeight ? 'parallax-full-screen' : ''}`}>
       <div 
         className="parallax-bg-fixed" 
         style={{ backgroundImage: `url(${imagenUrl})` }}

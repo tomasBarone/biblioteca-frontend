@@ -6,6 +6,14 @@
   overflow: hidden;
 }
 
+/* variante exclusiva para ocupar toda la pantalla en las páginas institucionales */
+.parallax-section-container.parallax-full-screen {
+  height: 100vh;
+  margin-top: -65px;
+  padding-top: 65px;
+  box-sizing: border-box;
+}
+
 /* Imagen fija que genera el efecto al hacer scroll */
 .parallax-bg-fixed {
   position: relative;
@@ -25,7 +33,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 /* Contenido centrado sobre la imagen */
@@ -57,14 +65,14 @@
 
 /* Adaptación para dispositivos móviles */
 @media (max-width: 768px) {
-  .parallax-section-container {
+  .parallax-section-container,
+  .parallax-section-container.parallax-full-screen {
     height: 45vh;
   }
   
   .parallax-title {
     font-size: 2rem;
   }
-
   
   .parallax-bg-fixed {
     background-attachment: scroll;

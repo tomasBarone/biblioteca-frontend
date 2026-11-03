@@ -22,6 +22,14 @@ import Home from './pages/Home.jsx';
 import './pages/Home';
 import MisLecturas from './pages/MisLecturas/MisLecturas.jsx';
 import MisReservas from './pages/MisReservas.jsx';
+import SalaGeneral from  './pages/Salas/General/SalaGeneral.jsx'
+import SedeUbicacion from './pages/Salas/Sede/SedeUbicacion.jsx'
+import SalaInvestigacion from './pages/Salas/Investigacion/SalaInvestigacion.jsx'
+import SalaCafe from './pages/Salas/Cafe/SalaCafe.jsx'
+import PaseLectorObtener from './pages/PaseLector/PaseLectorObtener.jsx';
+import ReglamentoPrestamos from './pages/PaseLector/Prestamos/ReglamentoPrestamos.jsx';
+import AccesoManuscritos from './pages/PaseLector/Manuscritos/AccesoManuscritos.jsx';  
+import ScrollToTop from './components/ScrollToTop/ScrollToTop.jsx';
 
 function App() {
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -40,6 +48,7 @@ function App() {
       <ToastContainer position="bottom-right" theme="colored" autoClose={3000} />
 
       <Router>
+        <ScrollToTop />
         <div style={{ 
           backgroundColor: '#fbf9f4', 
           minHeight: '100vh', 
@@ -74,7 +83,13 @@ function App() {
               <Route path="/libros" element={<VistaLibros />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/reservas" element={<MisReservas />} />
-            
+              <Route path="/salas/generales" element={<SalaGeneral />}/>
+              <Route path="/salas/sede" element={<SedeUbicacion />} />
+              <Route path="/salas/investigacion" element={<SalaInvestigacion />}/>
+              <Route path="/salas/cafe" element={<SalaCafe />} />
+              <Route path="/pase-lector" element={<PaseLectorObtener />} />
+              <Route path="/pase-lector/reglamento" element={<ReglamentoPrestamos />} />
+              <Route path="/pase-lector/manuscritos" element={<AccesoManuscritos />} />
             {/* RUTA PROTEGIDA PARA CUALQUIER USUARIO AUTENTICADO */}
               <Route path="/biblioteca" element={
                 <ProtectedRoute allowedRoles={['ROLE_USER', 'ROLE_ADMIN']}>

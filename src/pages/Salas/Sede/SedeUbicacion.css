@@ -1,0 +1,104 @@
+.sede-page-container {
+  background-color: #fcfaf2;
+  color: #2c1810;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.sede-content-container {
+  position: relative;
+  width: 100%;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+
+.infinita-deriva-fullwidth-card {
+  width: 100%;
+  background-color: #fcfaf2; 
+  padding: 80px 10%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.infinita-deriva-heading {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #2c1810;
+  margin: 0 0 50px 0;
+}
+
+
+.infinita-deriva-frame-box {
+  position: relative;
+  max-width: 850px;
+  background-color: transparent; 
+  padding: 0;
+  box-sizing: border-box;
+  box-shadow: none;
+}
+
+/* Subtítulos internos */
+.sede-subheading {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #2c1810;
+  margin-bottom: 20px;
+}
+
+.infinita-deriva-description {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #4a4a4a;
+  margin: 0;
+}
+
+/* bloque secundario alineado */
+.sede-secondary-section {
+  background-color: #fcfaf2;
+  padding: 20px 10% 80px 10%;
+  display: flex;
+  justify-content: center;
+}
+
+.sede-info-box {
+  max-width: 850px;
+  width: 100%;
+  background-color: transparent;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.sede-action-wrapper {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.btn-institutional {
+  display: inline-block;
+  background-color: #2c1810;
+  color: #fcfaf2;
+  padding: 14px 28px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-institutional:hover {
+  background-color: #8b0000;
+}

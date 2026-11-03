@@ -123,10 +123,10 @@ function Navbar({ onToggleMenu }) {
                                     <h3>Salas de Lectura & Sede San Isidro</h3>
                                     <p className="drawer-lead">Espacios silenciosos de estudio e investigación académica dotados de luz focal y consulta en sala.</p>
                                     <div className="drawer-links-grid">
-                                        <Link to="/salas" onClick={() => setMenuAbierto(null)}>Salas Generales de Lectura</Link>
-                                        <Link to="/salas" onClick={() => setMenuAbierto(null)}>Mesas de Investigación Silenciosa</Link>
-                                        <Link to="/salas" onClick={() => setMenuAbierto(null)}>Gabinete y Café de Lectores</Link>
-                                        <Link to="/salas" onClick={() => setMenuAbierto(null)}>Horarios y Ubicación de Sede</Link>
+                                        <Link to="/salas/generales" onClick={() => setMenuAbierto(null)}>Salas Generales de Lectura</Link>
+                                        <Link to="/salas/investigacion" onClick={() => setMenuAbierto(null)}>Mesas de Investigación Silenciosa</Link>
+                                        <Link to="/salas/cafe" onClick={() => setMenuAbierto(null)}>Gabinete y Café de Lectores</Link>
+                                        <Link to="/salas/sede" onClick={() => setMenuAbierto(null)}>Horarios y Ubicación de Sede</Link>
                                     </div>
                                 </div>
                                 <div className="drawer-side-col">
@@ -143,8 +143,8 @@ function Navbar({ onToggleMenu }) {
                                     <p className="drawer-lead">La credencial oficial que otorga derechos de préstamo domiciliario y reserva de puestos de estudio.</p>
                                     <div className="drawer-links-grid">
                                         <Link to="/pase-lector" onClick={() => setMenuAbierto(null)}>¿Cómo obtener el Pase Lector?</Link>
-                                        <Link to="/pase-lector" onClick={() => setMenuAbierto(null)}>Reglamento de Préstamos (14 Días)</Link>
-                                        <Link to="/pase-lector" onClick={() => setMenuAbierto(null)}>Acceso a Fondos y Manuscritos Raros</Link>
+                                        <Link to="/pase-lector/reglamento" onClick={() => setMenuAbierto(null)}>Reglamento de Préstamos (14 Días)</Link>
+                                        <Link to="/pase-lector/manuscritos" onClick={() => setMenuAbierto(null)}>Acceso a Fondos y Manuscritos Raros</Link>
                                     </div>
                                 </div>
                                 <div className="drawer-side-col">
