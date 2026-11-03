@@ -97,7 +97,6 @@ function PantallaAnalisis() {
                         </div>
                     </header>
 
-                    {/* Ficha de ejes / Cuadro Harvard */}
                     <div className="ficha-tecnica-harvard">
                         <h3 className="ficha-harvard-title">Ejes de Clasificación Teórica</h3>
                         <div className="grid-harvard-metadata">
